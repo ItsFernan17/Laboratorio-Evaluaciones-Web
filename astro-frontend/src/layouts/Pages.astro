@@ -1,0 +1,46 @@
+---
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+import Header from '../components/Header';
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+	</head>
+	<body>
+        <div id="page" class="relative h-screen">
+            <header class="[grid-area:header]">
+                <Header/>
+            </heade>
+            <main class="[grid-area:main]  mt-5 mr-32 ml-32">
+               Holaaaa
+            </main>
+
+        </div>
+
+		<slot/>
+	</body>
+</html>
+
+<style>
+#page {
+    display: grid;
+    grid-template-areas: 
+        "header"
+        "main";
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: 100vh;
+}
+
+</style>
