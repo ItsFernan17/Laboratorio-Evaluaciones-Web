@@ -4,7 +4,8 @@ interface Props {
 }
 
 const { title } = Astro.props;
-import Header from '../components/Header';
+
+import { Navbar } from '../components/Navbar'
 ---
 
 <!doctype html>
@@ -17,18 +18,21 @@ import Header from '../components/Header';
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body class="text-[#f7f7f7]">
         <div id="page" class="relative h-screen">
-            <header class="[grid-area:header]">
-                <Header/>
-            </heade>
+            <header class="[grid-area:header] flex">
+                <Navbar client:load/>
+            </header>
             <main class="[grid-area:main]  mt-5 mr-32 ml-32">
-               Holaaaa
+               <div class="bg-white">
+                    <div class="w-full flex justify-center">
+                        <div class="w-4/5 mx-auto bg-white p-6 shadow rounded-lg">
+                            <slot />
+                        </div>
+                    </div>                  
+                </div>
             </main>
-
         </div>
-
-		<slot/>
 	</body>
 </html>
 
