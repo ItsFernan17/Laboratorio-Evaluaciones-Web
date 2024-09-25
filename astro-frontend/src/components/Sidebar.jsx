@@ -14,7 +14,6 @@ const Sidebar = () => {
 
   return (
     <div>
-
       <div className="flex">
         <button onClick={() => setIsPressed(!isPressed)}>
           {isPressed ? <IoMdClose className='text-white size-8 mt-10 mr-4'/> : <FiMenu className='text-white size-7 mt-10 mr-5'/>}

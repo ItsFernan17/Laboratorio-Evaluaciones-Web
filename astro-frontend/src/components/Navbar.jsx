@@ -1,7 +1,6 @@
 import Sidebar from './Sidebar'
 import { MdHome } from "react-icons/md";
 
-
 export function Navbar (){
     return(
         <div className="flex flex-row bg-primary w-full h-[120px] justify-between z-50">
