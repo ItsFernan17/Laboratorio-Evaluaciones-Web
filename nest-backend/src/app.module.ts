@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
-import { SeedDbModule } from './seed-db/seed-db.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
+import { UsuarioModule } from './usuario/usuario.module';
+import { CertificacionModule } from './certificacion/certificacion.module';
+import { SeedDbModule } from './seed-db/seed-db.module';
 
 @Module({
   imports: [
@@ -14,11 +16,11 @@ import { ConfigModule } from '@nestjs/config';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: false,
+      synchronize: true, // Cambia a true en desarrollo si es necesario
     }),
-    SeedDbModule
+    SeedDbModule,
+    UsuarioModule,
+    CertificacionModule,
   ],
-  controllers: [],
-  providers: [],
 })
-export class AppModule {}
+export class AppModule { }
