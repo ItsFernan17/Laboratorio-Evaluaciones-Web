@@ -23,21 +23,10 @@ export class DepartamentoService {
       await this.departamentoRepository.save(departamento);
       return { ...departamento };
     } catch (error) {
-      console.error('Error al insertar departamento:', error);
+      console.error('Error al insertar los departamentos:', error);
       throw new BadRequestException(
         'No se pudo insertar el departamento: ' + error.message,
       );
-    }
-  }
-
-  async deleteAllDepartamentos() {
-    const query =
-      this.departamentoRepository.createQueryBuilder('departamento');
-
-    try {
-      return await query.delete().where({}).execute();
-    } catch (error) {
-      throw new BadRequestException(error.detail);
     }
   }
 }
