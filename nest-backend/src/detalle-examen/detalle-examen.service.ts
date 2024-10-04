@@ -12,12 +12,14 @@ export class DetalleExamenService {
   ) {}
 
   async findAll() {
-    this.detalleRepository.find();
+    return this.detalleRepository.find(
+     { where: { estado: true }},
+    );
   }
 
   async findById(codigo_detalle: number) {
     const detalleExistente = await this.detalleRepository.findOne({
-      where: { codigo_detalle },
+      where: { codigo_detalle, estado: true },
     });
 
     if (!detalleExistente) {

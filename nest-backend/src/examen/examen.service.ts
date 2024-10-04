@@ -11,12 +11,15 @@ export class ExamenService {
   ) {}
 
   async findAll() {
-    this.examenRepository.find();
+    return this.examenRepository.find({
+      where: { estado: true },
+    });
+
   }
 
   async findById(codigo_examen: number) {
     const examenExistente = await this.examenRepository.findOne({
-      where: { codigo_examen },
+      where: { codigo_examen, estado: true },
     });
 
     if (!examenExistente) {
@@ -81,4 +84,5 @@ export class ExamenService {
     const resultado = await this.examenRepository.save(examenExistente);
     return resultado;
   }
+
 }
