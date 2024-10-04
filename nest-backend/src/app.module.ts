@@ -17,6 +17,7 @@ import { SeedDbModule } from './seed-db/seed-db.module';
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true, // Cambia a true en desarrollo si es necesario
+      dropSchema: true,
     }),
     SeedDbModule,
     UsuarioModule,

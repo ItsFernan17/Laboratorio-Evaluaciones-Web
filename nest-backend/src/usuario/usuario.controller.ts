@@ -5,12 +5,13 @@ import { UpdateUsuarioDto } from './dto/update-usuario.dto';
 
 @Controller('usuario')
 export class UsuarioController {
-  constructor(private readonly usuarioService: UsuarioService) {}
+  constructor(private readonly usuarioService: UsuarioService) { }
 
   @Post()
-  create(@Body() createUsuarioDto: CreateUsuarioDto) {
+  async create(@Body() createUsuarioDto: CreateUsuarioDto) {
     return this.usuarioService.create(createUsuarioDto);
   }
+
 
   @Get()
   findAll() {
@@ -26,6 +27,7 @@ export class UsuarioController {
   update(@Param('nombre_usuario') nombre_usuario: string, @Body() updateUsuarioDto: UpdateUsuarioDto) {
     return this.usuarioService.update(nombre_usuario, updateUsuarioDto);
   }
+
 
   @Delete(':nombre_usuario')
   remove(@Param('nombre_usuario') nombre_usuario: string) {

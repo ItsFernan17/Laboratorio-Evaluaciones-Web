@@ -14,7 +14,6 @@ export class UpdateUsuarioDto {
     @IsString({ message: 'El DPI debe ser una cadena de texto' })
     DPI?: string;
 
-    @IsBoolean()
     ESTADO?: boolean;
 
     @IsOptional()
