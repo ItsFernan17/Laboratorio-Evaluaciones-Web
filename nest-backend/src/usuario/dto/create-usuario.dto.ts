@@ -47,4 +47,3 @@ export class CreateUsuarioDto {
     @IsInt()
     POBLACION: number;
 }
-
