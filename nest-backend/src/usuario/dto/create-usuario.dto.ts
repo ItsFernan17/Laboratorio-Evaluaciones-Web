@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength, IsInt, IsEnum} from "class-validator";
+import { IsNotEmpty, IsString, MaxLength, MinLength, IsInt, IsEnum } from "class-validator";
 
 enum Roles {
     admin = 'admin',
@@ -26,8 +26,6 @@ export class CreateUsuarioDto {
     @MaxLength(15, { message: 'El teléfono no debe exceder los 15 caracteres' })
     telefono: string;
 
-    nombre_usuario: string;
-
     @IsNotEmpty({ message: 'El rol es obligatorio' })
     @IsEnum(Roles, { message: 'El rol debe ser uno de los valores permitidos: admin, evaluador, auxiliar, evaluado' })
     rol: Roles;
@@ -45,9 +43,7 @@ export class CreateUsuarioDto {
     @IsInt()
     poblacion: number;
 
-    @IsNotEmpty({ message: 'La recidencia es obligatoria' })
+    @IsNotEmpty({ message: 'La residencia es obligatoria' })
     @IsInt()
     residencia: number;
-
-
 }

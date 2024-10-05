@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Departamento } from "src/seed-db/departamento/model/departamento.entity";
+import { Grado } from "src/seed-db/grado/model/grado.entity";
+import { Poblacion } from "src/seed-db/poblacion/model/poblacion.entity";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class Usuario {
@@ -6,7 +9,7 @@ export class Usuario {
     @PrimaryColumn({ unique: true })
     dpi: string;
 
-    @Column({ type: 'boolean', default: true })
+    @Column({ type: 'bit', width: 1 })
     estado: boolean;
 
     @Column({ length: 75 })
@@ -24,12 +27,15 @@ export class Usuario {
     @Column({ length: 100 })
     contrasenia: string;
 
-    @Column({ nullable: false })
-    grado: number;
+    @ManyToOne(() => Grado, { nullable: true })
+    @JoinColumn({ name: 'grado' })
+    grado: Grado;
 
-    @Column({ nullable: false })
-    poblacion: number;
+    @ManyToOne(() => Poblacion, { nullable: true })
+    @JoinColumn({ name: 'poblacion' })
+    poblacion: Poblacion;
 
-    @Column({ nullable: false })
-    residencia: number;
+    @ManyToOne(() => Departamento, { nullable: true })
+    @JoinColumn({ name: 'residencia' })
+    residencia: Departamento;  
 }

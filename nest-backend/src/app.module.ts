@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
+import { SeedDbModule } from './seed-db/seed-db.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { ExamenModule } from './examen/examen.module';
 import { DetalleExamenModule } from './detalle-examen/detalle-examen.module';
-import { SeedDbModule } from './seed-db/seed-db.module';
+import { EmpleoModule } from './empleo/empleo.module';
+import { PreguntaModule } from './pregunta/pregunta.module';
+import { BancoRespuestasModule } from './banco_respuestas/banco_respuestas.module';
 import { UsuarioModule } from './usuario/usuario.module';
 
 @Module({
@@ -23,7 +26,12 @@ import { UsuarioModule } from './usuario/usuario.module';
     SeedDbModule,
     ExamenModule,
     DetalleExamenModule,
-    UsuarioModule
+    EmpleoModule,
+    PreguntaModule,
+    BancoRespuestasModule,
+    UsuarioModule,
   ],
+  controllers: [],
+  providers: [],
 })
-export class AppModule { }
+export class AppModule {}

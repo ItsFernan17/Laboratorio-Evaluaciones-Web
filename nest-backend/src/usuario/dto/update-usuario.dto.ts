@@ -41,8 +41,9 @@ export class UpdateUsuarioDto {
     @IsOptional()
     @IsInt({ message: 'La población debe ser un número entero' })
     poblacion?: number;
-    
+
     @IsOptional()
     @IsInt({ message: 'La población debe ser un número entero' })
     residencia?: number;
+
 }

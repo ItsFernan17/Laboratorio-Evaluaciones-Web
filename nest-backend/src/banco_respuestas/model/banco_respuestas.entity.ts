@@ -1,28 +1,17 @@
-import { Entity, Column , PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
 import { Usuario } from 'src/usuario/model/usuario.entity';
-import { Empleo } from "src/empleo/model/empleo.entity";
 
-@Entity({name: 'examen'})
-export class Examen{
+@Entity({ name: 'banco_respuestas' })
+export class BancoRespuestas {
+
     @PrimaryGeneratedColumn()
-    codigo_examen: number;
+    codigo_respuesta: number;
 
     @Column({ type: 'bit', width: 1 })
     estado: boolean;
 
-    @Column({ type: 'date' })
-    fecha_evaluacion: Date;
-
-    @ManyToOne(() => Usuario, { nullable: true })
-    @JoinColumn({ name: 'usuario' })
-    usuario: Usuario;
-
-    @ManyToOne(() => Empleo, { nullable: true })
-    @JoinColumn({ name: 'empleo' })
-    empleo: Empleo;
-
-    @Column({ type: 'int' })
-    punteo_total: number;
+    @Column({ type: 'varchar', length: 100 })
+    respuesta: string;
 
     @ManyToOne(() => Usuario, { nullable: true })
     @JoinColumn({ name: 'usuario_ingreso' })

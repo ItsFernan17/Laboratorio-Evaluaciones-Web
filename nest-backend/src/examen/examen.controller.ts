@@ -26,7 +26,7 @@ export class ExamenController {
 
     @Put(':id')
     updateExamen(@Param(':id') codigo_examen: number, @Body() updateExamen: UpdateExamenDto){
-        return this.examenService.updateExamen(codigo_examen, updateExamen);
+       return this.examenService.updateExamen(codigo_examen, updateExamen);
     }
 
     @Patch(':id/estado')

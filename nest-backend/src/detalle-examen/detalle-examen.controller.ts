@@ -10,27 +10,27 @@ export class DetalleExamenController {
     ){}
 
     @Get()
-    getExamenes(){
+    getDetallle(){
         return this.detalleService.findAll();
     }
 
     @Get(':id')
-    getExamenesId(@Param('id') codigo_detalle: number){
+    getDetallleId(@Param('id') codigo_detalle: number){
         return this.detalleService.findById(codigo_detalle);
     }
 
     @Post()
-    createExamen(@Body() newDetalle: CreateDetalleDto){
+    createDetallle(@Body() newDetalle: CreateDetalleDto){
         return this.detalleService.createDetalle(newDetalle);
-    }   
+    }
 
     @Put(':id')
-    updateExamen(@Param(':id') codigo_detalle: number, @Body() updateDetalle: UpdateDetalleDto){
+    updateDetallle(@Param('id') codigo_detalle: number, @Body() updateDetalle: UpdateDetalleDto){
         return this.detalleService.updateDetalle(codigo_detalle, updateDetalle);
     }
 
     @Patch(':id/estado')
-    desactiveExamen(@Param('id') codigo_detalle: number){
+    desactiveDetallle(@Param('id') codigo_detalle: number){
         return this.detalleService.desactiveDetalle(codigo_detalle);
     } 
 
