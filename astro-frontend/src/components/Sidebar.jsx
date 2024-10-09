@@ -1,4 +1,4 @@
-import { sidebarStore } from '../store/sidebarStore'
+import { componentStore } from '../store/componentsStore'
 import { FiMenu } from "react-icons/fi";
 import { IoMdClose } from "react-icons/io";
 import { FaUsers,FaBook  } from "react-icons/fa";
@@ -10,7 +10,7 @@ import { IoMdSettings } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 
 const Sidebar = () => {
-  const { isPressed, setIsPressed } = sidebarStore(state => state)
+  const { isPressed, setIsPressed } = componentStore(state => state)
 
   return (
     <div>

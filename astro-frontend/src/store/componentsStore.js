@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export const sidebarStore = create ((set) => ({
+export const componentStore = create ((set) => ({
     isPressed: false,
     setIsPressed: (isPressed) => set({ isPressed })
 }))
