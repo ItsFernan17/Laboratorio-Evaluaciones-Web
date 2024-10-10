@@ -4,11 +4,12 @@ export default {
 	theme: {
 		extend: {
 		  fontFamily: {
-			sans: ['San Francisco', 'system-ui', 'sans-serif'],
+			page: ['Inter'],
 		  },
 		  colors: {
 			primary: '#142957',
 			secondary: '#fab91d',
+			background: '#D9D9D9',
 		  },
 		},
 	  },
