@@ -33,7 +33,6 @@ export class UsuarioService {
     return `${primerNombre.charAt(0).toLowerCase()}${primerApellido.toLowerCase()}`;
   }
 
-
   async findAll() {
     return this.usuarioRepository.find({
       where: { estado: true },
