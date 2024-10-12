@@ -1,6 +1,99 @@
 ---
-import Publico from '../layouts/publico.astro';
+import Navbar from "../components/Navbar";
 ---
-<Publico title='Nosotros'>
 
-</Publico>
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Página</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, sans-serif;
+        }
+
+        .background {
+            background-image: url("mdn1.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+        }
+
+        .capa-transparente {
+            background-color: rgba(124, 164, 109, 0.5); /* Esto agrega una capa semitransparente sobre la imagen */
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+
+        .container {
+            position: relative; /* Esto permite que el contenido se sitúe por encima de la capa de color */
+            z-index: 1; /* Asegura que el contenido esté por encima de la capa de fondo */
+        }
+    </style>
+</head>
+<body>
+    <Navbar/>
+    <div class="background">
+        <div class="capa-transparente"></div> <!-- Capa semitransparente -->
+        <div class="container">
+            <div class="container w-full bg-white rounded-lg shadow-md ring-1 ring-blue-200 mt-4 p-4">
+                <h1 class="text-4xl font-bold text-gray-900 text-center">Contáctanos</h1>
+                <p class="mt-4 text-gray-600 text-center">
+                    Si tienes alguna duda, comentario o sugerencia, no dudes en ponerte en contacto con nosotros. Estamos aquí para ayudarte y atender tus necesidades. Completa el formulario a continuación y nos comunicaremos contigo a la brevedad.
+                </p>
+            </div>
+            <!-- Contenedor del Formulario -->
+            <div class="max-w-5xl mx-auto my-10 p-8 bg-white rounded-lg shadow-lg shadow-orange-200">
+                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Formulario de Contacto</h2>
+                <form action="#" method="POST">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="nombre" class="block text-sm font-medium text-gray-700">Nombres</label>
+                            <input type="text" id="nombre" name="nombre" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200" placeholder="Ingrese sus nombres" />
+                        </div>
+                        <div>
+                            <label for="apellido" class="block text-sm font-medium text-gray-700">Apellidos</label>
+                            <input type="text" id="apellido" name="apellido" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200" placeholder="Ingrese sus apellidos" />
+                        </div>
+                        <div>
+                            <label for="dpi" class="block text-sm font-medium text-gray-700">DPI</label>
+                            <input type="text" id="dpi" name="dpi" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200" placeholder="Ingrese su DPI" />
+                        </div>
+                        <div>
+                            <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono</label>
+                            <input type="tel" id="telefono" name="telefono" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200" placeholder="Ingrese su número de teléfono" />
+                        </div>
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
+                            <input type="email" id="email" name="email" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200" placeholder="Ingrese su correo electrónico" />
+                        </div>
+                        <div>
+                            <label for="empleo" class="block text-sm font-medium text-gray-700">Empleo que le interesa (opcional)</label>
+                            <input type="text" id="empleo" name="empleo" class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200" placeholder="Ingrese el empleo que le interesa" />
+                        </div>
+                        <div class="col-span-2">
+                            <label for="comentario" class="block text-sm font-medium text-gray-700">Comentario</label>
+                            <textarea id="comentario" name="comentario" rows="4" required class="mt-1 block w-full p-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-200" placeholder="Escriba su comentario..."></textarea>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex justify-end">
+                        <button type="reset" class="mr-4 px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400">Limpiar</button>
+                        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Enviar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
