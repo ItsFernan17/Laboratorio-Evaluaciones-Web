@@ -1,6 +1,216 @@
 ---
+// Empleos.astro
 import Publico from '../layouts/publico.astro';
+
+const empleos = [
+  {
+    titulo: "Oficinista II",
+    descripcion: "Requisitos: Acreditar diploma de nivel de educación básica, Curso de redacción y ortografía, 1 año de experiencia en puesto relacionado.",
+    imagen: "oficinista.png" // Solo debes colocar el nombre de la imagen
+  },
+  {
+    titulo: "Conductor de Transporte Pesado",
+    descripcion: "Requisitos: Acreditar licencia de conducir tipo A, curso de conducción de vehículos, experiencia de dos años relacionados con el puesto.",
+    imagen: "conductor.png" // Solo debes colocar el nombre de la imagen
+  },
+  {
+    titulo: "Auxiliar de Ingeniero Civil I",
+    descripcion: "Para postularse, se debe haber aprobado el sexto ciclo de la carrera de Ingeniería Civil.",
+    imagen: "auxcivil1.webp" // Solo debes colocar el nombre de la imagen
+  },
+  {
+    titulo: "Auxiliar de Ingeniero Civil II",
+    descripcion: "Se requiere poseer pensum cerrado en la carrera universitaria de Ingeniería Civil, acreditar un (01) año de experiencia como Auxiliar de Ingeniero I, o tres (03) años de experiencia en labores relacionadas con el puesto fuera de la institución.",
+    imagen: "auxcivil2.png" // Solo debes colocar el nombre de la imagen
+  },
+  {
+    titulo: "Ingeniero Civil I",
+    descripcion: "Es necesario poseer título universitario de Ingeniero Civil, ser colegiado activo y acreditar un (01) año de experiencia como Auxiliar de Ingeniero II o tres (03) años de experiencia profesional en labores relacionadas con el puesto fuera de la institución.",
+    imagen: "civil1.png" // Solo debes colocar el nombre de la imagen
+  },
+  {
+    titulo: "Ingeniero Civil II",
+    descripcion: "Se solicita poseer título de Ingeniero Civil, ser colegiado activo y acreditar dos (02) años de experiencia como Ingeniero Civil I, o seis (06) años de experiencia profesional en labores relacionadas con el puesto fuera de la institución.",
+    imagen: "civil2.png" // Solo debes colocar el nombre de la imagen
+  },
+  {
+    titulo: "Ingeniero Civil III",
+    descripcion: "Para este puesto, se requiere título universitario de Ingeniero Civil, una (01) maestría en el área de su especialidad, ser colegiado activo y acreditar dos (02) años de experiencia como Ingeniero Civil II, o seis (06) años de experiencia profesional en labores relacionadas con el puesto fuera de la institución.",
+    imagen: "civil3.png" // Solo debes colocar el nombre de la imagen
+  },
+  {
+    titulo: "Ingeniero Civil IV",
+    descripcion: "Es necesario poseer título universitario de Ingeniero Civil, una (01) maestría en el área de su especialidad, ser colegiado activo y acreditar dos (02) años de experiencia como Ingeniero Civil III, o seis (06) años de experiencia profesional y dos (02) años de ejercicio profesional como maestro en la institución.",
+    imagen: "civil4.png" // Solo debes colocar el nombre de la imagen
+  }
+];
+
+// Arreglo de colores degradados para las tarjetas
+const colores = [
+  "linear-gradient(to bottom right, #ffe58e, #ffb800)",
+  "linear-gradient(to bottom right, #ff9b9b, #ff5733)",
+  "linear-gradient(to bottom right, #b3ffb3, #33ff57)",
+  "linear-gradient(to bottom right, #9bb3ff, #3375ff)",
+  "linear-gradient(to bottom right, #ffb3d9, #ff33a1)",
+  "linear-gradient(to bottom right, #a1ffda, #33ffa1)",
+  "linear-gradient(to bottom right, #d1a1ff, #a133ff)",
+  "linear-gradient(to bottom right, #ffb3b3, #ff3375)"
+];
 ---
-<Publico title='Empelos'>
-    
+
+<Publico title='Empleos'>
+  <!-- Sección de bienvenida -->
+  <section class="welcome-section">
+    <h1>¡Bienvenido a Tu Futuro Profesional!</h1>
+    <p>En el Ministerio de la Defensa Nacional, creemos que cada talento merece una oportunidad. Nos comprometemos a conectar a profesionales con las mejores ofertas laborales diseñadas para impulsar sus carreras, y a ser su aliado en la búsqueda de empleo que se adapte a sus habilidades y aspiraciones. Explora nuestro mundo de posibilidades, donde ofrecemos empleos en empresas innovadoras y consolidadas, con una plataforma intuitiva para facilitar tu búsqueda. Conectamos talento con oportunidades y, ya seas un profesional en busca de su próximo desafío o una empresa en busca de candidatos, estamos aquí para ayudarte a alcanzar tus metas.</p>
+  </section>
+
+  <!-- Sección de tarjetas de empleos -->
+  <section class="cards-container">
+    {empleos.map((empleo, index) => (
+      <div class="card" key={index}>
+        <div class="card-inner">
+          <div class="card-front" style={`background: ${colores[index % colores.length]};`}>
+            <img src={`/${empleo.imagen}`} alt={empleo.titulo} className="card-image" />
+            <h2>{empleo.titulo}</h2>
+          </div>
+          <div class="card-back">
+            <h2>{empleo.titulo}</h2>
+            <p>{empleo.descripcion}</p>
+          </div>
+        </div>
+      </div>
+    ))} 
+  </section>
+
+  <!-- Información de contacto -->
+  <section class="contact-section">
+    <h2>¡Cumples con los Requisitos?</h2>
+    <p>Si alguna de estas ofertas coincide con tu perfil y cumples con los requisitos, no dudes en contactarnos. Comunícate con la Dirección de Personal del EMDN al teléfono <strong>32324578</strong>. Estaremos encantados de brindarte más detalles y orientarte en el proceso de aplicación.</p>
+    <p>¡No dejes pasar esta oportunidad de formar parte de una organización comprometida con el desarrollo y crecimiento profesional!</p>
+  </section>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif; /* Cambiado a Inter */
+      background-color: #fff;
+    }
+
+    .welcome-section {
+      padding: 40px;
+      margin-bottom: 20px;
+    }
+
+    .welcome-section h1 {
+      font-size: 2.5rem;
+      color: #0059ff;
+      margin-bottom: 10px;
+      text-align: center; /* Centrar título */
+    }
+
+    .welcome-section p {
+      font-size: 1rem;
+      margin-bottom: 15px;
+      line-height: 1.5;
+      text-align: center; /* Centrar texto */
+    }
+
+    .cards-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .card {
+      width: 100%;
+      height: 450px;
+      perspective: 1000px;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    .card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      flex-direction: column;
+    }
+
+    .card-front img {
+      margin-bottom: 10px;
+      width: 80%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .card-back {
+      background-color: #0059ff;
+      transform: rotateY(180deg);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 1.8rem; /* Aumentado tamaño del texto */
+      text-align: center; /* Centrar títulos */
+    }
+
+    p {
+      font-size: 1.1rem; /* Aumentado tamaño del texto */
+      text-align: center; /* Centrar texto */
+    }
+
+    .contact-section {
+      background-color: #fff;
+      padding: 40px;
+      margin: 20px;
+      text-align: center;
+    }
+
+    .contact-section h2 {
+      font-size: 1.8rem;
+      color: #0059ff;
+      margin-bottom: 15px;
+    }
+
+    .contact-section p {
+      font-size: 1rem;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .contact-section strong {
+      font-size: 1.2rem;
+      color: #ffb800;
+    }
+  </style>
 </Publico>
