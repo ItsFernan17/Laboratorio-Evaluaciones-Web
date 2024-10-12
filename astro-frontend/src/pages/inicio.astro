@@ -1,0 +1,64 @@
+---
+import Navbar from "../components/Navbar";
+---
+
+<!doctype html>
+<html lang="">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Nosotros</title>
+    </head>
+    <body>
+        <div class="sticky top-0 bg-white z-10">
+            <Navbar />
+        </div>
+        <div>
+           {/* ------------------------------------------------------------ */}
+           <main class="max-w-full mx-auto">
+            <!-- Sección de Bienvenida -->
+            <div
+                class="bg-blue-400 text-white text-center p-4 w-[95%] mx-auto m-4 rounded-lg shadow-lg"
+            >
+                <h1 class="text-4xl font-bold text-amber-400">
+                    Bienvenido, sitio oficial de la Dirección de Personal
+                    del Estado Mayor de la Defensa Nacional.
+                </h1>
+                <p class="mt-4 text-lg">
+                    En esta página, encontrará información valiosa
+                    relacionada con la administración del potencial humano.
+                    Nos especializamos en la captación y selección de
+                    personal, y nuestro objetivo es ofrecerle los recursos
+                    necesarios para optimizar su proceso de reclutamiento.
+                    Explore nuestras herramientas, guías y consejos
+                    diseñados para ayudarle a identificar y atraer el
+                    talento adecuado para su equipo. ¡Gracias por
+                    visitarnos!
+                </p>
+            </div>
+
+            <!-- Imagen centrada -->
+            <div class="w-[95%] mx-auto m-2 flex justify-center items-center min-h-[300px]">
+                <img
+                    src="logo_dpemdn.png"
+                    alt="logo-dpemdn"
+                    class="w-1/4 max-w-full h-auto"
+                />
+            </div>
+            
+            <div
+                class="fixed bottom-0 left-0 w-full bg-gray-100 text-center p-4 shadow-md"
+            >
+                <div class="flex justify-center items-center">
+                    <!-- Derechos Reservados -->
+                    <h3 class="flex text-xl text-center mt-8 text-gray-600">
+                        © 2024 dpemdn | Todos los derechos
+                        reservados | Ⓡ | ™
+                    </h3>
+                </div>
+            </div>
+        </main>
+        {/* ------------------------------------------------------------ */}
+        </div>
+    </body>
+</html>

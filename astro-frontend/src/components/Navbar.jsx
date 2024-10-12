@@ -14,7 +14,7 @@ const Navbar = () => {
 
       <div className="relative hidden xl:flex items-center gap-3">
       <ul className="hidden xl:flex items-center gap-7 text-page mb-3">
-        <a href="/">
+        <a href="inicio">
             <li className="text-white text-[15px] font-regular mt-4 p-2 border-b-2 border-transparent duration-300 ease-in-out hover:border-secondary transition-all cursor-pointer">
                 Inicio
             </li>
