@@ -43,7 +43,9 @@ import Navbar from "../components/Navbar";
     </style>
 </head>
 <body>
-    <Navbar/>
+    <div class="sticky top-0 bg-white z-10">
+        <Navbar />
+    </div>
     <div class="background">
         <div class="capa-transparente"></div> <!-- Capa semitransparente -->
         <div class="container">
@@ -55,7 +57,9 @@ import Navbar from "../components/Navbar";
             </div>
             <!-- Contenedor del Formulario -->
             <div class="max-w-5xl mx-auto my-10 p-8 bg-white rounded-lg shadow-lg shadow-orange-200">
-                <h2 class="text-2xl font-semibold text-gray-800 mb-4">Formulario de Contacto</h2>
+                <div class="w-full text-center">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4">Formulario de Contacto</h2>
+                </div>
                 <form action="#" method="POST">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
