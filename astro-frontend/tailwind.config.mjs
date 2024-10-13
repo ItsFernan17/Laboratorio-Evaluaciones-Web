@@ -11,7 +11,12 @@ export default {
 			secondary: '#fab91d',
 			background: '#D9D9D9',
 		  },
+		  /* Para bordes */
+		  borderRadius: { 
+			'3xl': '3rem', 
+		  },
 		},
 	  },
 	plugins: [],
-}
+};
+
