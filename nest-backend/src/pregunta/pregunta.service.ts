@@ -1,104 +1,113 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Pregunta } from './model/pregunta.entity';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
-import { CreatePreguntaDto } from './dto/create-pregunta.dto';
-import { UpdatePreguntaDto } from './dto/update-pregunta.dto';
 import { Usuario } from 'src/usuario/model/usuario.entity';
-import { BancoRespuestas } from 'src/banco_respuestas/model/banco_respuestas.entity';
+import { TipoPregunta } from 'src/seed-db/tipo-pregunta/model/tipo-pregunta.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Pregunta } from './model/pregunta.entity';
+import { CreatePreguntaDto, UpdatePreguntaDto } from './dto';
 
 @Injectable()
-export class PreguntaService {
-  constructor(
-    @InjectRepository(Pregunta)
-    private preguntaRepository: Repository<Pregunta>,
-    @InjectRepository(Usuario)
-    private readonly usuarioRepository: Repository<Usuario>,
-    @InjectRepository(BancoRespuestas)
-    private readonly respuestaRepository: Repository<BancoRespuestas>,
-  ) {}
-
-  async findAll() {
-    return this.preguntaRepository.find({
-      where: { estado: true },
-    });
-  }
-
-  async findById(codigo_pregunta: number) {
-    const preguntaExistente = await this.preguntaRepository.findOne({
-      where: { codigo_pregunta, estado: true },
-    });
-
-    if (!preguntaExistente) {
-      throw new HttpException(
-        'La pregunta con el código proporcionado no existe en la base de datos.',
-        HttpStatus.NOT_FOUND,
-      );
+export class PreguntaService { 
+    constructor(
+        @InjectRepository(TipoPregunta)
+        private tipoPreguntaRepository: Repository<TipoPregunta>,
+        @InjectRepository(Usuario)
+        private usuarioRepository: Repository<Usuario>,
+        @InjectRepository(Pregunta)
+        private preguntaRepository: Repository<Pregunta>,
+    ) {}
+    
+    async findAll(){
+        return this.tipoPreguntaRepository.find({
+        where: { estado: true },
+        });
     }
 
-    return preguntaExistente;
-  }
-
-  async createPregunta(createPreguntaDto: CreatePreguntaDto) {
-
-    const usuario = await this.usuarioRepository.findOne({ where: { nombre_usuario: createPreguntaDto.usuario_ingreso } });
-
-    if (!usuario) {
-      throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
+    async findByPregunta(descripcion: string): Promise<Pregunta | null> {
+        return await this.preguntaRepository.findOne({ where: { descripcion } });
     }
 
-    const respuesta = await this.respuestaRepository.findOne({ where: { codigo_respuesta: createPreguntaDto.banco_respuestas } });
+    async findById(codigo_pregunta: number){
+        const preguntaExistente = await this.preguntaRepository.findOne({
+            where: { codigo_pregunta, estado: true },
+        });
 
-    if (!respuesta) {
-      throw new HttpException('Respuesta no encontrada.', HttpStatus.NOT_FOUND);
+        if (!preguntaExistente) {
+            return new HttpException(
+                'La pregunta con el código proporcionado no existe en la base de datos.',
+                HttpStatus.NOT_FOUND,
+            );
+        }
+
+        return preguntaExistente;
     }
 
-    // Create the new question
-    const newPregunta = this.preguntaRepository.create({
-      estado: true,
-      usuario_ingreso: usuario,
-      banco_respuestas: respuesta,
-      fecha_modifica: null,
-      enunciado: createPreguntaDto.enunciado,
-    });
+    async createPregunta(createPreguntaDto: CreatePreguntaDto){
+        const usuario = await this.usuarioRepository.findOne({ where: { nombre_usuario: createPreguntaDto.usuario_ingreso} });
 
-    return this.preguntaRepository.save(newPregunta);
-  }
-  
-  async updatePregunta(codigo_pregunta: number, updatePreguntaDto: UpdatePreguntaDto) {
-    const preguntaExistente = await this.preguntaRepository.findOne({ where: { codigo_pregunta } });
-    if (!preguntaExistente) {
-      throw new HttpException('La pregunta con el código proporcionado no existe en la base de datos.', HttpStatus.NOT_FOUND);
+        if (!usuario) {
+            throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
+        }
+
+        const tipoPregunta = await this.tipoPreguntaRepository.findOne({ where: { codigo_tipoP: createPreguntaDto.tipo_pregunta } });
+
+        if (!tipoPregunta) {
+            throw new HttpException('Tipo de pregunta no encontrado.', HttpStatus.NOT_FOUND);
+        }
+
+        const newPregunta = this.preguntaRepository.create({
+            descripcion: createPreguntaDto.descripcion,
+            punteo: createPreguntaDto.punteo,
+            estado: true,
+            usuario_ingreso: usuario,
+            fecha_ingreso: new Date(),
+            fecha_modifica: null,
+            tipo_pregunta: tipoPregunta,
+        });
+
+        return this.preguntaRepository.save(newPregunta);
     }
 
-    const usuario = await this.usuarioRepository.findOne({ where: { nombre_usuario: updatePreguntaDto.usuario_modifica } });
-    if (!usuario) {
-      throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
+    async updatePregunta(codigo_pregunta: number, updatePregunta: UpdatePreguntaDto){
+        const preguntaExistente = await this.preguntaRepository.findOne({ where: { codigo_pregunta, estado: true } });
+
+        if (!preguntaExistente) {
+            throw new HttpException('La pregunta con el código proporcionado no existe en la base de datos.', HttpStatus.NOT_FOUND);
+        }
+
+        const usuario = await this.usuarioRepository.findOne({ where: { nombre_usuario: updatePregunta.usuario_modifica } });
+
+        if (!usuario) {
+            throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
+        }
+
+        const tipoPregunta = await this.tipoPreguntaRepository.findOne({ where: { codigo_tipoP: updatePregunta.tipo_pregunta } });
+
+        if (!tipoPregunta) {
+            throw new HttpException('Tipo de pregunta no encontrado.', HttpStatus.NOT_FOUND);
+        }
+
+        preguntaExistente.descripcion = updatePregunta.descripcion;
+        preguntaExistente.punteo = updatePregunta.punteo;
+        preguntaExistente.usuario_ingreso = usuario;
+        preguntaExistente.fecha_modifica = new Date();
+        preguntaExistente.tipo_pregunta = tipoPregunta;
+
+        return this.preguntaRepository.save(preguntaExistente);
     }
 
-    preguntaExistente.enunciado = updatePreguntaDto.enunciado;
-    preguntaExistente.usuario_modifica = usuario;
-    preguntaExistente.fecha_modifica = new Date();
+    async desactivePregunta(codigo_pregunta: number){
+        const preguntaExistente = await this.preguntaRepository.findOne({ where: { codigo_pregunta, estado: true } });
 
-    return this.preguntaRepository.save(preguntaExistente);
-  }
+        if (!preguntaExistente) {
+            throw new HttpException('La pregunta con el código proporcionado no existe en la base de datos.', HttpStatus.NOT_FOUND);
+        }
 
-  async desactivePregunta(codigo_pregunta: number) {  // Cambiado a codigo_pregunta
-    const preguntaExistente = await this.preguntaRepository.findOne({
-      where: { codigo_pregunta },  // Cambiado a codigo_pregunta
-    });
+        preguntaExistente.estado = false;
+        preguntaExistente.fecha_modifica = new Date();
 
-    if (!preguntaExistente) {
-      throw new HttpException(
-        'La pregunta con el código proporcionado no existe en la base de datos.',
-        HttpStatus.NOT_FOUND,
-      );
+        return this.preguntaRepository.save(preguntaExistente);
     }
     
-    // Cambiar el estado a false en lugar de eliminar el registro
-    preguntaExistente.estado = false;
 
-    const resultado = await this.preguntaRepository.save(preguntaExistente);
-    return resultado;
-  }
 }

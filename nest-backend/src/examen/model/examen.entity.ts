@@ -1,9 +1,10 @@
-import { Entity, Column , PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
-import { Usuario } from 'src/usuario/model/usuario.entity';
-import { Empleo } from "src/empleo/model/empleo.entity";
+import { Entity, Column, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Usuario } from '../../usuario/model/usuario.entity';
+import { TipoExamen } from "src/tipo-examen/model/tipo-examen.entity";
 
-@Entity({name: 'examen'})
-export class Examen{
+@Entity({ name: 'examen' })
+export class Examen {
+
     @PrimaryGeneratedColumn()
     codigo_examen: number;
 
@@ -13,16 +14,12 @@ export class Examen{
     @Column({ type: 'date' })
     fecha_evaluacion: Date;
 
-    @ManyToOne(() => Usuario, { nullable: true })
-    @JoinColumn({ name: 'usuario' })
-    usuario: Usuario;
-
-    @ManyToOne(() => Empleo, { nullable: true })
-    @JoinColumn({ name: 'empleo' })
-    empleo: Empleo;
+    @ManyToOne(() => TipoExamen, { nullable: true })
+    @JoinColumn({ name: 'tipo_examen' })
+    tipo_examen: TipoExamen;
 
     @Column({ type: 'int' })
-    punteo_total: number;
+    punteo_maximo: number;
 
     @ManyToOne(() => Usuario, { nullable: true })
     @JoinColumn({ name: 'usuario_ingreso' })

@@ -12,8 +12,8 @@ export class UsuarioController {
   }
 
   @Get(':id')
-  getUsuarioId(@Param('id') nombre_usuario: string) {
-    return this.usuarioService.findById(nombre_usuario);
+  getUsuarioId(@Param('id') dpi: string) {
+    return this.usuarioService.findByDPI(dpi);
   }
 
   @Post()

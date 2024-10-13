@@ -1,15 +1,20 @@
-import { IsNotEmpty, IsString, MinLength, IsInt } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString, Min, MinLength } from "class-validator";
 
 export class CreatePreguntaDto {
 
     @IsString()
-    @IsNotEmpty({ message: "El enunciado es obligatorio" })
-    @MinLength(5, { message: "El enunciado debe tener mínimo 5 caracteres" })
-    enunciado: string;
+    @IsNotEmpty({ message: "La descripción es obligatoria" })
+    @MinLength(5, { message: "La descripción debe tener mínimo 5 caracteres" })
+    descripcion: string;
+    
+    @IsNumber()
+    @IsNotEmpty({ message: "El punteo es obligatorio" })
+    @Min(1, { message: "El punteo debe tener mínimo 1 caracteres" })
+    punteo: number;
 
-    @IsInt({ message: "El banco de respuestas debe ser un número entero" })
-    @IsNotEmpty({ message: "El banco de respuestas es obligatorio" })
-    banco_respuestas: number;
+    @IsNumber()
+    @IsNotEmpty({ message: "El tipo de pregunta es obligatorio" })
+    tipo_pregunta: number;
 
     @IsString()
     @IsNotEmpty({ message: "El usuario de ingreso es obligatorio" })

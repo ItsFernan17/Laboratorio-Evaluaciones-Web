@@ -2,22 +2,24 @@ import { Module } from '@nestjs/common';
 import { SeedDbModule } from './seed-db/seed-db.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { ExamenModule } from './examen/examen.module';
-import { DetalleExamenModule } from './detalle-examen/detalle-examen.module';
 import { EmpleoModule } from './empleo/empleo.module';
-import { PreguntaModule } from './pregunta/pregunta.module';
-import { BancoRespuestasModule } from './banco_respuestas/banco_respuestas.module';
 import { UsuarioModule } from './usuario/usuario.module';
-import { ComandoModule } from './comando/comando.module';
-import { MotivoAptoController } from './motivo-apto/motivo-apto.controller';
-import { MotivoAptoService } from './motivo-apto/motivo-apto.service';
-import { MotivoApoModule } from './motivo-apto/motivo-apto.module';
-import { MotivoNoaptoModule } from './motivo-noapto/motivo-noapto.module';
+import { AuthModule } from './auth/auth.module';
+import { TipoPreguntaModule } from './seed-db/tipo-pregunta/tipo-pregunta.module';
+import { TipoExamenModule } from './tipo-examen/tipo-examen.module';
+import { SerieModule } from './serie/serie.module';
+import { RespuestaModule } from './respuesta/respuesta.module';
+import { PreguntaModule } from './pregunta/pregunta.module';
+import { PreguntaRespuestaModule } from './pregunta-respuesta/pregunta-respuesta.module';
+import { ExamenModule } from './examen/examen.module';
+import { ExamenMasterModule } from './examen-master/examen-master.module';
+import { SerieExamenModule } from './serie-examen/serie-examen.module';
+import { AsignacionModule } from './asignacion/asignacion.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    TypeOrmModule.forRoot({
+    TypeOrmModule.forRoot({ 
       type: 'mysql',
       host: process.env.DB_HOST,
       port: +process.env.DB_PORT,
@@ -26,20 +28,24 @@ import { MotivoNoaptoModule } from './motivo-noapto/motivo-noapto.module';
       database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
-      dropSchema: true,
+      dropSchema: false, 
     }),
     SeedDbModule,
-    ExamenModule,
-    DetalleExamenModule,
     EmpleoModule,
-    PreguntaModule,
-    BancoRespuestasModule,
     UsuarioModule,
-    ComandoModule,
-    MotivoApoModule,
-    MotivoNoaptoModule,
+    AuthModule,
+    TipoPreguntaModule,
+    TipoExamenModule,
+    SerieModule,
+    RespuestaModule,
+    PreguntaModule,
+    PreguntaRespuestaModule,
+    ExamenModule,
+    ExamenMasterModule,
+    SerieExamenModule,
+    AsignacionModule
   ],
-  controllers: [MotivoAptoController],
-  providers: [MotivoAptoService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

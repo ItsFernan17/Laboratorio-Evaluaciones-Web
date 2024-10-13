@@ -1,6 +1,6 @@
-import { BancoRespuestas } from "src/banco_respuestas/model/banco_respuestas.entity";
-import { Usuario } from "src/usuario/model/usuario.entity";
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, Column, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Usuario } from '../../usuario/model/usuario.entity';
+import { TipoPregunta } from "src/seed-db/tipo-pregunta/model/tipo-pregunta.entity";
 
 @Entity({ name: 'pregunta' })
 export class Pregunta {
@@ -11,12 +11,15 @@ export class Pregunta {
     @Column({ type: 'bit', width: 1 })
     estado: boolean;
 
-    @Column({ type: 'varchar', length: 150 })
-    enunciado: string;
+    @Column({ type: 'varchar', length: 200 })
+    descripcion: string;
 
-    @ManyToOne(() => BancoRespuestas, { nullable: true })
-    @JoinColumn({ name: 'banco_respuestas' })
-    banco_respuestas: BancoRespuestas;
+    @Column({ type: 'decimal', precision: 9, scale: 2 })
+    punteo: number;
+
+    @ManyToOne(() => TipoPregunta, { nullable: true })
+    @JoinColumn({ name: 'tipo_pregunta' })
+    tipo_pregunta: TipoPregunta;
 
     @ManyToOne(() => Usuario, { nullable: true })
     @JoinColumn({ name: 'usuario_ingreso' })

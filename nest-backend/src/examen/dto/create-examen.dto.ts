@@ -1,29 +1,21 @@
-import { IsNotEmpty, IsInt, IsString, MaxLength, Min, IsDateString } from "class-validator";
+import { IsDateString, IsNotEmpty, IsNumber, IsString, Min, MinLength } from "class-validator";
 
-export class CreateExamenDto{
+export class CreateExamenDto {
 
     @IsDateString()
-    @IsNotEmpty({message: "Este campo es obligatorio"})
-    fecha_evaluacion: string;
+    @IsNotEmpty({ message: "La fecha de evaluación es obligatoria" })
+    fecha_evaluacion: Date;
+
+    @IsNumber()
+    @IsNotEmpty({ message: "El tipo de examen es obligatorio" })
+    tipo_examen: number;
+
+    @IsNumber()
+    @IsNotEmpty({ message: "El punteo máximo es obligatorio" })
+    punteo_maximo: number;
 
     @IsString()
-    @IsNotEmpty({message: "Este campo es obligatorio"})
-    @MaxLength(25, {message: "El usuario debe de tener máximo 4 caracteres"})
-    usuario: string;
-
-    @IsString()
-    @IsNotEmpty({message: "Este campo es obligatorio"})
-    @MaxLength(10, {message: "El empleo debe de tener máximo 4 caracteres"})
-    empleo: string;
-
-    @IsInt({message: "El punteo total debe ser un número entero"})
-    @IsNotEmpty({message: "Este campo es obligatorio"})
-    @Min(0, {message: "El punteo total debe ser mayor o igual a 0"})
-    punteo_total:number;
-
-    @IsString()
-    @IsNotEmpty({message: "Este campo es obligatorio"})
-    @MaxLength(25, {message: "El usuario debe de tener mínimo 4 caracteres"})
-    usuario_ingreso: string
-
+    @IsNotEmpty({ message: "El usuario de ingreso es obligatorio" })
+    @MinLength(4, { message: "El usuario debe tener mínimo 4 caracteres" })
+    usuario_ingreso: string;
 }

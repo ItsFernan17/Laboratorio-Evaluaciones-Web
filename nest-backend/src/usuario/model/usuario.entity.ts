@@ -1,12 +1,13 @@
+import { Comando } from "src/seed-db/comando/model/comando.entity";
 import { Departamento } from "src/seed-db/departamento/model/departamento.entity";
 import { Grado } from "src/seed-db/grado/model/grado.entity";
 import { Poblacion } from "src/seed-db/poblacion/model/poblacion.entity";
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn} from "typeorm";
 
 @Entity()
 export class Usuario {
 
-    @PrimaryColumn({ unique: true })
+    @PrimaryColumn({unique: true})
     dpi: string;
 
     @Column({ type: 'bit', width: 1 })
@@ -18,14 +19,14 @@ export class Usuario {
     @Column({ unique: true })
     telefono: string;
 
-    @Column({ unique: true })
+    @Column({ unique: true, nullable: false })
     nombre_usuario: string;
 
-    @Column()
-    rol: string;
+    @Column({ default: 'evaluado' })
+    role: string;
 
-    @Column({ length: 100 })
-    contrasenia: string;
+    @Column({ length: 100, nullable: false })
+    password: string;
 
     @ManyToOne(() => Grado, { nullable: true })
     @JoinColumn({ name: 'grado' })
@@ -38,4 +39,8 @@ export class Usuario {
     @ManyToOne(() => Departamento, { nullable: true })
     @JoinColumn({ name: 'residencia' })
     residencia: Departamento;  
+
+    @ManyToOne(() => Comando, { nullable: true })
+    @JoinColumn({ name: 'comando' })
+    comando: Comando; 
 }

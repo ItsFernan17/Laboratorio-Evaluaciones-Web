@@ -46,7 +46,7 @@ const Navbar = () => {
       <i className={`bx ${isPressed ? "bx-x" : "bx-menu"} xl:hidden block text-5xl font-light cursor-pointer transition-transform duration-300`}
         onClick={() => setIsPressed(!isPressed)}></i>
 
-        <div className={`absolute xl:hidden top-[66px] left-0 w-full bg-background flex flex-col items-center gap-7 font-normal text-lg transform transition-transform ${isPressed ? "opacity-100" : "opacity-0"}`}
+        <div className={`absolute xl:hidden top-[66px] left-0 w-full bg-white flex flex-col items-center gap-7 font-normal text-lg transform transition-transform ${isPressed ? "opacity-100" : "opacity-0"}`}
             style={{transition: "transform 0.3s ease, opacity 0.3s ease"}}>
                 <li className="list-none w-full text-primary text-center p-4 hover:bg-primary hover:text-white transition-all cursor-pointer">
                     Inicio
@@ -70,7 +70,7 @@ const Navbar = () => {
         <div className="flex-1 bg-[#069CF1]"></div>
         <div className="flex-1 bg-white"></div>
         <div className="flex-1 bg-[#069CF1]"></div>
-    </div>
+        </div>
 
     </header>
     

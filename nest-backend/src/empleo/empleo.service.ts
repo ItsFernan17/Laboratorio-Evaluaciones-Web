@@ -1,10 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Empleo } from './model/empleo.entity';  // Asegúrate de que la ruta sea correcta
+import { Empleo } from './model/empleo.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateEmpleoDto } from './dto/create-empleo.dto';  // Asegúrate de que la ruta sea correcta
-import { UpdateEmpleoDto } from './dto/update-empleo.dto';  // Asegúrate de que la ruta sea correcta
-import { Usuario } from 'src/usuario/model/usuario.entity';
+import { CreateEmpleoDto, UpdateEmpleoDto } from './dto';
+import { Usuario } from 'src/usuario/model/usuario.entity'; 
 
 @Injectable()
 export class EmpleoService {

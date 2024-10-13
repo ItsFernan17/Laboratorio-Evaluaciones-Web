@@ -6,6 +6,7 @@ import { Usuario } from './model/usuario.entity';
 import { Departamento } from 'src/seed-db/departamento/model/departamento.entity';
 import { Grado } from 'src/seed-db/grado/model/grado.entity';
 import { Poblacion } from 'src/seed-db/poblacion/model/poblacion.entity';
+import { Comando } from 'src/seed-db/comando/model/comando.entity';
 
 @Injectable()
 export class UsuarioService {
@@ -18,6 +19,8 @@ export class UsuarioService {
     private readonly gradoRepository: Repository<Grado>,
     @InjectRepository(Poblacion)
     private readonly poblacionRepository: Repository<Poblacion>,
+    @InjectRepository(Comando)
+    private readonly comandoRepository: Repository<Comando>,
   ) { }
 
   private generateUsername(nombreCompleto: string): string { 
@@ -40,22 +43,15 @@ export class UsuarioService {
     });
   }
 
-  async findById(nombre_usuario: string) {
-    const usuarioExistente = await this.usuarioRepository.findOne({
-      where: { nombre_usuario, estado: true },
-    });
-
-    if (!usuarioExistente) {
-      return new HttpException(
-        'El Usuario con el nombre proporcionado no existe en la base de datos.',
-        HttpStatus.NOT_FOUND,
-      );
-    }
-
-    return usuarioExistente;
+  async findByDPI(dpi: string) {
+    return this.usuarioRepository.findOne({ where: { dpi, estado: true } });
   }
 
-  async createUsuario(createUsuarioDto: CreateUsuarioDto): Promise<Usuario | string> {
+  async findByUsername(nombre_usuario: string){
+    return this.usuarioRepository.findOne({ where: { nombre_usuario, estado: true } });
+  }
+
+  async createUsuario(createUsuarioDto: CreateUsuarioDto) {
     const nombreUsuario = this.generateUsername(createUsuarioDto.nombre_completo);
     const usuarioExistente = await this.usuarioRepository.findOne({
       where: { nombre_usuario: nombreUsuario },
@@ -65,10 +61,10 @@ export class UsuarioService {
       throw new HttpException('El usuario ya existe en la base de datos.', 409);
     }
   
-    // Fetch related entities
     const residencia = await this.departamentoRepository.findOne({ where: { codigo_departamento: createUsuarioDto.residencia } });
     const grado = await this.gradoRepository.findOne({ where: { codigo_grado: createUsuarioDto.grado } });
     const poblacion = await this.poblacionRepository.findOne({ where: { codigo_poblacion: createUsuarioDto.poblacion } });
+    const comando = await this.comandoRepository.findOne({ where: { codigo_comando: createUsuarioDto.comando } });
   
     if (!residencia) {
       throw new HttpException('Departamento no encontrado.', HttpStatus.NOT_FOUND);
@@ -81,14 +77,19 @@ export class UsuarioService {
     if (!poblacion) {
       throw new HttpException('Población no encontrada.', HttpStatus.NOT_FOUND);
     }
+
+    if (!comando) {
+      throw new HttpException('Comando no encontrado.', HttpStatus.NOT_FOUND);
+    }
   
     const newUsuario = this.usuarioRepository.create({
       estado: true,
-      nombre_usuario: nombreUsuario,
       ...createUsuarioDto,
+      nombre_usuario: nombreUsuario,
       residencia: residencia,
       grado: grado,
       poblacion: poblacion,
+      comando: comando,
     });
   
     return this.usuarioRepository.save(newUsuario);
@@ -106,14 +107,12 @@ export class UsuarioService {
       );
     }
   
-    // Update fields from DTO
     Object.keys(updateUsuarioDto).forEach(key => {
       if (updateUsuarioDto[key] !== undefined) {
         usuarioExistente[key] = updateUsuarioDto[key];
       }
     });
   
-    // Fetch and update related entities if provided
     if (updateUsuarioDto.residencia) {
       const residencia = await this.departamentoRepository.findOne({ where: { codigo_departamento: updateUsuarioDto.residencia } });
       if (!residencia) {
@@ -137,6 +136,15 @@ export class UsuarioService {
       }
       usuarioExistente.poblacion = poblacion;
     }
+
+    if (updateUsuarioDto.comando) {
+      const comando = await this.comandoRepository.findOne({ where: { codigo_comando: updateUsuarioDto.comando } });
+      if (!comando) {
+        throw new HttpException('Comando no encontrado.', HttpStatus.NOT_FOUND);
+      }
+      usuarioExistente.comando = comando;
+    }
+    
   
     return this.usuarioRepository.save(usuarioExistente);
   }

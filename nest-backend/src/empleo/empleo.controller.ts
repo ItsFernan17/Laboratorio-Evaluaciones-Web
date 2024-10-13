@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Put, Patch, Body, Param } from '@nestjs/common';
-import { EmpleoService } from './empleo.service';  // Asegúrate de que la ruta sea correcta
-import { CreateEmpleoDto } from './dto/create-empleo.dto';  // Asegúrate de que la ruta sea correcta
-import { UpdateEmpleoDto } from './dto/update-empleo.dto';  // Asegúrate de que la ruta sea correcta
+import { EmpleoService } from './empleo.service';
+import { CreateEmpleoDto, UpdateEmpleoDto  } from './dto';
 
 @Controller('empleo')
 export class EmpleoController {

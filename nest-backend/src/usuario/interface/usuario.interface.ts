@@ -9,4 +9,5 @@ export interface Usuario {
     grado: number;
     poblacion: number;
     residencia: number;
+    comando: number;
 }
