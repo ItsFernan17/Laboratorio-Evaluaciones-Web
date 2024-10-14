@@ -4,48 +4,140 @@ import Navbar from "../components/Navbar";
 
 <!doctype html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Mi Página</title>
-    <style>
-        html,
-        body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: Arial, sans-serif;
-        }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Mi Página</title>
+    </head>
+    <body>
+        <div class="sticky top-0 bg-white z-10">
+            <Navbar />
 
-        .background {
-            background-image: url("mdn1.jpg");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 100vh;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center; 
-        }
-
-        .capa-transparente {
-            background-color: rgba(124, 164, 109, 0.5); /* Esto agrega una capa semitransparente sobre la imagen */
-            width: 100%;
-            height: 100%;
-            position: absolute;
-        }
-
-        .container {
-            position: relative; /* Esto permite que el contenido se sitúe por encima de la capa de color */
-            z-index: 1; /* Asegura que el contenido esté por encima de la capa de fondo */
-        }
-    </style>
-</head>
-<body>
-    <div class="sticky top-0 bg-white z-10">
-        <Navbar />
-    </div>
-    
-</body>
+            <div
+                class="min-h-screen flex justify-center items-center bg-cover bg-center bg-no-repeat bg-[linear-gradient(rgba(0,0,0,0.8),rgba(0,0,0,0.8)),url('mdn1.jpg')]"
+            >
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-5 w-[90%]">
+                    <div
+                        class="flex justify-center text-center flex-col gap-12 text-white font-bold text-xl"
+                    >
+                        <h1 class="text-center tracking-widest text-blue-400">
+                            CONTÁCTATE CON NOSOTROS
+                        </h1>
+                        <div class="flex flex-col gap-6">
+                            <p class="text-lg">
+                                <i
+                                    class="fa-solid fa-phone text-crimson mr-2 text-2xl"
+                                ></i> 32745698
+                            </p>
+                            <p class="text-lg">
+                                <i
+                                    class="fa-solid fa-envelope text-crimson mr-2 text-2xl"
+                                ></i> potencialhumano@mindef.mil.gt
+                            </p>
+                            <p class="text-lg">
+                                <i
+                                    class="fa-solid fa-location-dot text-crimson mr-2 text-2xl"
+                                ></i> 2da. Avenida 4-63 zona 10, Ciudad de Guatemala
+                            </p>
+                        </div>
+                        <div class="flex gap-4">
+                            <a
+                                href="#"
+                                class="w-10 h-10 bg-crimson text-white text-center transition hover:bg-[#ac102f]"
+                            >
+                                <i
+                                    class="fa-brands fa-facebook-f leading-10 text-xl"
+                                ></i>
+                            </a>
+                            <a
+                                href="#"
+                                class="w-10 h-10 bg-crimson text-white text-center transition hover:bg-[#ac102f]"
+                            >
+                                <i
+                                    class="fa-brands fa-instagram leading-10 text-xl"
+                                ></i>
+                            </a>
+                            <a
+                                href="#"
+                                class="w-10 h-10 bg-crimson text-white text-center transition hover:bg-[#ac102f]"
+                            >
+                                <i
+                                    class="fa-brands fa-twitter leading-10 text-xl"
+                                ></i>
+                            </a>
+                            <a
+                                href="#"
+                                class="w-10 h-10 bg-crimson text-white text-center transition hover:bg-[#ac102f]"
+                            >
+                                <i
+                                    class="fa-brands fa-linkedin leading-10 text-xl"
+                                ></i>
+                            </a>
+                        </div>
+                    </div>
+                    <form
+                        class="w-[100%] flex flex-col gap-4 text-center bg-gray-700 bg-opacity-70 p-8 rounded-lg shadow-lg"
+                    >
+                        <div class="relative flex flex-col items-start">
+                            <label class="text-blue-400 text-left mb-1"
+                                >DPI</label
+                            >
+                            <input
+                                type="text"
+                                placeholder="Número de DPI"
+                                required
+                                class="w-full h-10 px-2 bg-white/10 border-b-3 border-transparent text-white focus:border-crimson transition placeholder:text-gray-400 focus:placeholder-transparent outline-none"
+                            />
+                        </div>
+                        <div class="relative flex flex-col items-start">
+                            <label class="text-blue-400 text-left mb-1"
+                                >Nombre y apellido</label
+                            >
+                            <input
+                                type="text"
+                                placeholder="Nombre y apellido"
+                                required
+                                class="w-full h-10 px-2 bg-white/10 border-b-3 border-transparent text-white focus:border-crimson transition placeholder:text-gray-400 focus:placeholder-transparent outline-none"
+                            />
+                        </div>
+                        <div class="relative flex flex-col items-start">
+                            <label class="text-blue-400 text-left mb-1"
+                                >Correo electrónico</label
+                            >
+                            <input
+                                type="email"
+                                required
+                                placeholder="Correo electrónico"
+                                class="w-full h-10 px-2 bg-white/10 border-b-3 border-transparent text-white focus:border-crimson transition placeholder:text-gray-400 focus:placeholder-transparent outline-none"
+                            />
+                        </div>
+                        <div class="relative flex flex-col items-start">
+                            <label class="text-blue-400 text-left mb-1"
+                                >Asunto</label
+                            >
+                            <input
+                                type="text"
+                                placeholder="Asunto"
+                                class="w-full h-10 px-2 bg-white/10 border-b-3 border-transparent text-white focus:border-crimson transition placeholder:text-gray-400 focus:placeholder-transparent outline-none"
+                            />
+                        </div>
+                        <div class="relative flex flex-col items-start">
+                            <label class="text-blue-400 text-left mb-1"
+                                >Mensaje</label
+                            >
+                            <textarea
+                                placeholder="Escribe tu mensaje..."
+                                class="w-full h-32 p-2 bg-white/10 border-b-3 border-transparent text-white focus:border-crimson transition placeholder:text-gray-400 focus:placeholder-transparent outline-none"
+                            ></textarea>
+                        </div>
+                        <button
+                            type="submit"
+                            class="w-full p-3 bg-crimson text-white transition hover:bg-[#ac102f] cursor-pointer text-lg"
+                            >Enviar mensaje</button
+                        >
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
