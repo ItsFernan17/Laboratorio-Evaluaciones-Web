@@ -14,10 +14,11 @@ import { SerieModule } from 'src/serie/serie.module';
 import { TipoExamenModule } from 'src/tipo-examen/tipo-examen.module';
 import { ExamenModule } from 'src/examen/examen.module';
 import { Examen } from 'src/examen/model/examen.entity';
+import { PreguntaRespuesta } from 'src/pregunta-respuesta/model/pregunta-respuesta.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ExamenMaster, Pregunta, Usuario, SerieExamen, TipoExamen, Examen]),
+    TypeOrmModule.forFeature([ExamenMaster, Pregunta, Usuario, SerieExamen, TipoExamen, Examen, PreguntaRespuesta]),
     UsuarioModule,
     PreguntaModule,
     SerieModule,

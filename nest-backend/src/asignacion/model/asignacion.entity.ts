@@ -1,23 +1,22 @@
 import { Examen } from 'src/examen/model/examen.entity';
-import { Serie } from 'src/serie/model/serie.entity';
 import { Usuario } from 'src/usuario/model/usuario.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 
-@Entity('serie_examen')
-export class SerieExamen {
+@Entity('asignacion')
+export class Asignacion {
     @PrimaryGeneratedColumn()
-    codigo_se_ex: number;
+    codigo_asignacion: number;
 
     @Column({ type: 'bit', width: 1 })
     estado: boolean;
 
     @ManyToOne(() => Examen, { nullable: true })
-    @JoinColumn({ name: 'examen' })
+    @JoinColumn({ name: 'pregunta' })
     examen: Examen;
 
-    @ManyToOne(() => Serie, { nullable: true })
-    @JoinColumn({ name: 'serie' })
-    serie: Serie;
+    @ManyToOne(() => Usuario, { nullable: true })
+    @JoinColumn({ name: 'evaluado' })
+    evaluado: Usuario;
 
     @ManyToOne(() => Usuario, { nullable: true })
     @JoinColumn({ name: 'usuario_ingreso' })

@@ -4,7 +4,7 @@ import { Usuario } from 'src/usuario/model/usuario.entity';
 import { TipoExamen } from './model/tipo-examen.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTipoExamenDto, UpdateTipoExamenDto } from './dto';
-import { Examen } from 'src/examen/model/examen.entity';
+import { Empleo } from 'src/empleo/model/empleo.entity';
 
 @Injectable()
 export class TipoExamenService {
@@ -14,6 +14,8 @@ export class TipoExamenService {
         private tipoExamenRepository: Repository<TipoExamen>,
         @InjectRepository(Usuario)
         private readonly usuarioRepository: Repository<Usuario>,
+        @InjectRepository(Empleo)
+        private readonly empleoRepository: Repository<Empleo>,
     ) {}
 
     async findAll(){
@@ -50,17 +52,19 @@ export class TipoExamenService {
             throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
         }
 
-        const empleo = await this.tipoExamenRepository.findOne({ where: { description: createTipoExamenDto.descripcion} });
+        const empleo = await this.empleoRepository.findOne({ where: { ceom: createTipoExamenDto.ceom} });
 
-        if (empleo) {
-            throw new HttpException('El tipo de examen ya existe.', HttpStatus.FOUND);
+        if (!empleo) {
+            throw new HttpException('Empleo no encontrado.', HttpStatus.NOT_FOUND);
         }
 
         const newTipoExamen = this.tipoExamenRepository.create({
             description: createTipoExamenDto.descripcion,
-            ceom: empleo.ceom,
+            estado: true,
+            ceom: empleo,
             usuario_ingreso: usuario,
             fecha_ingreso: new Date(),
+            fecha_modifica: null
         });
 
         return this.tipoExamenRepository.save(newTipoExamen);
