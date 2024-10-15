@@ -4,7 +4,7 @@ export default {
 	theme: {
 		extend: {
 		  fontFamily: {
-			page: ['Inter'],
+			page: ['Inter', 'Arial', 'Helvetica', 'sans-serif'],
 		  },
 		  colors: {
 			primary: '#142957',
