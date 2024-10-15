@@ -1,9 +1,248 @@
 ---
-import Publico from "../layouts/publico.astro";
+// Empleos.astro
+import Publico from '../layouts/publico.astro';
 
+const empleos = [
+  {
+    titulo: "Oficinista II",
+    descripcion: [
+      "Acreditar diploma de nivel de educación básica",
+      "Curso de redacción y ortografía",
+      "1 año de experiencia en puesto relacionado"
+    ],
+    imagen: "oficinista.jpg"
+  },
+  {
+    titulo: "Conductor de Transporte Pesado",
+    descripcion: [
+      "Acreditar licencia de conducir tipo A",
+      "Curso de conducción de vehículos",
+      "Experiencia de dos años relacionados con el puesto"
+    ],
+    imagen: "conductor-transporte.png"
+  },
+  {
+    titulo: "Auxiliar de Ingeniero Civil I",
+    descripcion: [
+      "Aprobado el sexto ciclo de la carrera de Ingeniería Civil"
+    ],
+    imagen: "auxiliar-civil-1.png"
+  },
+  {
+    titulo: "Auxiliar de Ingeniero Civil II",
+    descripcion: [
+      "Pensum cerrado en la carrera universitaria de Ingeniería Civil",
+      "Acreditar 1 año de experiencia como Auxiliar de Ingeniero I",
+      "O 3 años de experiencia en labores relacionadas con el puesto fuera de la institución"
+    ],
+    imagen: "auxiliar-civil-2.png"
+  },
+  {
+    titulo: "Ingeniero Civil I",
+    descripcion: [
+      "Título universitario de Ingeniero Civil",
+      "Ser colegiado activo",
+      "Acreditar 1 año de experiencia como Auxiliar de Ingeniero II",
+      "O 3 años de experiencia profesional en labores relacionadas con el puesto fuera de la institución"
+    ],
+    imagen: "civil-1.png"
+  },
+  {
+    titulo: "Ingeniero Civil II",
+    descripcion: [
+      "Título de Ingeniero Civil",
+      "Ser colegiado activo",
+      "Acreditar 2 años de experiencia como Ingeniero Civil I",
+      "O 6 años de experiencia profesional en labores relacionadas con el puesto fuera de la institución"
+    ],
+    imagen: "civil-2.png"
+  },
+  {
+    titulo: "Ingeniero Civil III",
+    descripcion: [
+      "Título universitario de Ingeniero Civil",
+      "Una maestría en el área de su especialidad",
+      "Ser colegiado activo",
+      "Acreditar 2 años de experiencia como Ingeniero Civil II",
+      "O 6 años de experiencia profesional en labores relacionadas con el puesto fuera de la institución"
+    ],
+    imagen: "civil-3.png"
+  },
+  {
+    titulo: "Ingeniero Civil IV",
+    descripcion: [
+      "Título universitario de Ingeniero Civil",
+      "Una maestría en el área de su especialidad",
+      "Ser colegiado activo",
+      "Acreditar 2 años de experiencia como Ingeniero Civil III",
+      "O 6 años de experiencia profesional y 2 años de ejercicio profesional como maestro en la institución"
+    ],
+    imagen: "civil-4.png"
+  }
+];
 
+// Arreglo de colores degradados para las tarjetas
+const colores = [
+  "linear-gradient(to bottom right, #ffe58e, #ffb800)",
+  "linear-gradient(to bottom right, #ff9b9b, #ff5733)",
+  "linear-gradient(to bottom right, #b3ffb3, #33ff57)",
+  "linear-gradient(to bottom right, #9bb3ff, #3375ff)",
+  "linear-gradient(to bottom right, #ffb3d9, #ff33a1)",
+  "linear-gradient(to bottom right, #a1ffda, #33ffa1)",
+  "linear-gradient(to bottom right, #d1a1ff, #a133ff)",
+  "linear-gradient(to bottom right, #ffb3b3, #ff3375)"
+];
 ---
 
-<Publico title="Empleos">
+<Publico title='Empleos'>
+  <!-- Sección de bienvenida -->
+  <section class="p-10 mb-10">
+    <h1 class="text-[50px] text-4xl text-blue-900 font-extrabold mb-10 text-center">¡Bienvenido a Tu Futuro Profesional!</h1>
+    <p class="text-[20px] font-extralight mb-4 leading-relaxed text-black text-left px-4 transition duration-200 transform hover:scale-105">
+      En el <strong class="text-yellow-500 font-bold">Ministerio de la Defensa Nacional</strong>, creemos que cada talento merece una 
+      oportunidad. <br></br> Nos comprometemos a conectar a profesionales con las mejores ofertas laborales diseñadas para impulsar sus 
+      carreras, y a ser su aliado en la búsqueda de empleo que se adapte a sus habilidades y aspiraciones. <br></br>Explora nuestro 
+      mundo de posibilidades, donde ofrecemos empleos innovadores y consolidados, con una plataforma intuitiva para facilitar 
+      tu búsqueda. <br></br>Conectamos talento con oportunidades y, ya seas un profesional en busca de su próximo desafío o una empresa 
+      en busca de candidatos, estamos aquí para ayudarte a alcanzar tus metas.
+    </p>
+  </section>
 
+  <!-- Sección de tarjetas de empleos -->
+  <section class="grid grid-cols-3 gap-4 p-5">
+    {empleos.map((empleo, index) => (
+      <div class="card" key={index}>
+        <div class="card-inner">
+          <div class={`card-front ${index % 2 === 0 ? 'curve-left' : 'curve-right'}`} style={`background: ${colores[index % colores.length]};`}>
+            <img src={`/${empleo.imagen}`} alt={empleo.titulo} className="card-image" />
+          </div>
+          <div class={`card-back ${index % 2 === 0 ? 'curve-left' : 'curve-right'}`}>
+            <h2>{empleo.titulo}</h2>
+            <ul>
+              {empleo.descripcion.map((requisito, i) => (
+                <li key={i}>{requisito}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    ))}
+  </section>
+  
+  <!-- Información de contacto -->
+  <section class="bg-white p-10 mt-10 text-center ">
+    <h2 class=" text-[50px] text-2xl font-extrabold text-blue-900 mb-10">¡Cumples con los Requisitos?</h2>
+    <p class="text-[20px] text-left mb-4 leading-relaxed text-black px-4  transition duration-200 transform hover:scale-105">
+      Si alguna de estas ofertas coincide con tu perfil y cumples con los requisitos, no dudes en contactarnos. <br></br> Comunícate 
+      con la Dirección de Personal del <strong class="text-yellow-500">MINDEF</strong> al teléfono <a href="contacto" class="font-bold"><strong class="text-yellow-500">32324578</strong></a>. 
+      <br></br>Estaremos encantados de brindarte más detalles y orientarte en el proceso de aplicación. <br></br>¡No dejes pasar esta oportunidad de 
+      formar parte de una organización comprometida con el desarrollo y crecimiento profesional!
+    </p>
+  </section>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 10;
+      padding: 10;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #fff;
+    }
+
+    .card-back ul {
+      list-style-image: disc; /* Ruta ajustada para usar la imagen en la misma carpeta del proyecto */
+      padding-left: 20px;
+      text-align: left; /* Alinea la lista a la izquierda */
+      padding-top: auto;
+    }
+
+    .card-back li {
+      /* Ajusta el tamaño del icono en relación a cada elemento de la lista */
+      background-image: url('/Business.png'); /* Usar la imagen como fondo */
+      background-repeat: no-repeat; /* Evitar que se repita la imagen */
+      background-size: 15px 15px; /* Ajusta el tamaño del icono (12px x 12px) */
+      background-position: 0 25%; /* Centra verticalmente el icono */
+      padding-left: 30px; /* Espacio para que el texto no se superponga al icono */
+      margin-bottom: 10px;
+    }
+
+    .card {
+      width: 350px;
+      height: 500px;
+      perspective: 1000px;
+    }
+
+    .card-inner {
+      width: 100%;
+      height: 500px;
+      position: relative;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    .card:hover .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      width: 100%;
+      height: 500px;
+      position: absolute;
+      backface-visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Aplicar bordes alternados */
+    .curve-left {
+      border-radius: 30px 0px 0px 30px; /* Borde redondeado en esquinas izquierdas */
+    }
+
+    .curve-right {
+      border-radius: 0px 30px 30px 0px; /* Borde redondeado en esquinas derechas */
+    }
+
+    .card-front img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit; /* Asegurarse de que la imagen herede el borde */
+    }
+
+    .card-back {
+      background-color: white;
+      transform: rotateY(180deg);
+      color: #142957;
+      border: 5px solid #142957;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px; /* Añadir espacio en la parte superior */
+      justify-content: flex-start; /* Alinear contenido hacia el principio (parte superior) */
+    }
+
+    .card-back h2 {
+      font-size: 1.8rem;
+      font-weight: 900;
+      margin-bottom: 50px; /* Añadir margen inferior para separar el título del contenido */
+      text-align: center;
+      color: #142957;
+    }
+
+    .card-back p {
+      font-size: 1.1rem;
+      margin-top: auto; /* Empuja el párrafo hacia el centro */
+      margin-bottom: auto; /* Asegura que el párrafo esté centrado verticalmente */
+      padding: 0 20px; /* Margen interno para mayor legibilidad */
+      text-align: center;
+    }
+  </style>
 </Publico>
