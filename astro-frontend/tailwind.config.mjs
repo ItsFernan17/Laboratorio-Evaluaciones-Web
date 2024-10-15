@@ -9,7 +9,7 @@ export default {
 		  colors: {
 			primary: '#142957',
 			secondary: '#fab91d',
-			background: '#D9D9D9',
+			background: '#F5F5F5',
 		  },
 		  /* Para bordes */
 		  borderRadius: { 
