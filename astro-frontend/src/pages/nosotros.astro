@@ -1,152 +1,134 @@
 ---
-import Navbar from "../components/Navbar";
+import Publico from "../layouts/publico.astro";
 ---
 
-<!doctype html>
-<html lang="">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Nosotros</title>
-    </head>
-    <body>
-        <div class="sticky top-0 bg-white z-10">
-            <Navbar />
+<Publico title="Nostros">
+    <div class="top-0 left-0 right-0 mb-10 flex justify-center mx-auto">
+        <div class="w-full h-full">
+            <img
+                src="/quienes-somos.jpg"
+                alt="Descripción de la imagen"
+                class="w-full h-full t-0 object-cover shadow-sm"
+            />
         </div>
-        <div>
-            <section>
+    </div>
+        <section>
+            <div
+                class="max-w-8xl mx-auto p-2"
+            >
+
                 <div
-                    class="max-w-8xl mx-auto p-2 bg-white shadow-md rounded-lg"
+                    class="flex items-center mb-6 p-4 rounded-lg shadow-sm w-[95%] mx-auto bg-amber-200 border rounded-br-3xl rounded-bl-3xl"
                 >
-                    {
-                        /* ****************** IMAGEN *************************** */
-                    }
-                    <div class="w-[95%] pb-2 flex justify-center mx-auto">
-                        <div class="w-full h-full">
-                            <img
-                                src="/quienes-somos.jpg"
-                                alt="Descripción de la imagen"
-                                class="w-full h-full object-cover rounded-lg shadow-sm"
-                            />
-                        </div>
-                    </div>
-                    {/* ********************************************* */}
-
-                    {/* Cuadro Quienes somos */}
-                    <div
-                        class="flex items-center mb-6 p-4 rounded-lg shadow-sm w-[95%] mx-auto bg-amber-200 border rounded-br-3xl rounded-bl-3xl"
-                    >
-                        <div class="w-full p-4">
-                            <h2
-                                class="text-4xl text-center font-bold text-gray-800"
-                            >
-                                Quienes Somos
-                            </h2>
-                            <p
-                                class="text-xl mt-4 text-lg text-gray-700 text-justify"
-                            >
-                                En el Departamento de Administración del
-                                Potencial Humano, somos un equipo de
-                                profesionales apasionados por conectar talento
-                                con oportunidades. nuestra misión es transformar
-                                el proceso de selección de personal,
-                                garantizando que cada cliente encuentre a los
-                                candidatos más adecuados para sus necesidades.
-                                Nuestra experiencia en el sector nos permite
-                                entender las particularidades de cada industria,
-                                lo que nos capacita para ofrecer soluciones
-                                personalizadas y efectivas. Nos enorgullece ser
-                                un socio estratégico en el desarrollo del
-                                capital humano, contribuyendo así al crecimiento
-                                y éxito de las organizaciones a las que
-                                servimos.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Cuadro Misión */}
-                    <div
-                        class="flex items-center mb-6 border-gray-300 rounded-br-3xl rounded-tl-3xl shadow-lg w-[95%] mx-auto"
-                    >
-                        <div
-                            class="w-1/2 h-full flex justify-center items-center bg-orange-200 border-gray-300 rounded-tl-3xl p-0"
+                    <div class="w-full p-4">
+                        <h2
+                            class="text-4xl text-center font-bold text-gray-800"
                         >
-                            <img
-                                src="/captacion1.jpg"
-                                alt="Descripción de la imagen"
-                                class="w-full h-full object-cover shadow-sm rounded-tl-3xl"
-                            />
-                        </div>
-
-                        <div class="w-1/2 p-6">
-                            <h2
-                                class="text-4xl text-center font-bold text-gray-800"
-                            >
-                                Misión
-                            </h2>
-                            <p class="m-4 text-xl text-gray-700 text-justify">
-                                Nuestra misión es proporcionar un servicio
-                                excepcional en la captación y selección de
-                                personal, utilizando metodologías avanzadas y
-                                tecnologías innovadoras para identificar y
-                                atraer a los mejores talentos del mercado. Nos
-                                dedicamos a entender profundamente las
-                                necesidades de nuestros clientes, ofreciendo
-                                soluciones personalizadas que optimicen su
-                                proceso de selección. A través de un enfoque
-                                ético y profesional, buscamos empoderar a los
-                                candidatos, guiándolos en su búsqueda de empleo
-                                y asegurándonos de que encuentren posiciones que
-                                no solo se alineen con sus habilidades, sino
-                                también con sus aspiraciones y valores. Nuestro
-                                compromiso es transformar vidas a través de
-                                oportunidades laborales, creando un impacto
-                                positivo en la sociedad y en las organizaciones
-                                que servimos.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* Cuadro Visión */}
-                    <div
-                        class="flex items-center mb-6 border border-gray-300 rounded-br-3xl rounded-tl-3xl shadow-lg w-[95%] mx-auto"
-                    >
-                        <div class="w-1/2 p-4">
-                            <h2
-                                class="text-4xl text-center font-bold text-gray-800"
-                            >
-                                Visión
-                            </h2>
-                            <p class="mt-4 text-xl text-gray-700 text-justify">
-                                Nuestra visión es ser reconocidos como líderes
-                                en el ámbito de la captación y selección de
-                                personal, siendo el referente en la creación de
-                                procesos de reclutamiento innovadores y
-                                eficientes que se adapten a las dinámicas
-                                cambiantes del mercado laboral. Aspiramos a
-                                establecer relaciones duraderas y de confianza
-                                con nuestros clientes, ayudándoles a construir
-                                equipos de alto rendimiento que impulsen su
-                                éxito a largo plazo. Creemos en el poder del
-                                talento humano como motor de cambio y
-                                desarrollo, y nos comprometemos a ser la puerta
-                                de entrada para los profesionales que desean
-                                contribuir de manera significativa a sus
-                                organizaciones.
-                            </p>
-                        </div>
-                        <div
-                            class="w-1/2 h-full flex justify-center items-center bg-rose-200 rounded-br-3xl"
+                            Quienes Somos
+                        </h2>
+                        <p
+                            class=" mt-4 text-lg text-gray-700 text-justify"
                         >
-                            <img
-                                src="/captacion2.jpg"
-                                alt="Descripción de la imagen"
-                                class="w-full h-full rounded-br-3xl shadow-sm"
-                            />
-                        </div>
+                            En el Departamento de Administración del
+                            Potencial Humano, somos un equipo de
+                            profesionales apasionados por conectar talento
+                            con oportunidades. nuestra misión es transformar
+                            el proceso de selección de personal,
+                            garantizando que cada cliente encuentre a los
+                            candidatos más adecuados para sus necesidades.
+                            Nuestra experiencia en el sector nos permite
+                            entender las particularidades de cada industria,
+                            lo que nos capacita para ofrecer soluciones
+                            personalizadas y efectivas. Nos enorgullece ser
+                            un socio estratégico en el desarrollo del
+                            capital humano, contribuyendo así al crecimiento
+                            y éxito de las organizaciones a las que
+                            servimos.
+                        </p>
                     </div>
                 </div>
-            </section>
-        </div>
-    </body>
-</html>
+
+                {/* Cuadro Misión */}
+                <div
+                    class="flex items-center mb-6 border-gray-300 rounded-br-3xl rounded-tl-3xl shadow-lg w-[95%] mx-auto"
+                >
+                    <div
+                        class="w-1/2 h-full flex justify-center items-center bg-orange-200 border-gray-300 rounded-tl-3xl p-0"
+                    >
+                        <img
+                            src="/captacion1.jpg"
+                            alt="Descripción de la imagen"
+                            class="w-full h-full object-cover shadow-sm rounded-tl-3xl"
+                        />
+                    </div>
+
+                    <div class="w-1/2 p-6">
+                        <h2
+                            class="text-4xl text-center font-bold text-gray-800"
+                        >
+                            Misión
+                        </h2>
+                        <p class="m-4 text-xl text-gray-700 text-justify">
+                            Nuestra misión es proporcionar un servicio
+                            excepcional en la captación y selección de
+                            personal, utilizando metodologías avanzadas y
+                            tecnologías innovadoras para identificar y
+                            atraer a los mejores talentos del mercado. Nos
+                            dedicamos a entender profundamente las
+                            necesidades de nuestros clientes, ofreciendo
+                            soluciones personalizadas que optimicen su
+                            proceso de selección. A través de un enfoque
+                            ético y profesional, buscamos empoderar a los
+                            candidatos, guiándolos en su búsqueda de empleo
+                            y asegurándonos de que encuentren posiciones que
+                            no solo se alineen con sus habilidades, sino
+                            también con sus aspiraciones y valores. Nuestro
+                            compromiso es transformar vidas a través de
+                            oportunidades laborales, creando un impacto
+                            positivo en la sociedad y en las organizaciones
+                            que servimos.
+                        </p>
+                    </div>
+                </div>
+
+                {/* Cuadro Visión */}
+                <div
+                    class="flex items-center mb-6 border border-gray-300 rounded-br-3xl rounded-tl-3xl shadow-lg w-[95%] mx-auto"
+                >
+                    <div class="w-1/2 p-4">
+                        <h2
+                            class="text-4xl text-center font-bold text-gray-800"
+                        >
+                            Visión
+                        </h2>
+                        <p class="mt-4 text-xl text-gray-700 text-justify">
+                            Nuestra visión es ser reconocidos como líderes
+                            en el ámbito de la captación y selección de
+                            personal, siendo el referente en la creación de
+                            procesos de reclutamiento innovadores y
+                            eficientes que se adapten a las dinámicas
+                            cambiantes del mercado laboral. Aspiramos a
+                            establecer relaciones duraderas y de confianza
+                            con nuestros clientes, ayudándoles a construir
+                            equipos de alto rendimiento que impulsen su
+                            éxito a largo plazo. Creemos en el poder del
+                            talento humano como motor de cambio y
+                            desarrollo, y nos comprometemos a ser la puerta
+                            de entrada para los profesionales que desean
+                            contribuir de manera significativa a sus
+                            organizaciones.
+                        </p>
+                    </div>
+                    <div
+                        class="w-1/2 h-full flex justify-center items-center bg-rose-200 rounded-br-3xl"
+                    >
+                        <img
+                            src="/captacion2.jpg"
+                            alt="Descripción de la imagen"
+                            class="w-full h-full rounded-br-3xl shadow-sm"
+                        />
+                    </div>
+                </div>
+            </div>
+        </section>
+</Publico>
