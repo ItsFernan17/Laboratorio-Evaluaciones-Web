@@ -17,7 +17,7 @@ export function NewUsuario() {
         className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2"
         onSubmit={onSubmit}
       >
-        <div className="mt-4">
+                <div className="mt-4">
           <label
             htmlFor="dpi"
             className="block text-[16px] font-page font-semibold text-primary"
@@ -77,6 +77,7 @@ export function NewUsuario() {
             {...register("password")}
           />
         </div>
+        
         <div className="mt-2">
           <label
             htmlFor="departamento"
@@ -84,35 +85,39 @@ export function NewUsuario() {
           >
             Departamento
           </label>
-          <Departamentos />
+          <Departamentos register={register} />
         </div>
+
         <div className="mt-2">
           <label
-            htmlFor="departamento"
+            htmlFor="grado"
             className="block text-[16px] font-page font-semibold text-primary"
           >
             Grado Militar
           </label>
-          <Grado />
+          <Grado register={register} />
         </div>
+
         <div className="mt-2">
           <label
-            htmlFor="departamento"
+            htmlFor="poblacion"
             className="block text-[16px] font-page font-semibold text-primary"
           >
-            Poblacion Militar
+            Población Militar
           </label>
-          <Poblacion />
+          <Poblacion register={register} /> 
         </div>
+
         <div className="mt-2">
           <label
-            htmlFor="departamento"
+            htmlFor="comando"
             className="block text-[16px] font-page font-semibold text-primary"
           >
             Comando Militar
           </label>
-          <Comando />
+          <Comando register={register} />
         </div>
+
         <div className="col-span-full flex justify-center">
           <button
             type="submit"
