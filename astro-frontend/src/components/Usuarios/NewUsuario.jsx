@@ -240,14 +240,13 @@ export function NewUsuario({ usuario = null, onClose, onUserSaved }) {
               >
                 Actualizar
               </button>
-              <a href="/portal/usuarios/gestionar-usuarios">
                 <button
+                  onClick={onClose}
                   type="button"
                   className="bg-[#ED8080] mt-2 font-bold font-page mb-2 text-[#090000] border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
                 >
                   Cancelar
                 </button>
-              </a>
             </div>
           ) : (
             // Si dpi NO está presente, mostramos el botón "Registrar Usuario"
