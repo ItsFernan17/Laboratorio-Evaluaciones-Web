@@ -21,14 +21,14 @@ export class UsuarioController {
     return this.usuarioService.createUsuario(newUsuario);
   }
 
-  @Put(':id')
-  updateUsuario(@Param('id') nombre_usuario: string, @Body() updateUsuario: UpdateUsuarioDto) {
-    return this.usuarioService.updateUsuario(nombre_usuario, updateUsuario);
+  @Put(':dpi')
+  updateUsuario(@Param('dpi') dpi: string, @Body() updateUsuario: UpdateUsuarioDto) {
+    return this.usuarioService.updateUsuario(dpi, updateUsuario);
   }
 
   @Patch(':id/estado')
-  desactiveUsuario(@Param('id') nombre_usuario: string) {
-    return this.usuarioService.desactiveUsuario(nombre_usuario);
+  desactiveUsuario(@Param('id') dpi: string) {
+    return this.usuarioService.desactiveUsuario(dpi);
   }
 
 }
