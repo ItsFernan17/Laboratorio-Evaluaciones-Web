@@ -1,18 +1,77 @@
+import React, { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { createEmpleo } from "./Empleo.api";
 
-import {useForm } from "react-hook-form";
+export function NewEmpleo({ ceom = null }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
 
- export function NewEmpleo() {
-  const { register, handleSubmit } = useForm();
+  const [toastMessage, setToastMessage] = useState(null);
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data);
+  useEffect(() => {
+    const fetchEmpleoData = async () => {
+      if (ceom) {
+        try {
+          const empleoResponse = await fetch(
+            `http://localhost:3000/api/v1/empleo/${ceom}`
+          );
+          if (usuarioResponse.ok) {
+            const empleoData = await empleoResponse.json();
+            reset({});
+          }
+        } catch (error) {
+          toast.error("Error al cargar los datos del usuario");
+        }
+      }
+    };
+
+    fetchEmpleoData();
+  }, [ceom, reset]);
+
+  const onSubmit = handleSubmit(async (dataUsuario) => {
+    try {
+      await createEmpleo({
+        ceom: dataUsuario.ceom,
+        descripcion: dataUsuario.descripcion,
+        usuario_ingreso: 'apurg',
+      });
+
+      toast.success(
+        <div>
+          <strong>¡Empleo creado exitosamente!</strong>
+        </div>,
+        {
+          autoClose: 2500,
+          render: (message) => (
+            <div dangerouslySetInnerHTML={{ __html: message }} />
+          ),
+        }
+      );
+    } catch (error) {
+      toast.error("Error al crear el empleo, intente nuevamente");
+    } finally {
+      reset();
+    }
   });
-  
+
   return (
     <div>
-      <form className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2" onSubmit={onSubmit}>
+      <ToastContainer />
+      <form
+        className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2"
+        onSubmit={onSubmit}
+      >
         <div className="mt-4">
-          <label htmlFor="ceom" className="block text-[16px] font-page font-semibold text-primary">
+          <label
+            htmlFor="ceom"
+            className="block text-[16px] font-page font-semibold text-primary"
+          >
             CEOM
           </label>
           <input
@@ -24,7 +83,10 @@ import {useForm } from "react-hook-form";
           />
         </div>
         <div className="mt-4">
-          <label htmlFor="descripcion" className="block font-page text-[16px] font-semibold text-primary">
+          <label
+            htmlFor="descripcion"
+            className="block font-page text-[16px] font-semibold text-primary"
+          >
             Descripcion
           </label>
           <input
@@ -36,9 +98,34 @@ import {useForm } from "react-hook-form";
           />
         </div>
         <div className="col-span-full flex justify-center">
-          <button type="submit" className="bg-[#142957] font-normal font-page mb-10 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out  h-[40px] md:w-[300px]  hover:bg-white hover:text-primary hover:border-primary">
-            CREAR Empleo
-          </button>
+          {ceom ? (
+            <div className="flex justify-end space-x-4 mb-3 w-full">
+              <button
+                type="submit"
+                className="bg-[#0f763d] mt-2 font-bold font-page mb-2 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#0f763d] hover:border-[#0f763d]"
+              >
+                Actualizar
+              </button>
+              <a href="/portal/usuarios/gestionar-usuarios">
+                <button
+                  type="button"
+                  className="bg-[#ED8080] mt-2 font-bold font-page mb-2 text-[#090000] border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
+                >
+                  Cancelar
+                </button>
+              </a>
+            </div>
+          ) : (
+            <div className="flex justify-center w-full">
+              <button
+                type="submit"
+                className="bg-[#142957] mt-2 font-normal font-page mb-10 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out  h-[40px] md:w-[300px]  hover:bg-white hover:text-primary hover:border-primary"
+              >
+                Crear Empleo
+              </button>
+              {toastMessage && <div>{toastMessage}</div>}
+            </div>
+          )}
         </div>
       </form>
     </div>

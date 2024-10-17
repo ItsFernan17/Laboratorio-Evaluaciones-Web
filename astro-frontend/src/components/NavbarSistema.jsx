@@ -207,7 +207,7 @@ const EmpleosContent = () => {
       <div className="mb-3 space-y-3">
         <h3 className="font-page font-bold">Empleos</h3>
         <a
-          href="/portal/registrar-empleo"
+          href="/portal/empleos/registrar-empleo"
           className="block font-page text-sm hover:underline"
         >
           Nuevo Empleo
