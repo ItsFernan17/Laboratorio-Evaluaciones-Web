@@ -8,7 +8,7 @@ import Poblacion from "../Poblacion";
 import Comando from "../Comando";
 import { createUsuario, updateUsuario } from "./Usuario.api";
 
-export function NewUsuario({ usuario = null, onClose, onUserSaved }) {
+export function NewUsuario({ usuario = null, onClose = null, onUserSaved = null}) {
   const {
     register,
     handleSubmit,
@@ -34,7 +34,7 @@ export function NewUsuario({ usuario = null, onClose, onUserSaved }) {
             });
           }
         } catch (error) {
-          toast.error("Error al cargar los datos del usuario");
+          toast.error("Error al cargar los datos del empleo");
         }
       }
     };

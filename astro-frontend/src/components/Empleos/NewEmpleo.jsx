@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createEmpleo } from "./Empleo.api";
+import { createEmpleo, updateEmpleo } from "./Empleo.api";
 
-export function NewEmpleo({ ceom = null }) {
+export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm();
+
 
   const [toastMessage, setToastMessage] = useState(null);
 
@@ -21,12 +22,15 @@ export function NewEmpleo({ ceom = null }) {
           const empleoResponse = await fetch(
             `http://localhost:3000/api/v1/empleo/${ceom}`
           );
-          if (usuarioResponse.ok) {
+          if (empleoResponse.ok) {
             const empleoData = await empleoResponse.json();
-            reset({});
+            reset({
+              ceom: empleoData.ceom,
+              descripcion: empleoData.descripcion,
+            });
           }
         } catch (error) {
-          toast.error("Error al cargar los datos del usuario");
+          toast.error("Error al cargar los datos del empleo");
         }
       }
     };
@@ -34,30 +38,48 @@ export function NewEmpleo({ ceom = null }) {
     fetchEmpleoData();
   }, [ceom, reset]);
 
-  const onSubmit = handleSubmit(async (dataUsuario) => {
-    try {
-      await createEmpleo({
-        ceom: dataUsuario.ceom,
-        descripcion: dataUsuario.descripcion,
-        usuario_ingreso: 'apurg',
-      });
+  const onSubmit = handleSubmit(async (dataEmpleo) => {
 
-      toast.success(
-        <div>
-          <strong>¡Empleo creado exitosamente!</strong>
-        </div>,
-        {
-          autoClose: 2500,
-          render: (message) => (
-            <div dangerouslySetInnerHTML={{ __html: message }} />
-          ),
-        }
-      );
-    } catch (error) {
-      toast.error("Error al crear el empleo, intente nuevamente");
-    } finally {
-      reset();
+    if(ceom){
+      try{
+        await updateEmpleo(ceom, {
+          descripcion: dataEmpleo.descripcion,
+          usuario_modifica: 'apurg',
+        });
+        toast.success("Empleo actualizado exitosamente!", {autoClose: 1500});
+        setTimeout(() => {
+          onUserSaved();
+          onClose();
+        }, 1500);
+      } catch (error) {
+        toast.error("Error al actualizar el usuario, intente nuevamente");
+      }
+    } else {
+      try {
+        await createEmpleo({
+          ceom: dataEmpleo.ceom,
+          descripcion: dataEmpleo.descripcion,
+          usuario_ingreso: 'apurg',
+        });
+  
+        toast.success(
+          <div>
+            <strong>¡Empleo creado exitosamente!</strong>
+          </div>,
+          {
+            autoClose: 2500,
+            render: (message) => (
+              <div dangerouslySetInnerHTML={{ __html: message }} />
+            ),
+          }
+        );
+      } catch (error) {
+        toast.error("Error al crear el empleo, intente nuevamente");
+      } finally {
+        reset();
+      }
     }
+    
   });
 
   return (
@@ -79,6 +101,7 @@ export function NewEmpleo({ ceom = null }) {
             id="ceom"
             className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm border border-primary pl-3 font-page"
             placeholder="Ejemplo: E71A20"
+            disabled={!!ceom}
             {...register("ceom")}
           />
         </div>
