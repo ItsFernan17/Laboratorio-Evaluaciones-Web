@@ -190,7 +190,7 @@ const ExamenContent = () => {
       </div>
       <div className="mb-3 space-y-3"> 
         <h3 className="font-page font-bold">Tipos de Examen</h3>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <a href="/portal/tipoExamenes" className="block font-page text-sm hover:underline">
           Nuevo Tipo de Examen
         </a>
         <a href="/" className="block font-page text-sm hover:underline">
