@@ -212,7 +212,7 @@ const EmpleosContent = () => {
         >
           Nuevo Empleo
         </a>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <a href="/portal/empleos/gestionar-empleos" className="block font-page text-sm hover:underline">
           Ver Empleos Disponibles
         </a>
       </div>
