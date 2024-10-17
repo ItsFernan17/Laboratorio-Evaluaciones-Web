@@ -30,7 +30,7 @@ import { AsignacionModule } from './asignacion/asignacion.module';
       synchronize: true,
       dropSchema: false, 
     }),
-    SeedDbModule,
+    SeedDbModule, 
     EmpleoModule,
     UsuarioModule,
     AuthModule,
