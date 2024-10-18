@@ -12,6 +12,10 @@ export class UpdateExamenDto {
 
     @IsNumber()
     @IsOptional()
+    motivo_examen: number;
+
+    @IsNumber()
+    @IsOptional()
     punteo_maximo: number;
 
     @IsString()

@@ -1,9 +1,12 @@
-import { IsNumber, IsDate, IsBoolean, IsArray, ValidateNested } from 'class-validator';
+import { IsNumber, IsDate, IsBoolean, IsArray, ValidateNested, IsString, IsDateString } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class ExamenMasterDto {
   @IsNumber()
-  tipo_examen: number;    // Relación con Tipo de Examen
+  tipo_examen: number;
+
+  @IsNumber()
+  motivo: number;
 
   @IsDate()
   @Type(() => Date)
@@ -14,6 +17,9 @@ export class ExamenMasterDto {
 
   @IsBoolean()
   estado: boolean;
+
+  @IsString()
+  usuario_ingreso: string;
 
   @IsArray()
   @ValidateNested({ each: true })
@@ -54,3 +60,4 @@ export class PreguntaIdDto {
     this.pregunta = preguntaId;
   }
 }
+

@@ -15,7 +15,8 @@ function Poblacion({ register, errors }) {
       >
         <option value="0">Seleccione una Poblacion</option>
         {data?.map((poblacion, index) => (
-          <option key={index} value={index + 1}>
+          <option key={poblacion.codigo_poblacion} value={poblacion.codigo_poblacion}
+        >
             {poblacion.nombre_poblacion}
           </option>
         ))}

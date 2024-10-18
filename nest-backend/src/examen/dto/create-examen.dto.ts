@@ -10,6 +10,11 @@ export class CreateExamenDto {
     @IsNotEmpty({ message: "El tipo de examen es obligatorio" })
     tipo_examen: number;
 
+    
+    @IsNumber()
+    @IsNotEmpty({ message: "El motivo del examen es obligatorio" })
+    motivo_examen: number;
+
     @IsNumber()
     @IsNotEmpty({ message: "El punteo máximo es obligatorio" })
     punteo_maximo: number;

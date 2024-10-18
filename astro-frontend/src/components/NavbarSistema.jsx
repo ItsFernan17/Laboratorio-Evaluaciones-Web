@@ -172,19 +172,19 @@ const ExamenContent = () => {
     <div className="grid grid-cols-[auto,auto,auto] gap-3">
       <div className="mb-3 space-y-3">
         <h3 className="font-page font-bold">Exámenes</h3>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <a href="/portal/examen/registrar-examen" className="block font-page text-sm hover:underline">
           Nuevo Examen
         </a>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <a href="/portal/examen/gestionar-examenes" className="block font-page text-sm hover:underline">
           Ver Exámenes
         </a>
       </div>
       <div className="mb-3 space-y-3"> 
         <h3 className="font-page font-bold">Preguntas y Respuestas</h3>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <a href="/portal/preguntas/registrar-pregunta" className="block font-page text-sm hover:underline">
           Nueva Pregunta y Respuestas
         </a>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <a href="/portal/preguntas/gestionar-pregunta" className="block font-page text-sm hover:underline">
           Ver Preguntas y Respuestas
         </a>
       </div>
