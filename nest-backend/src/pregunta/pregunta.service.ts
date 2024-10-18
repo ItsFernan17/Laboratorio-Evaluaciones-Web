@@ -17,11 +17,17 @@ export class PreguntaService {
         private preguntaRepository: Repository<Pregunta>,
     ) {}
     
-    async findAll(){
-        return this.tipoPreguntaRepository.find({
-        where: { estado: true },
+    async findAll() {
+        return this.preguntaRepository.find({
+          where: { estado: true }, // Filtra solo las preguntas activas
+          relations: ['tipo_pregunta'], // Trae la relación con TipoPregunta
+          select: {
+            tipo_pregunta: {
+              descripcion: true, // Selecciona la descripción del tipo de pregunta
+            },
+          },
         });
-    }
+      }
 
     async findByPregunta(descripcion: string): Promise<Pregunta | null> {
         return await this.preguntaRepository.findOne({ where: { descripcion } });

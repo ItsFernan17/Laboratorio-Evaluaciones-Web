@@ -15,10 +15,11 @@ import { TipoExamenModule } from 'src/tipo-examen/tipo-examen.module';
 import { ExamenModule } from 'src/examen/examen.module';
 import { Examen } from 'src/examen/model/examen.entity';
 import { PreguntaRespuesta } from 'src/pregunta-respuesta/model/pregunta-respuesta.entity';
+import { Motivo } from 'src/seed-db/motivo/model/motivo.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ExamenMaster, Pregunta, Usuario, SerieExamen, TipoExamen, Examen, PreguntaRespuesta]),
+    TypeOrmModule.forFeature([ExamenMaster, Pregunta, Usuario, SerieExamen, TipoExamen, Examen, PreguntaRespuesta, Motivo]),
     UsuarioModule,
     PreguntaModule,
     SerieModule,

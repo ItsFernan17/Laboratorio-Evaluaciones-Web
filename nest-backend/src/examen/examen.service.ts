@@ -7,6 +7,7 @@ import { TipoExamen } from 'src/tipo-examen/model/tipo-examen.entity';
 import { Empleo } from 'src/empleo/model/empleo.entity';
 import { TipoExamenService } from 'src/tipo-examen/tipo-examen.service';
 import { Examen } from './model/examen.entity';
+import { Motivo } from 'src/seed-db/motivo/model/motivo.entity';
 
 
 @Injectable()
@@ -19,13 +20,24 @@ export class ExamenService {
         private usuarioRepository: Repository<Usuario>,
         @InjectRepository(TipoExamen)
         private tipoExamenRepository: Repository<TipoExamen>,
+        @InjectRepository(Motivo)
+        private motivoRepository: Repository<Motivo>,
     ){}
 
-    async findAll(){
+    async findAll() {
         return this.examenRepository.find({
-            where: { estado: true },
+          where: { estado: true },
+          relations: ['tipo_examen', 'motivo_examen'],
+          select: {
+            tipo_examen: {
+              description: true,  // Incluye la descripción del tipo de examen
+            },
+            motivo_examen: {
+                nombre_motivo: true,  // Incluye la descripción del motivo de examen
+            },
+          },
         });
-    }
+      }
 
     async findByTipoExamen(codigo_tipoE: number){
         return this.examenRepository.find({
@@ -55,6 +67,7 @@ export class ExamenService {
 
         const tipoExamen = await this.tipoExamenRepository.findOne({ where: { codigo_tipoE: createExamenDto.tipo_examen} });
 
+        const motivoExamen = await this.motivoRepository.findOne({ where: { codigo_motivo: createExamenDto.motivo_examen} });
 
         if (!usuario) {
             throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
@@ -64,11 +77,16 @@ export class ExamenService {
             throw new HttpException('El tipo de examen no encontrado.', HttpStatus.NOT_FOUND);
         }
 
+        if (!motivoExamen) {
+            throw new HttpException('El motivo de examen no encontrado.', HttpStatus.NOT_FOUND);
+        }
+
 
         const newExamen = this.examenRepository.create({
             fecha_evaluacion: createExamenDto.fecha_evaluacion,
             estado: true,
             tipo_examen: tipoExamen,
+            motivo_examen: motivoExamen,
             punteo_maximo: createExamenDto.punteo_maximo,
             usuario_ingreso: usuario,
             fecha_ingreso: new Date(),
@@ -103,8 +121,15 @@ export class ExamenService {
             throw new HttpException('El tipo de examen no encontrado.', HttpStatus.NOT_FOUND);
         }
 
+        const motivoExamen = await this.motivoRepository.findOne({ where: { codigo_motivo: updateExamenDto.motivo_examen} });
+
+        if (!motivoExamen) {
+            throw new HttpException('El motivo de examen no encontrado.', HttpStatus.NOT_FOUND);
+        }
+
         examenExistente.fecha_evaluacion = updateExamenDto.fecha_evaluacion;
         examenExistente.tipo_examen = tipoExamen;
+        examenExistente.motivo_examen = motivoExamen;
         examenExistente.punteo_maximo = updateExamenDto.punteo_maximo;
         examenExistente.usuario_modifica = usuario;
         examenExistente.fecha_modifica = new Date();   

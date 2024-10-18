@@ -102,8 +102,11 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
             className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm border border-primary pl-3 font-page"
             placeholder="Ejemplo: E71A20"
             disabled={!!ceom}
-            {...register("ceom")}
+            {...register("ceom", { required: "*CEOM es requerido" })}
           />
+                    {errors.ceom && (
+            <p className="text-red-900 text-sm mb-0">{errors.ceom.message}</p>
+          )}
         </div>
         <div className="mt-4">
           <label
@@ -117,8 +120,11 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
             id="descripcion"
             className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
             placeholder="Descripcion del Empleo"
-            {...register("descripcion")}
+            {...register("descripcion" , { required: "*Descripcion es requerida" })}
           />
+          {errors.descripcion && (
+            <p className="text-red-900 text-sm mb-0">{errors.descripcion.message}</p>
+          )}
         </div>
         <div className="col-span-full flex justify-center">
           {ceom ? (
@@ -129,14 +135,13 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
               >
                 Actualizar
               </button>
-              <a href="/portal/usuarios/gestionar-usuarios">
                 <button
                   type="button"
+                  onClick={onClose}
                   className="bg-[#ED8080] mt-2 font-bold font-page mb-2 text-[#090000] border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
                 >
                   Cancelar
                 </button>
-              </a>
             </div>
           ) : (
             <div className="flex justify-center w-full">

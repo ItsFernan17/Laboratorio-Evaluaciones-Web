@@ -1,6 +1,7 @@
 import { Entity, Column, ManyToOne, JoinColumn, PrimaryGeneratedColumn } from "typeorm";
 import { Usuario } from '../../usuario/model/usuario.entity';
 import { TipoExamen } from "src/tipo-examen/model/tipo-examen.entity";
+import { Motivo } from "src/seed-db/motivo/model/motivo.entity";
 
 @Entity({ name: 'examen' })
 export class Examen {
@@ -17,6 +18,10 @@ export class Examen {
     @ManyToOne(() => TipoExamen, { nullable: true })
     @JoinColumn({ name: 'tipo_examen' })
     tipo_examen: TipoExamen;
+
+    @ManyToOne(() => Motivo, { nullable: true })
+    @JoinColumn({ name: 'motivo_examen' })
+    motivo_examen: Motivo;
 
     @Column({ type: 'int' })
     punteo_maximo: number;

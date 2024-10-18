@@ -15,7 +15,7 @@ function Comando({ register, errors }) {
     >
       <option value="0">Seleccione un Comando</option>
       {data?.map((comando, index) => (
-        <option key={index} value={index + 1}>
+        <option key={comando.codigo_comando} value={comando.codigo_comando}>
           {comando.nombre_comando}
         </option>
       ))}

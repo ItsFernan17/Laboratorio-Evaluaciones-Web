@@ -15,7 +15,7 @@ function Grado({ register, errors }) {
     >
       <option value="0">Seleccione un Grado</option>
       {data?.map((grado, index) => (
-        <option key={index} value={index + 1}>
+        <option key={grado.codigo_grado} value={grado.codigo_grado}>
           {grado.nombre_grado}
         </option>
       ))}
