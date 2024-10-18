@@ -243,20 +243,36 @@ const UsuariosContent = () => {
 };
 
 const Perfil = () => {
+  // Función para manejar el cierre de sesión
+  const handleLogout = () => {
+    // Eliminar los tokens del localStorage
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+    localStorage.removeItem("usuario");
+    
+    // Redirigir al login o la página principal
+    window.location.href = "/login";
+  };
+
   return (
     <div className="w-[190px] bg-white p-6 shadow-lg border border-primary rounded-lg">
       <div className="mb-3 space-y-3">
-        <h3 className="font-page text-[16px] font-bold">Fernando Rivas</h3>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <h3 className="font-page text-[16px] font-bold">{localStorage.usuario}</h3>
+        <a href="/portal" className="block font-page text-sm hover:underline">
           Perfil
         </a>
         <hr className="border-[#F0F0F0] my-2" />
-        <a href="/login" className="block font-page text-sm hover:underline">
+        <button
+          onClick={handleLogout}
+          className="block font-page text-sm hover:underline cursor-pointer text-left"
+        >
           Cerrar Sesión
-        </a>
+        </button>
       </div>
     </div>
   );
 };
+
+
 
 export default NavbarSistema;

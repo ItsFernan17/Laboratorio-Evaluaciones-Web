@@ -34,26 +34,30 @@ export class AuthService {
 
     async login(loginDto: LoginDto) {
         const usuario = await this.usuarioService.findByUsername(loginDto.usuario);
-
-        if(!usuario) {
+    
+        if (!usuario) {
             throw new UnauthorizedException('El usuario no es correcto');
         }
-        
+    
         const isPasswordValid = await bcryptjs.compare(loginDto.password, usuario.password);
-
-        if(!isPasswordValid) {
+    
+        if (!isPasswordValid) {
             throw new UnauthorizedException('La contraseña no es correcta');
         }
-
+    
         const payload = { user: usuario.nombre_usuario, sub: usuario.dpi };
-
-        const token = await this.jwtService.signAsync(payload);
-        
+    
+        // Generar access token
+        const accessToken = await this.jwtService.signAsync(payload, { expiresIn: '30m' });
+    
+        // Generar refresh token con mayor duración
+        const refreshToken = await this.jwtService.signAsync(payload, { expiresIn: '7d' });
+    
         return {
-            token,
+            accessToken,
+            refreshToken, // Enviar también el refresh token
             usuario: usuario.nombre_usuario,
         };
-
     }
 
 }

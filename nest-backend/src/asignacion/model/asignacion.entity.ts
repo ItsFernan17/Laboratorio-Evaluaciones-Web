@@ -7,7 +7,7 @@ export class Asignacion {
   @PrimaryGeneratedColumn()
   codigo_asignacion: number;
 
-  @Column({ type: 'bit', width: 1, default: 1 })
+  @Column({ type: 'bit', width: 1})
   estado: boolean;
 
   @ManyToOne(() => Usuario, { nullable: false })

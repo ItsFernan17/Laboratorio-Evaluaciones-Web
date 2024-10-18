@@ -73,7 +73,7 @@ export function NewExamen({
           motivo: parseInt(dataExamen.motivo, 10),
           punteo_maximo: parseFloat(dataExamen.punteo),
           estado: true,
-          usuario_ingreso: "apurg", // Ajustar el usuario de ingreso si es dinámico
+          usuario_ingreso: localStorage.usuario, // Ajustar el usuario de ingreso si es dinámico
           series: dataExamen.series.map((serie) => ({
             serie: Number(serie.serie),
             preguntas: serie.preguntas.map((pregunta) => ({
@@ -109,7 +109,7 @@ export function NewExamen({
           motivo: parseInt(dataExamen.motivo, 10),
           punteo_maximo: parseFloat(dataExamen.punteo),
           estado: true,
-          usuario_ingreso: "apurg",
+          usuario_ingreso: localStorage.usuario,
           series: dataExamen.series.map((serie) => ({
             serie: Number(serie.serie),
             preguntas: serie.preguntas.map((pregunta) => ({

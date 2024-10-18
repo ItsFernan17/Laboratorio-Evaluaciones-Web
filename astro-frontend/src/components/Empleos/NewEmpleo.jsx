@@ -44,7 +44,7 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
       try{
         await updateEmpleo(ceom, {
           descripcion: dataEmpleo.descripcion,
-          usuario_modifica: 'apurg',
+          usuario_modifica: localStorage.usuario,
         });
         toast.success("Empleo actualizado exitosamente!", {autoClose: 1500});
         setTimeout(() => {
@@ -59,7 +59,7 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
         await createEmpleo({
           ceom: dataEmpleo.ceom,
           descripcion: dataEmpleo.descripcion,
-          usuario_ingreso: 'apurg',
+          usuario_ingreso: localStorage.usuario,
         });
   
         toast.success(

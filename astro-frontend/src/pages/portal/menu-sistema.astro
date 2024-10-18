@@ -2,6 +2,38 @@
 import Sistema from '../../layouts/sistema.astro'
 ---
 
-<Sistema title='Menu Principal'>
-    
+<Sistema title="Menu Principal">
+  <div class="flex flex-col items-center w-full mt-10 text-center">
+    <div class="w-full mb-5">
+      <h1 class="text-2xl font-extrabold text-[48px] text-primary">
+        Estado Mayor de la Defensa Nacional
+      </h1>
+      <h2 class="text-lg text-primary text-[30px] mt-5">
+        Dirección de Personal Del Estado Mayor de la Defensa Nacional
+      </h2>
+    </div>
+    <div class="w-1/6 flex justify-center">
+      <img src="/logo_dpemdn.png" alt="Logo de la Defensa Nacional" class="w-[243px]" />
+    </div>
+    <div class="mt-10 ml-20 mr-20">
+      <h2 class="font-semibold text-[33px] mb-5 text-primary">
+        ¡Bienvenido al Sistema de Evaluación!
+      </h2>
+      <span id="welcome-message" class=" text-[20px] font-bold  text-primary">
+        ¡Atención usuario!
+      </span> <span class="text-[20px] text-primary" >Es fundamental que toda la información contenida en este sistema sea tratada con el máximo cuidado y confidencialidad,
+        siguiendo los protocolos de seguridad establecidos. La manipulación de los datos debe ser precisa y rigurosa,
+        ya que cualquier uso indebido podría comprometer la integridad del sistema y la privacidad de la información.</span>
+    </div>
+  </div>
+
+  <!-- Script to access localStorage and update the message -->
+  <script>
+    const usuario = localStorage.getItem('usuario');
+    const welcomeMessage = document.getElementById('welcome-message');
+
+    if (welcomeMessage && usuario) {
+      welcomeMessage.textContent = `¡Atención ${usuario}! `;
+    }
+  </script>
 </Sistema>
