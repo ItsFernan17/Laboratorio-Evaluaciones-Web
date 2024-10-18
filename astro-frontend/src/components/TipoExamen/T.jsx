@@ -182,7 +182,6 @@ function TipoExamen() {
             />
           </div>
         )}
-
         <button
           type="submit"
           className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition duration-200"
@@ -190,7 +189,6 @@ function TipoExamen() {
           {editando ? 'Actualizar Tipo de Examen' : 'Crear Tipo de Examen'}
         </button>
       </form>
-
       {/* Tabla para mostrar la lista de tipos de examen */}
       <div className="mt-8 flex justify-center">
         <div className="w-[90%]">
