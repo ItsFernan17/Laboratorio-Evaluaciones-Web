@@ -5,8 +5,9 @@ const Carousel = () => {
     const [isAnimating, setIsAnimating] = useState(false);
 
     const items = [
-        '/captacion1.jpg',
-        '/captacion2.jpg',
+        '/quienes-somos.jpg',
+        '/emdn2.png',
+        '/fondo_login.jpg'
     ];
 
     const handlePrev = () => {
@@ -25,7 +26,7 @@ const Carousel = () => {
 
     return (
         <div id="animation-carousel" className="relative w-full" data-carousel="static">
-            <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
+            <div className="relative h-70 overflow-hidden rounded-lg md:h-96">
                 {items.map((item, index) => (
                     <div
                         key={index}
