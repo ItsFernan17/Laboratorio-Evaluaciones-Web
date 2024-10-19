@@ -52,10 +52,10 @@ export class ExamenService {
             relations: ['tipo_examen', 'motivo_examen'],
             select: {
                 tipo_examen: {
-                  description: true,  // Incluye la descripción del tipo de examen
+                  description: true,
                 },
                 motivo_examen: {
-                    nombre_motivo: true,  // Incluye la descripción del motivo de examen
+                    nombre_motivo: true, 
                 },
               },
         });

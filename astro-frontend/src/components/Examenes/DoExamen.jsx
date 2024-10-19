@@ -1,17 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 
-function MenuExamen() {
+export function DoExamen() {
   const [examen, setExamen] = useState(null);
   const [isExamFinished, setIsExamFinished] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUnauthorized, setIsUnauthorized] = useState(false);
+  const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
+
+  useEffect(() => {
+    const codigo_examen = localStorage.getItem('codigo_examen');
+    if (!codigo_examen) {
+      // Si no hay un código de examen, mostrar modal de usuario no autorizado
+      setIsUnauthorized(true);
+      setTimeout(() => {
+        window.location.assign("/portal/menu-sistema");
+      }, 5000);
+    }
+  }, []);
 
   const handleStartExam = async () => {
-    const id = 20; // Puedes ajustar el ID según necesites
+    const codigo_examen = localStorage.getItem('codigo_examen');
+    if (!codigo_examen) {
+      toast.error("No se encontró el código del examen.");
+      return;
+    }
+    
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/examen-master/informacion/${id}`);
+      const response = await fetch(`http://localhost:3000/api/v1/examen-master/informacion/${codigo_examen}`);
       const data = await response.json();
       setExamen(data);
     } catch (error) {
@@ -19,52 +37,83 @@ function MenuExamen() {
     }
   };
 
-  const handleFinishExam = () => {
-    if (!examen || !examen.series) {
-      return;
-    }
+  const handleFinishExam = async () => {
+    const codigo_examen = localStorage.getItem('codigo_examen');
+    const codigo_asignacion = localStorage.getItem('codigo_asignacion');
+    
+    if (codigo_examen && codigo_asignacion) {
+      // Lógica para calcular el punteo
+      const punteo = 10; // Reemplaza esto con tu lógica real de cálculo
+  
+      try {
+        console.log("Enviando solicitud para actualizar punteo...");
+        console.log(`Asignación: ${codigo_asignacion}, Punteo: ${punteo}`);
+  
+        const response = await fetch(`http://localhost:3000/api/v1/asignacion/${codigo_asignacion}/punteo`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ punteo }), // Asegúrate de enviar punteo correctamente
+        });
+  
+        console.log("Respuesta del servidor:", response);
+  
+        if (response.ok) {
+          toast.success("¡Calificación Registrada en el Sistema!.");
+          // Eliminar los datos de localStorage
+          localStorage.removeItem('codigo_examen');
+          localStorage.removeItem('codigo_asignacion');
 
-    let totalScore = 0;
-    let allAnswered = true;
-
-    examen.series.forEach((serie, serieIndex) => {
-      serie.preguntas.forEach((pregunta, preguntaIndex) => {
-        const selectedOption = document.querySelector(
-          `input[name="pregunta-${serieIndex}-${preguntaIndex}"]:checked`
-        );
-
-        if (selectedOption) {
-          // Encuentra la respuesta seleccionada y verifica si es correcta
-          const selectedAnswer = pregunta.respuestas.find(
-            (respuesta) => respuesta.descripcion_respuesta === selectedOption.value
-          );
-
-          if (selectedAnswer && selectedAnswer.esCorrecta) {
-            totalScore++;
-          }
+          // Abrir el modal indicando que se ha completado el examen
+          setIsCompletedModalOpen(true);
+          
+          // Redirigir al menú-sistema después de 5 segundos
+          setTimeout(() => {
+            window.location.assign("/portal/menu-sistema");
+          }, 5000);
+          
         } else {
-          allAnswered = false;
+          const errorData = await response.json(); // Intenta obtener el mensaje de error del servidor
+          console.error("Error en la respuesta:", errorData);
+          toast.error("Error al actualizar el punteo.");
         }
-      });
-    });
-
-    if (!allAnswered) {
-      toast.error("Por favor, contesta todas las preguntas antes de finalizar el examen.");
+      } catch (error) {
+        console.error("Error en la solicitud:", error);
+        toast.error("Error en la solicitud. Revisa la consola.");
+      }
     } else {
-      setTotalScore(totalScore);
-      setIsExamFinished(true);
-      setIsModalOpen(true);
+      toast.error("No se encontraron códigos en localStorage.");
     }
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
+    setIsCompletedModalOpen(false);
     window.location.assign("/portal/menu-sistema");
   };
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
       <ToastContainer />
+
+      {/* Modal si no hay un código de examen */}
+      {isUnauthorized && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+          <div className="bg-white w-[500px] rounded-lg shadow-lg">
+            <div className="w-full flex items-center justify-between bg-primary text-white py-3 px-5 rounded-t-md">
+              <h2 className="font-page font-semibold text-[25px]">
+                Examen No Asignado
+              </h2>
+              <img src="/EMDN1.png" alt="Logo" className="h-14" />
+            </div>
+            <div className="p-6 text-center">
+              <p className="text-lg text-primary mb-8">
+                No se encontró el código del examen. Redirigiendo al menú principal...
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {!examen ? (
         <div className="mt-8 w-[900px]">
@@ -152,33 +201,21 @@ function MenuExamen() {
         </div>
       )}
 
-      {/* Modal para mostrar la puntuación */}
-      {isModalOpen && (
+      {/* Modal para mostrar que se ha completado el examen y redirigir */}
+      {isCompletedModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
           <div className="bg-white w-[500px] rounded-lg shadow-lg">
-            {/* Encabezado del Modal */}
             <div className="w-full flex items-center justify-between bg-primary text-white py-3 px-5 rounded-t-md">
               <h2 className="font-page font-semibold text-[25px]">
-                Resultado del Examen
+                Examen Finalizado
               </h2>
-              <img
-                src="/EMDN1.png"
-                alt="Logo"
-                className="h-14"
-              />
+              <img src="/EMDN1.png" alt="Logo" className="h-14" />
             </div>
 
-            {/* Contenido del Modal */}
             <div className="p-6 text-center">
               <p className="text-lg text-primary mb-8">
-                Has obtenido {totalScore} de un total de {examen?.punteo_maximo} puntos.
+                Has finalizado el examen y tu punteo ha sido actualizado. Serás redirigido al menú principal en 5 segundos.
               </p>
-              <button
-                onClick={handleCloseModal}
-                className="bg-[#142957] text-white font-semibold rounded-lg px-6 py-2 hover:bg-white hover:text-primary hover:border hover:border-primary"
-              >
-                Salir
-              </button>
             </div>
           </div>
         </div>
@@ -186,5 +223,3 @@ function MenuExamen() {
     </div>
   );
 }
-
-export default MenuExamen;

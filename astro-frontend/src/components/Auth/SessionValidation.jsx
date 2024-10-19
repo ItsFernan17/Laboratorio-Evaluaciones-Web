@@ -30,7 +30,7 @@ const ProtectedPage = () => {
   }, []);
 
   if (loading) {
-    return <div>Cargando...</div>;
+    return null;
   }
 
   return (

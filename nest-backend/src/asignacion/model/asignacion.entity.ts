@@ -3,6 +3,7 @@ import { Usuario } from 'src/usuario/model/usuario.entity';
 import { Examen } from 'src/examen/model/examen.entity';
 
 @Entity({ name: 'asignacion' })
+@Entity({ name: 'asignacion' })
 export class Asignacion {
   @PrimaryGeneratedColumn()
   codigo_asignacion: number;
@@ -11,16 +12,16 @@ export class Asignacion {
   estado: boolean;
 
   @ManyToOne(() => Usuario, { nullable: false })
-  @JoinColumn({ name: 'usuario_ingreso' })
-  usuario_ingreso: Usuario;
-
-  @ManyToOne(() => Usuario, { nullable: false })
   @JoinColumn({ name: 'evaluado' })
   evaluado: Usuario;
 
   @ManyToOne(() => Examen, { nullable: false })
   @JoinColumn({ name: 'examen' })
   examen: Examen;
+
+  @ManyToOne(() => Usuario, { nullable: true })
+  @JoinColumn({ name: 'usuario_ingreso' })
+  usuario_ingreso: Usuario;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP', nullable: true })
   fecha_ingreso: Date;
@@ -32,7 +33,10 @@ export class Asignacion {
   @JoinColumn({ name: 'usuario_modifica' })
   usuario_modifica: Usuario;
 
-  @Column()
+  @Column({ nullable: true })
   punteo: number; // Asegúrate de tener este campo
+
 }
+
+
 

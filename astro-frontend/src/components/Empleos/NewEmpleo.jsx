@@ -52,7 +52,7 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
           onClose();
         }, 1500);
       } catch (error) {
-        toast.error("Error al actualizar el usuario, intente nuevamente");
+        toast.error("Error al actualizar el empleo, intente nuevamente");
       }
     } else {
       try {

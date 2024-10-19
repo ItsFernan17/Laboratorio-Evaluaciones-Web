@@ -156,10 +156,10 @@ const AsignacionContent = () => {
     <div className="w-64 bg-white p-6 shadow-lg border border-primary rounded-lg">
       <div className="mb-3 space-y-3">
         <h3 className="font-page font-bold">Asignaciones</h3>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <a href="/portal/asignaciones/registrar-asignacion" className="block font-page text-sm hover:underline">
           Nueva Asignacion
         </a>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <a href="/portal/asignaciones/gestionar-asignacion" className="block font-page text-sm hover:underline">
           Ver Asignaciones
         </a>
       </div>

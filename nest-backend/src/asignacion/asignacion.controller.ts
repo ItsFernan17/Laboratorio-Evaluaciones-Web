@@ -58,7 +58,7 @@ export class AsignacionController {
       return asignacion; // Devuelve la asignación con datos filtrados
   }
   
-  @Patch(':codigo_asignacion/punteo')
+  @Put(':codigo_asignacion/punteo')
   async updatePunteo(
     @Param('codigo_asignacion') codigo_asignacion: number,
     @Body() updatePunteoDto: UpdatePunteoDto,
