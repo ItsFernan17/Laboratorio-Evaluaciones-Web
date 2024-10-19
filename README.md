@@ -25,7 +25,7 @@ Asegúrate de tener instalados los siguientes requisitos en tu entorno:
 
 Sigue estos pasos para instalar y configurar el proyecto en tu entorno local:
 
-1. Clona este repositorio en tu máquina:
+1. Clona este repositorio:
 
    ```bash
    git clone https://github.com/tu-usuario/laboratorio-evaluaciones-web.git
