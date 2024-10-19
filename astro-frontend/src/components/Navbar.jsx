@@ -5,7 +5,7 @@ const Navbar = () => {
   const { isPressed, setIsPressed } = componentStore((state) => state);
 
   return (
-    <header className="shadow-md">
+    <header className="fixed top-0 left-0 w-full z-50 shadow-md">
       <div className="flex items-center w-full h-auto text-white md:px-9 bg-primary drop-shadow-md justify-between">
         <div className="flex items-center">
           <img
@@ -17,17 +17,17 @@ const Navbar = () => {
 
         <div className="relative hidden xl:flex items-center gap-3">
           <div className="flex h-auto justify-center bg-primary cursor-pointer mr-8">
-            <FlyoutLink href='/' FlyoutContent>
+            <FlyoutLink href="/" FlyoutContent>
               Inicio
             </FlyoutLink>
           </div>
           <div className="flex h-auto justify-center bg-primary cursor-pointer mr-8">
-            <FlyoutLink href='/nosotros' FlyoutContent>
+            <FlyoutLink href="/nosotros" FlyoutContent>
               Nosotros
             </FlyoutLink>
           </div>
           <div className="flex h-auto justify-center bg-primary cursor-pointer mr-8">
-            <FlyoutLink href='/empleo' FlyoutContent>
+            <FlyoutLink href="/empleo" FlyoutContent>
               Empleos
             </FlyoutLink>
           </div>
@@ -53,21 +53,31 @@ const Navbar = () => {
           className={`absolute xl:hidden top-[66px] left-0 w-full bg-white flex flex-col items-center gap-7 font-normal text-lg transform transition-transform ${isPressed ? "opacity-100" : "opacity-0"}`}
           style={{ transition: "transform 0.3s ease, opacity 0.3s ease" }}
         >
-          <li className="list-none w-full text-primary text-center p-4 hover:bg-primary hover:text-white transition-all cursor-pointer">
-            Inicio
-          </li>
-          <li className="list-none w-full text-primary  text-center p-4 hover:bg-primary hover:text-white transition-all cursor-pointer">
-            Nosotros
-          </li>
-          <li className="list-none w-full text-primary  text-center p-4 hover:bg-primary hover:text-white transition-all cursor-pointer">
-            Empleo
-          </li>
-          <li className="list-none w-full text-primary  text-center p-4 hover:bg-primary hover:text-white transition-all cursor-pointer">
-            Iniciar Sesión
-          </li>
-          <li className="list-none w-full text-primary  text-center p-4 hover:bg-primary hover:text-white transition-all cursor-pointer">
-            contacto
-          </li>
+          <a href="/">
+            <li className="list-none w-full text-primary text-center p-4  font-semibold text-[20px] hover:text-secondary ver:w-full transition-all cursor-pointer">
+              Inicio
+            </li>
+          </a>
+          <a href="/nosotros">
+          <li className="list-none w-full text-primary text-center p-4  font-semibold text-[20px] hover:text-secondary ver:w-full transition-all cursor-pointer">
+              Nosotros
+            </li>
+          </a>
+          <a href="/empleo">
+          <li className="list-none w-full text-primary text-center p-4  font-semibold text-[20px] hover:text-secondary ver:w-full transition-all cursor-pointer">
+              Empleos
+            </li>
+          </a>
+          <a href="/login">
+          <li className="list-none w-full text-primary text-center p-4  font-semibold text-[20px] hover:text-secondary ver:w-full transition-all cursor-pointer">
+              Login
+            </li>
+          </a>
+          <a href="/contacto">
+          <li className="list-none w-full text-primary text-center p-4  font-semibold text-[20px] hover:text-secondary ver:w-full transition-all cursor-pointer">
+              Contácto
+            </li>
+          </a>
         </div>
       </div>
 

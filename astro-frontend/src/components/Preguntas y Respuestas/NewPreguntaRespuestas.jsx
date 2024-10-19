@@ -76,7 +76,7 @@ export function NewPreguntaRespuestas({
       const respuestas = dataPregunta.respuestas.map((respuesta) => ({
         respuesta: respuesta.respuesta,
         esCorrecta: respuesta.esCorrecta || false,
-        usuario_modifica: 'apurg', // Asegurar que cada respuesta tiene este campo
+        usuario_modifica: localStorage.usuario, // Asegurar que cada respuesta tiene este campo
       }));
 
       // Enviar el objeto de la pregunta junto con las respuestas
@@ -85,7 +85,7 @@ export function NewPreguntaRespuestas({
           descripcion: dataPregunta.pregunta,
           tipo_pregunta: parseInt(dataPregunta.tipo_pregunta),
           punteo: dataPregunta.punteo,
-          usuario_modifica: 'apurg', // Incluimos usuario_modifica en la pregunta
+          usuario_modifica: localStorage.usuario, // Incluimos usuario_modifica en la pregunta
         },
         respuestas: respuestas,
       });
@@ -119,7 +119,7 @@ export function NewPreguntaRespuestas({
 
       // Enviamos la pregunta creada
       await createPregunta({
-        usuario_ingreso: "apurg",
+        usuario_ingreso: localStorage.usuario,
         descripcion: dataPregunta.pregunta,
         punteo: dataPregunta.punteo,
         tipo_pregunta: parseInt(dataPregunta.tipo_pregunta),

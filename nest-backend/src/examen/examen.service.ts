@@ -49,6 +49,15 @@ export class ExamenService {
     async findById(codigo_examen: number){
         const examenExistente = await this.examenRepository.findOne({
             where: { codigo_examen, estado: true },
+            relations: ['tipo_examen', 'motivo_examen'],
+            select: {
+                tipo_examen: {
+                  description: true,
+                },
+                motivo_examen: {
+                    nombre_motivo: true, 
+                },
+              },
         });
 
         if (!examenExistente) {

@@ -36,3 +36,4 @@ export async function updateEmpleo(ceom: string, newEmpleo: any){
 
     return await res.json();
 }
+

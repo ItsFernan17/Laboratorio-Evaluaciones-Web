@@ -10,7 +10,6 @@ import {LoginForm} from '../components/Login/LoginForm'
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ministerio de la Defensa</title>
-    <link rel="stylesheet" href="/style.css" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
   <body>
@@ -31,28 +30,15 @@ import {LoginForm} from '../components/Login/LoginForm'
           </div>
 
           <div
-            class="bg-white font-sans font-bold rounded-[15px] p-[20px] h-auto lg:h-[550px] w-full sm:w-[80%] md:w-[60%] lg:w-[500px] shadow-lg flex flex-col justify-center items-center text-center"
+            class="bg-white font-bold rounded-[15px] p-[20px] h-auto lg:h-[550px] sm:w-[80%] md:w-[60%] lg:w-[450px] shadow-lg flex flex-col justify-center items-center text-center"
           >
             <h1
-              class="text-primary text-[28px] md:text-[34px] lg:text-[40px] mb-6 lg:mb-8 font-sans font-bold"
+              class="text-primary text-[28px] md:text-[34px] lg:text-[35px] mb-6 lg:mb-8  font-semibold"
             >
               Iniciar Sesión
             </h1>
 
-            <LoginForm />
-
-            <a
-              class="font-normal block mb-2 mt-5 text-primary"
-              href="http://www.google.com">¿No tienen usuario? Contactanos</a
-            >
-            <a
-              class="font-normal block mb-2 text-primary"
-              href="http://www.google.com">¿Olvidaste tu Contraseña?</a
-            >
-            <a
-              class="font-normal block text-primary"
-              href="https://www.mindef.mil.gt/" target="_blank">Conoce más acerca del MINDEF</a
-            >
+            <LoginForm client:load />
           </div>
         </div>
       </login>

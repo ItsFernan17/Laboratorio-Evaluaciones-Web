@@ -6,6 +6,9 @@ interface Props {
 }
 
 const { title } = Astro.props;
+
+import ClearSession from '../components/Auth/ClearSession';
+
 ---
 
 <!doctype html>
@@ -31,6 +34,8 @@ const { title } = Astro.props;
 		/>
 	</head>
 	<body class="bg-background w-full h-full absolute">
+		<Navbar client:load/>
+		<ClearSession client:load />
 		<Navbar client:load />
 		<div class="mr-2 ml-2">
 			<slot />
@@ -57,13 +62,23 @@ const { title } = Astro.props;
 						class="bx bx-world text-[30px] hover:text-secondary mr-10"
 					></i>
 				</a>
+<<<<<<< HEAD
 				<a href="https://www.facebook.com/EjercitoGT" target="_blank">
+=======
+				<a href="https://www.facebook.com/EjercitoGT/" target="_blank">
+>>>>>>> 0c9640c9c8c875a6a00425515f499b572b9edc23
 					<i
 						class="bx bxl-facebook-circle text-[30px] hover:text-secondary mr-10"
 					></i>
 				</a>
+<<<<<<< HEAD
 				<a href="https://x.com/ejercito_gt" target="_blank">
 					<i class="bx bx-x text-[30px] hover:text-secondary mr-10"
+=======
+				<a href="https://x.com/Ejercito_GT" target="_blank">
+					<i
+						class="bx bxl-twitter text-[30px] hover:text-secondary mr-10"
+>>>>>>> 0c9640c9c8c875a6a00425515f499b572b9edc23
 					></i>
 				</a>
 			</div>

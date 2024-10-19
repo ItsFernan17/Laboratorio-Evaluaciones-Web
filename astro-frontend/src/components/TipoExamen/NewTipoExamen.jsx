@@ -96,7 +96,7 @@ export function NewTipoExamen({
             id="ceom"
             className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm border border-primary pl-3 font-page"
             placeholder="Ejemplo: E71A20"
-            {...register("ceom")}
+            {...register("ceom", )}
           />
         </div>
         <div className="mt-4">

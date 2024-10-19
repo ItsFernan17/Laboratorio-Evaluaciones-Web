@@ -44,7 +44,7 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
       try {
         await updateEmpleo(ceom, {
           descripcion: dataEmpleo.descripcion,
-          usuario_modifica: 'apurg',
+          usuario_modifica: localStorage.usuario,
         });
         toast.success("Empleo actualizado exitosamente!", { autoClose: 1500 });
         setTimeout(() => {
@@ -52,14 +52,14 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
           onClose();
         }, 1500);
       } catch (error) {
-        toast.error("Error al actualizar el usuario, intente nuevamente");
+        toast.error("Error al actualizar el empleo, intente nuevamente");
       }
     } else {
       try {
         await createEmpleo({
           ceom: dataEmpleo.ceom,
           descripcion: dataEmpleo.descripcion,
-          usuario_ingreso: 'apurg',
+          usuario_ingreso: localStorage.usuario,
         });
 
         toast.success(
