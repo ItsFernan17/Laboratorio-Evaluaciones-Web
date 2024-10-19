@@ -16,11 +16,12 @@ export class TipoExamenService {
         private readonly usuarioRepository: Repository<Usuario>,
         @InjectRepository(Empleo)
         private readonly empleoRepository: Repository<Empleo>,
-    ) {}
+    ) { }
 
-    async findAll(){
+    async findAll() {
         return this.tipoExamenRepository.find({
             where: { estado: true },
+            relations: ['ceom'], // Incluir la relación con `Empleo` para obtener el campo `ceom`
         });
     }
 
@@ -29,7 +30,7 @@ export class TipoExamenService {
     }
 
 
-    async findById(codigo_tipoE: number){
+    async findById(codigo_tipoE: number) {
         const tipoExamenExistente = await this.tipoExamenRepository.findOne({
             where: { codigo_tipoE, estado: true },
         });
@@ -44,15 +45,15 @@ export class TipoExamenService {
         return tipoExamenExistente;
     }
 
-    async createTipoExamen(createTipoExamenDto: CreateTipoExamenDto){
+    async createTipoExamen(createTipoExamenDto: CreateTipoExamenDto) {
 
-        const usuario = await this.usuarioRepository.findOne({ where: { nombre_usuario: createTipoExamenDto.usuario_ingreso} });
+        const usuario = await this.usuarioRepository.findOne({ where: { nombre_usuario: createTipoExamenDto.usuario_ingreso } });
 
         if (!usuario) {
             throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
         }
 
-        const empleo = await this.empleoRepository.findOne({ where: { ceom: createTipoExamenDto.ceom} });
+        const empleo = await this.empleoRepository.findOne({ where: { ceom: createTipoExamenDto.ceom } });
 
         if (!empleo) {
             throw new HttpException('Empleo no encontrado.', HttpStatus.NOT_FOUND);
@@ -70,53 +71,61 @@ export class TipoExamenService {
         return this.tipoExamenRepository.save(newTipoExamen);
     }
 
-    async updateTipoExamen(codigo_tipoE: number, updateTipoExamenDto: UpdateTipoExamenDto){
+    async updateTipoExamen(codigo_tipoE: number, updateTipoExamenDto: UpdateTipoExamenDto) {
         const tipoExamenExistente = await this.tipoExamenRepository.findOne({
             where: { codigo_tipoE },
+            relations: ['ceom'], // Asegurarse de cargar la relación ceom
         });
 
         if (!tipoExamenExistente) {
-            return new HttpException(
+            throw new HttpException(
                 'El tipo de examen con el código proporcionado no existe en la base de datos.',
                 HttpStatus.NOT_FOUND,
             );
         }
 
-        const usuario = await this.usuarioRepository.findOne({ where: { nombre_usuario: updateTipoExamenDto.usuario_modifica} });
+        const usuario = await this.usuarioRepository.findOne({ where: { nombre_usuario: updateTipoExamenDto.usuario_modifica } });
 
         if (!usuario) {
             throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
         }
 
-        const empleo = await this.tipoExamenRepository.findOne({ where: { description: updateTipoExamenDto.descripcion} });
+        // Buscar el empleo usando el campo `ceom` (relación)
+        const empleo = await this.empleoRepository.findOne({ where: { ceom: updateTipoExamenDto.ceom } });
 
-        if (empleo) {
-            throw new HttpException('El tipo de examen ya existe.', HttpStatus.FOUND);
+        if (!empleo) {
+            throw new HttpException('Empleo no encontrado.', HttpStatus.NOT_FOUND);
         }
 
+        // Actualizar los campos del tipo de examen existente
         tipoExamenExistente.description = updateTipoExamenDto.descripcion;
-        tipoExamenExistente.ceom = empleo.ceom;
+        tipoExamenExistente.ceom = empleo; // Relación con el nuevo empleo (ceom)
         tipoExamenExistente.usuario_modifica = usuario;
         tipoExamenExistente.fecha_modifica = new Date();
 
         return this.tipoExamenRepository.save(tipoExamenExistente);
     }
 
-    async desactiveTipoExamen(codigo_tipoE: number){
+
+    async desactiveTipoExamen(codigo_tipoE: number) {
         const tipoExamenExistente = await this.tipoExamenRepository.findOne({
             where: { codigo_tipoE },
         });
-
+    
         if (!tipoExamenExistente) {
-            return new HttpException(
+            throw new HttpException(
                 'El tipo de examen con el código proporcionado no existe en la base de datos.',
                 HttpStatus.NOT_FOUND,
             );
         }
-
-        tipoExamenExistente.estado = false;
-
-        return this.tipoExamenRepository.save(tipoExamenExistente);
+    
+        tipoExamenExistente.estado = false; // Cambiar el estado a false para desactivarlo
+    
+        // Guardar los cambios en la base de datos
+        await this.tipoExamenRepository.save(tipoExamenExistente);
+    
+        return { message: 'Tipo de examen desactivado exitosamente' };
     }
+    
 
 }

@@ -10,22 +10,22 @@ import {
 import * as XLSX from "xlsx";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
-import { NewEmpleo } from "./NewEmpleo";
-import { desactiveEmpleo } from "./Empleo.api";
+import { NewTipoExamen } from "./NewTipoExamen";
+import { desactiveTipoExamen } from "./TipoExamen.api";
 
-export function ViewEmpleo() {
+export function ViewTipoExamen() {
   const [filterText, setFilterText] = useState("");
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [selectedEmpleo, setSelectedEmpleo] = useState(null);
+  const [selectedTipoExamen, setSelectedTipoExamen] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
 
-  const fetchEmpleos = async () => {
+  const fetchTiposExamen = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/empleo");
-      const empleos = await response.json();
-      setData(empleos); // Actualizamos el estado de la tabla
+      const response = await fetch("http://localhost:3000/api/v1/tipo-examen");
+      const tiposExamen = await response.json();
+      setData(tiposExamen); // Actualizamos el estado de la tabla
       setLoading(false); // Desactivamos el estado de carga
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -34,52 +34,54 @@ export function ViewEmpleo() {
   };
 
   useEffect(() => {
-    fetchEmpleos();
+    fetchTiposExamen();
   }, []);
 
   const filteredData = data.filter(
     (item) =>
-      (item.ceom && item.ceom.toLowerCase().includes(filterText.toLowerCase()))
+      (item.description &&
+        item.description.toLowerCase().includes(filterText.toLowerCase())) ||
+      (item.ceom && item.ceom.ceom.toLowerCase().includes(filterText.toLowerCase()))
   );
 
   const handleSelectedRowsChange = ({ selectedRows }) => {
     if (selectedRows.length > 0) {
-      setSelectedEmpleo(selectedRows[0]);
+      setSelectedTipoExamen(selectedRows[0]);
     } else {
-      setSelectedEmpleo(null);
+      setSelectedTipoExamen(null);
     }
   };
 
   const handleEditClick = () => {
-    if (selectedEmpleo) {
+    if (selectedTipoExamen) {
       setModalIsOpen(true);
     }
   };
 
   const handleDeleteClick = async () => {
-    if (selectedEmpleo) {
-      await desactiveEmpleo(selectedEmpleo.ceom);
+    if (selectedTipoExamen) {
+      await desactiveTipoExamen(selectedTipoExamen.codigo_tipoE);
       setDeleteModalIsOpen(false); // Cerrar modal después de eliminar
-      setSelectedEmpleo(null);
-      fetchEmpleos(); // Recargar datos después de eliminar
+      setSelectedTipoExamen(null);
+      fetchTiposExamen(); // Recargar datos después de eliminar
     }
   };
 
   const handleCloseModal = () => {
     setModalIsOpen(false); // Cerrar modal
-    setSelectedEmpleo(null);
+    setSelectedTipoExamen(null);
   };
 
   const columns = [
     {
-      name: "CEOM",
-      selector: (row) => row.ceom || "",
+      name: "Descripción",
+      selector: (row) => row.description || "",
       sortable: true,
       className: "font-page",
     },
     {
-      name: "Descripcion",
-      selector: (row) => row.descripcion || "",
+      name: "CEOM",
+      selector: (row) => row.ceom?.ceom || "",
       sortable: true,
       className: "font-page",
     },
@@ -90,19 +92,14 @@ export function ViewEmpleo() {
   // Exportar a Excel
   const exportToExcel = () => {
     if (filteredData.length > 0) {
-      const exportData = filteredData.map(
-        ({
-          ceom,
-          descripcion,
-        }) => ({
-          CEOM: ceom,
-          Descripcion: descripcion,
-        })
-      );
+      const exportData = filteredData.map(({ description, ceom }) => ({
+        Descripción: description,
+        CEOM: ceom?.ceom || "N/A",
+      }));
       const worksheet = XLSX.utils.json_to_sheet(exportData);
       const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Empleos");
-      XLSX.writeFile(workbook, "empleos.xlsx");
+      XLSX.utils.book_append_sheet(workbook, worksheet, "TiposExamen");
+      XLSX.writeFile(workbook, "tipos_examen.xlsx");
     } else {
       alert("No hay datos para exportar");
     }
@@ -111,26 +108,16 @@ export function ViewEmpleo() {
   // Exportar a PDF
   const exportToPDF = () => {
     if (filteredData.length > 0) {
-      const exportData = filteredData.map(
-        ({
-          ceom,
-          descripcion,
-        }) => [
-            ceom,
-            descripcion,
-          ]
-      );
+      const exportData = filteredData.map(({ description, ceom }) => [
+        description,
+        ceom?.ceom || "N/A",
+      ]);
       const doc = new jsPDF();
       doc.autoTable({
-        head: [
-          [
-            "CEOM",
-            "Descripcion",
-          ],
-        ],
+        head: [["Descripción", "CEOM"]],
         body: exportData,
       });
-      doc.save("empleos.pdf");
+      doc.save("tipos_examen.pdf");
     } else {
       alert("No hay datos para exportar");
     }
@@ -147,8 +134,8 @@ export function ViewEmpleo() {
             type="text"
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            className="border  bg-[#F7FAFF] p-2 pl-10 w-full rounded-md focus:outline-none focus:ring focus:border-blue-300 font-page"
-            placeholder="Buscar empleo..."
+            className="border bg-[#F7FAFF] p-2 pl-10 w-full rounded-md focus:outline-none focus:ring focus:border-blue-300 font-page"
+            placeholder="Buscar tipo de examen..."
           />
         </div>
 
@@ -177,10 +164,10 @@ export function ViewEmpleo() {
         </div>
       </div>
 
-      {selectedEmpleo && (
+      {selectedTipoExamen && (
         <div className="flex items-center bg-primary text-white p-2 rounded-md mb-4">
           <span className="mr-4 font-page ml-7">
-            Seleccionado: {selectedEmpleo.ceom}
+            Seleccionado: {selectedTipoExamen.description}
           </span>
           <button
             onClick={handleEditClick}
@@ -215,7 +202,7 @@ export function ViewEmpleo() {
           }}
           selectableRowsSingle
           selectableRowSelected={(row) =>
-            selectedEmpleo && row.ceom === selectedEmpleo.ceom
+            selectedTipoExamen && row.codigo_tipoE === selectedTipoExamen.codigo_tipoE
           }
           customStyles={{
             headCells: {
@@ -277,7 +264,7 @@ export function ViewEmpleo() {
             {/* Modal Header */}
             <div className="w-full flex items-center justify-between bg-primary text-white py-3 px-5 rounded-t-md">
               <h2 className="font-page font-semibold items-center text-[25px]">
-                Actualizar Empleo
+                Actualizar Tipo de Examen
               </h2>
               <img
                 src="/EMDN1.png" // Optional: Replace this with your actual logo path
@@ -288,10 +275,10 @@ export function ViewEmpleo() {
 
             {/* Modal Body */}
             <div className="px-6">
-              <NewEmpleo
-                ceom={selectedEmpleo.ceom}
+              <NewTipoExamen
+                codigo_tipoE={selectedTipoExamen.codigo_tipoE}
                 onClose={handleCloseModal}
-                onUserSaved={fetchEmpleos}
+                onUserSaved={fetchTiposExamen}
               />
             </div>
           </div>
@@ -325,7 +312,7 @@ export function ViewEmpleo() {
                 <button
                   onClick={() => {
                     setDeleteModalIsOpen(false);
-                    setSelectedEmpleo(null);
+                    setSelectedTipoExamen(null);
                   }}
                   className="bg-primary text-white px-4 py-2 rounded-md shadow transition duration-300 ease-in-out border hover:bg-white hover:text-primary hover:border-primary"
                 >

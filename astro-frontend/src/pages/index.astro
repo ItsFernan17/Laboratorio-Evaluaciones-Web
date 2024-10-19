@@ -1,28 +1,83 @@
 ---
-import Carousel from '../components/Carousel';
-import Publico from '../layouts/publico.astro';
+import Carousel from "../components/Carousel";
+import Publico from "../layouts/publico.astro";
 ---
 
-
-<Publico title='Inicio'>
-    <div class="mb-10 mt-20 z-10"> 
-        <Carousel client:load  />
+<Publico title="Inicio">
+    <div class="mb-20 mt-20">
+        <Carousel client:load />
     </div>
-    <div
-    class=" text-white text-center p-4 w-[99%] mx-auto m-2"
->
-    <h1 class="text-4xl font-bold text-amber-400">
-        Bienvenido! Departamento de Administración del Potencial
-        Humano de la Dirección de Personal del Estado Mayor de
-        la Defensa Nacional.
-    </h1>
-    <p class="mt-4 text-lg text-gray-600">
-        En esta página, encontrará información valiosa
-        relacionada con la administración del potencial humano.
-        Nos dedicammos a la captación y selección de personal, y
-        nuestro objetivo es ofrecerle los recursos necesarios
-        para optimizar su proceso de reclutamiento. ¡Gracias por
-        visitarnos!
-    </p>
-</div>
+
+    <!-- Sección de bienvenida con texto centrado -->
+    <div class="text-white text-center p-8 mt-8 mb-12 w-[99%] mx-auto m-2 shadow-lg rounded-lg ">
+        <h1 class="text-4xl font-bold text-blue-400">
+            ¡Bienvenido! Departamento de Administración del Potencial Humano de
+            la Dirección de Personal del Estado Mayor de la Defensa Nacional.
+        </h1>
+        <p class="mt-4 text-lg text-gray-600">
+            En esta página, encontrará información valiosa relacionada con la
+            administración del potencial humano. Nos dedicamos a la captación y
+            selección de personal, y nuestro objetivo es ofrecerle los recursos
+            necesarios para optimizar su proceso de reclutamiento. ¡Gracias por
+            visitarnos!
+        </p>
+    </div>
+
+    <!-- Sección de Tarjetas Interactivas debajo del texto de bienvenida -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-8xl mx-auto p-6">
+        <!-- Tarjeta 1: Captación de Personal -->
+        <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+            <img
+                src="/personal.png"
+                alt="Captación de Personal"
+                class="mx-auto h-20 w-20 mb-4"
+            />
+            <h2 class="text-3xl font-semibold text-primary mb-2">Captación</h2>
+            <p class="text-gray-500 mb-4">
+                Encuentra y selecciona el talento adecuado para el éxito de tu
+                equipo.
+            </p>
+            <a
+                href="/login"
+                class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition"
+                >Acceder</a
+            >
+        </div>
+
+        <!-- Tarjeta 2: Procesos de Selección -->
+        <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+            <img
+                src="/evaluacion.png"
+                alt="Procesos de Selección"
+                class="mx-auto h-20 w-20 mb-4"
+            />
+            <h2 class="text-3xl font-semibold text-primary mb-2">Selección</h2>
+            <p class="text-gray-500 mb-4">
+                Gestiona los procesos de selección con eficiencia y precisión.
+            </p>
+            <a
+                href="/login"
+                class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition"
+                >Acceder</a
+            >
+        </div>
+
+        <!-- Tarjeta 3: Evaluación de Desempeño -->
+        <div class="bg-white shadow-lg rounded-lg p-6 text-center">
+            <img
+                src="/atencion.png"
+                alt="Evaluación de Desempeño"
+                class="mx-auto h-20 w-20 mb-4"
+            />
+            <h2 class="text-3xl font-semibold text-primary mb-2">Atención</h2>
+            <p class="text-gray-500 mb-4">
+                Atencion de calidad durante el proceso de selección y captación.
+            </p>
+            <a
+                href="/login"
+                class="bg-primary text-white px-4 py-2 rounded hover:bg-primary-dark transition"
+                >Acceder</a
+            >
+        </div>
+    </div>
 </Publico>

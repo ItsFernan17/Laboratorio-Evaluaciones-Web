@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createEmpleo, updateEmpleo } from "./Empleo.api";
+import { createTipoExamen, updateTipoExamen } from "./TipoExamen.api";
 
-export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
+export function NewTipoExamen({
+  codigo_tipoE = null,
+  onClose = null,
+  onUserSaved = null,
+}) {
   const {
     register,
     handleSubmit,
@@ -12,74 +16,65 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
     reset,
   } = useForm();
 
-
   const [toastMessage, setToastMessage] = useState(null);
 
   useEffect(() => {
-    const fetchEmpleoData = async () => {
-      if (ceom) {
+    const fetchTipoExamenData = async () => {
+      if (codigo_tipoE) {
         try {
-          const empleoResponse = await fetch(
-            `http://localhost:3000/api/v1/empleo/${ceom}`
+          const tipoExamenResponse = await fetch(
+            `http://localhost:3000/api/v1/tipo-examen/${codigo_tipoE}`
           );
-          if (empleoResponse.ok) {
-            const empleoData = await empleoResponse.json();
+          if (tipoExamenResponse.ok) {
+            const tipoExamenData = await tipoExamenResponse.json();
             reset({
-              ceom: empleoData.ceom,
-              descripcion: empleoData.descripcion,
+              descripcion: tipoExamenData.description,
+              ceom: tipoExamenData.ceom?.ceom,
             });
           }
         } catch (error) {
-          toast.error("Error al cargar los datos del empleo");
+          toast.error("Error al cargar los datos del tipo de examen");
         }
       }
     };
 
-    fetchEmpleoData();
-  }, [ceom, reset]);
+    fetchTipoExamenData();
+  }, [codigo_tipoE, reset]);
 
-  const onSubmit = handleSubmit(async (dataEmpleo) => {
-
-    if (ceom) {
+  const onSubmit = handleSubmit(async (dataTipoExamen) => {
+    if (codigo_tipoE) {
       try {
-        await updateEmpleo(ceom, {
-          descripcion: dataEmpleo.descripcion,
-          usuario_modifica: localStorage.usuario,
+        await updateTipoExamen(codigo_tipoE, {
+          descripcion: dataTipoExamen.descripcion,
+          ceom: dataTipoExamen.ceom,
+          usuario_modifica: "apurg",
         });
-        toast.success("Empleo actualizado exitosamente!", { autoClose: 1500 });
+        toast.success("Tipo de examen actualizado exitosamente!", {
+          autoClose: 1500,
+        });
         setTimeout(() => {
           onUserSaved();
           onClose();
         }, 1500);
       } catch (error) {
-        toast.error("Error al actualizar el usuario, intente nuevamente");
+        toast.error("Error al actualizar el tipo de examen, intente nuevamente");
       }
     } else {
       try {
-        await createEmpleo({
-          ceom: dataEmpleo.ceom,
-          descripcion: dataEmpleo.descripcion,
-          usuario_ingreso: localStorage.usuario,
+        await createTipoExamen({
+          descripcion: dataTipoExamen.descripcion,
+          ceom: dataTipoExamen.ceom,
+          usuario_ingreso: "apurg",
         });
-
-        toast.success(
-          <div>
-            <strong>¡Empleo creado exitosamente!</strong>
-          </div>,
-          {
-            autoClose: 2500,
-            render: (message) => (
-              <div dangerouslySetInnerHTML={{ __html: message }} />
-            ),
-          }
-        );
+        toast.success("Tipo de examen creado exitosamente!", {
+          autoClose: 2500,
+        });
       } catch (error) {
-        toast.error("Error al crear el empleo, intente nuevamente");
+        toast.error("Error al crear el tipo de examen, intente nuevamente");
       } finally {
         reset();
       }
     }
-
   });
 
   return (
@@ -101,33 +96,26 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
             id="ceom"
             className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm border border-primary pl-3 font-page"
             placeholder="Ejemplo: E71A20"
-            disabled={!!ceom}
-            {...register("ceom", { required: "*CEOM es requerido" })}
+            {...register("ceom", )}
           />
-                    {errors.ceom && (
-            <p className="text-red-900 text-sm mb-0">{errors.ceom.message}</p>
-          )}
         </div>
         <div className="mt-4">
           <label
             htmlFor="descripcion"
             className="block font-page text-[16px] font-semibold text-primary"
           >
-            Descripcion
+            Descripción
           </label>
           <input
             type="text"
             id="descripcion"
             className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
-            placeholder="Descripcion del Empleo"
-            {...register("descripcion" , { required: "*Descripcion es requerida" })}
+            placeholder="Descripción del tipo de examen"
+            {...register("descripcion")}
           />
-          {errors.descripcion && (
-            <p className="text-red-900 text-sm mb-0">{errors.descripcion.message}</p>
-          )}
         </div>
         <div className="col-span-full flex justify-center">
-          {ceom ? (
+          {codigo_tipoE ? (
             <div className="flex justify-end space-x-4 mb-3 w-full">
               <button
                 type="submit"
@@ -135,13 +123,13 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
               >
                 Actualizar
               </button>
-                <button
-                  type="button"
-                  onClick={onClose}
-                  className="bg-[#ED8080] mt-2 font-bold font-page mb-2 text-[#090000] border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
-                >
-                  Cancelar
-                </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="bg-[#ED8080] mt-2 font-bold font-page mb-2 text-[#090000] border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
+              >
+                Cancelar
+              </button>
             </div>
           ) : (
             <div className="flex justify-center w-full">
@@ -149,7 +137,7 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
                 type="submit"
                 className="bg-[#142957] mt-2 font-normal font-page mb-10 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out  h-[40px] md:w-[300px]  hover:bg-white hover:text-primary hover:border-primary"
               >
-                Crear Empleo
+                Crear Tipo de Examen
               </button>
               {toastMessage && <div>{toastMessage}</div>}
             </div>

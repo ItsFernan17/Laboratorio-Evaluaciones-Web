@@ -179,7 +179,7 @@ const ExamenContent = () => {
           Ver Exámenes
         </a>
       </div>
-      <div className="mb-3 space-y-3"> 
+      <div className="mb-3 space-y-3">
         <h3 className="font-page font-bold">Preguntas y Respuestas</h3>
         <a href="/portal/preguntas/registrar-pregunta" className="block font-page text-sm hover:underline">
           Nueva Pregunta y Respuestas
@@ -188,12 +188,12 @@ const ExamenContent = () => {
           Ver Preguntas y Respuestas
         </a>
       </div>
-      <div className="mb-3 space-y-3"> 
+      <div className="mb-3 space-y-3">
         <h3 className="font-page font-bold">Tipos de Examen</h3>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <a href="/portal/tipoExamen/registrar-tipo-examen" className="block font-page text-sm hover:underline">
           Nuevo Tipo de Examen
         </a>
-        <a href="/" className="block font-page text-sm hover:underline">
+        <a href="/portal/tipoExamen/gestionar-tipo-examen" className="block font-page text-sm hover:underline">
           Ver Tipos de Examen
         </a>
       </div>

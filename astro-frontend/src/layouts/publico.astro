@@ -1,6 +1,5 @@
 ---
-import Navbar from '../components/Navbar';
-
+import Navbar from "../components/Navbar";
 
 interface Props {
 	title: string;
@@ -20,38 +19,59 @@ import ClearSession from '../components/Auth/ClearSession';
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/icono_usuario.png" />
 		<meta name="generator" content={Astro.generator} />
-		<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-		 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		<link
+			href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+			rel="stylesheet"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<title>{title}</title>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body class="bg-background w-full h-full absolute">
 		<Navbar client:load/>
 		<ClearSession client:load />
+		<Navbar client:load />
 		<div class="mr-2 ml-2">
-			<slot/>
+			<slot />
 		</div>
 	</body>
 	<footer class="bg-primary">
-		<div class="flex items-center w-full h-auto text-white md:px-9 bg-primary drop-shadow-md justify-between">
+		<div
+			class="flex items-center w-full h-auto text-white md:px-9 bg-primary drop-shadow-md justify-between"
+		>
 			<div class="flex items-center">
-			  <img
-				src="/logotipo.png"
-				alt="Logo Ministerio de la Defensa"
-				class="w-48 transition-all mr-6"
-			  />
+				<img
+					src="/logotipo.png"
+					alt="Logo Ministerio de la Defensa"
+					class="w-48 transition-all mr-6"
+				/>
 			</div>
 			<p>2024 © Todos los derechos reservados DP EMDN .</p>
 			<div>
-				<a href="https://www.mindef.mil.gt/Organizacion/2estado_mayordef/direcciones/1direccion_personal/1direccion_personal.html" target="_blank">
-					<i class='bx bx-world text-[30px] hover:text-secondary mr-10'></i>
+				<a
+					href="https://www.mindef.mil.gt/Organizacion/2estado_mayordef/direcciones/1direccion_personal/1direccion_personal.html"
+					target="_blank"
+				>
+					<i
+						class="bx bx-world text-[30px] hover:text-secondary mr-10"
+					></i>
 				</a>
 				<a href="" target="_blank">
-					<i class='bx bxl-facebook-circle text-[30px] hover:text-secondary mr-10'></i>
+					<i
+						class="bx bxl-facebook-circle text-[30px] hover:text-secondary mr-10"
+					></i>
 				</a>
 				<a href="" target="_blank">
-					<i class='bx bxl-twitter text-[30px] hover:text-secondary mr-10'></i>
+					<i
+						class="bx bxl-twitter text-[30px] hover:text-secondary mr-10"
+					></i>
 				</a>
-				
 			</div>
 		</div>
 	</footer>
