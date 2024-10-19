@@ -1,6 +1,6 @@
 # Laboratorio-Evaluaciones-Web
 
-<img src="./astro-frontend/public/logotipo.png" alt="Laboratorio Evaluaciones" width="250" />
+<img src="./astro-frontend/public/logotipo.png" alt="Laboratorio Evaluaciones" width="350" />
 
 ## Descripción
 
