@@ -6,6 +6,8 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Usuario } from 'src/usuario/model/usuario.entity';
 import { Examen } from 'src/examen/model/examen.entity'; // Asegúrate de ajustar la ruta
+import { UserActiveI } from 'src/common/interfaces/user-active.interface';
+import { Role } from 'src/common/enums/rol.enum';
 
 @Injectable()
 export class AsignacionService {
@@ -18,12 +20,19 @@ export class AsignacionService {
     private readonly examenRepository: Repository<Examen>,
   ) {}
 
-  async findAll() {
-    return this.asignacionRepository.find({
-      where: { estado: true },
-      relations: ['evaluado', 'examen', 'examen.motivo_examen', 'examen.tipo_examen',],
+  async findAll(user: UserActiveI): Promise<Asignacion[]> {
+    if (user.rol === Role.ADMINISTRADOR || user.rol === Role.EVALUADOR) {
+      return await this.asignacionRepository.find({
+        where: { estado: true },
+        relations: ['evaluado', 'examen', 'examen.motivo_examen', 'examen.tipo_examen'],
+      });
+    }
+    return await this.asignacionRepository.find({
+      where: { evaluado: { dpi: user.dpi }, estado: true }, 
+      relations: ['evaluado', 'examen', 'examen.motivo_examen', 'examen.tipo_examen'], 
     });
   }
+
 
   async findById(codigo_asignacion: number) {
     const asignacionExistente = await this.asignacionRepository.findOne({
@@ -42,9 +51,9 @@ export class AsignacionService {
   }
 
   async createAsignacion(createAsignacionDto: CreateAsignacionDto) {
-    // Buscar el usuario por el DPI proporcionado
+
     const usuarioEvaluado = await this.usuarioRepository.findOne({
-      where: { dpi: createAsignacionDto.evaluado },
+      where: { dpi: createAsignacionDto.evaluado, estado: true },
     });
   
     // Buscar el examen por el código proporcionado
@@ -76,7 +85,7 @@ export class AsignacionService {
     const newAsignacion = this.asignacionRepository.create({
       estado: true,
       evaluado: usuarioEvaluado,
-      punteo: 0,
+      punteo: null,
       examen,
       usuario_ingreso: usuarioEvaluado,
       fecha_ingreso: new Date(),
@@ -86,8 +95,6 @@ export class AsignacionService {
     return this.asignacionRepository.save(newAsignacion);
   }
   
-
-
   async updateAsignacion(
     codigo_asignacion: number,
     updateAsignacionDto: UpdateAsignacionDto,
@@ -158,20 +165,25 @@ export class AsignacionService {
       );
     }
 
-    // Cambiar el estado a false en lugar de eliminar el registro
     asignacionExistente.estado = false;
 
     return this.asignacionRepository.save(asignacionExistente);
   }
 
-  // Método adicional para obtener todos los datos del evaluado y del examen
-  async getAsignacionConDatos(codigo_asignacion: number) {
+async getAsignacionConDatos(codigo_asignacion: number) {
     const asignacion = await this.asignacionRepository.findOne({
         where: { codigo_asignacion },
-        relations: ['evaluado', 'examen', 'examen.motivo_examen','evaluado.grado', 'evaluado.poblacion', 'evaluado.residencia', 'evaluado.comando'],
+        relations: [
+            'evaluado', 
+            'examen', 
+            'examen.motivo_examen',
+            'examen.tipo_examen',  
+            'evaluado.grado', 
+            'evaluado.poblacion', 
+            'evaluado.residencia', 
+            'evaluado.comando'
+        ],
     });
-
-    console.log(asignacion); // Esto te permitirá ver todos los datos que estás obteniendo
 
     if (!asignacion) {
         throw new HttpException('Asignación no encontrada.', HttpStatus.NOT_FOUND);
@@ -194,11 +206,12 @@ export class AsignacionService {
             codigo_examen: asignacion.examen.codigo_examen,
             fecha_evaluacion: asignacion.examen.fecha_evaluacion,
             punteo_maximo: asignacion.examen.punteo_maximo,
-            tipo_examen: asignacion.examen.tipo_examen, // Asegúrate de que `tipo_examen` esté definido en la entidad Examen
-            motivo_examen: asignacion.examen.motivo_examen
+            tipo_examen: asignacion.examen.tipo_examen?.description || null,
+            motivo_examen: asignacion.examen.motivo_examen?.nombre_motivo || null,
         },
     };
 }
+
 
 async updatePunteo(codigo_asignacion: number, punteo: number) {
   const asignacionExistente = await this.asignacionRepository.findOne({
@@ -212,7 +225,6 @@ async updatePunteo(codigo_asignacion: number, punteo: number) {
     );
   }
 
-  // Actualizar solo el punteo
   asignacionExistente.punteo = punteo;
 
   return this.asignacionRepository.save(asignacionExistente);

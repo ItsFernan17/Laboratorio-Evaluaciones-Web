@@ -50,6 +50,13 @@ export class UsuarioService {
     });
   }
 
+  async findByUsuarioWithPassword(nombre_usuario: string) {
+    return this.usuarioRepository.findOne({
+      where: { nombre_usuario, estado: true },
+      select: ['dpi', 'nombre_completo', 'nombre_usuario', 'rol', 'password'],
+    });
+  }
+
   async findByDPI(dpi: string) {
     return this.usuarioRepository.findOne({
       where: { dpi, estado: true },
@@ -147,6 +154,7 @@ export class UsuarioService {
 
     usuarioExistente.nombre_completo = updateUsuarioDto.nombre_completo || usuarioExistente.nombre_completo;
     usuarioExistente.telefono = updateUsuarioDto.telefono || usuarioExistente.telefono;
+    usuarioExistente.rol = updateUsuarioDto.rol || usuarioExistente.rol;
     usuarioExistente.residencia = residencia;
     usuarioExistente.grado = grado;
     usuarioExistente.poblacion = poblacion;

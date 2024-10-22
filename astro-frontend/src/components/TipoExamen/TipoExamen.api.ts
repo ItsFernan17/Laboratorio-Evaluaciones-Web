@@ -1,67 +1,74 @@
-// Definimos los tipos de los datos que vamos a manejar
-export interface TipoExamen {
-    codigo_tipoE?: number;
-    descripcion: string;
-    ceom: string;
-    usuario_ingreso?: string;
-    usuario_modifica?: string;
-    estado?: boolean;
-  }
+export async function createTipoExamen(newTipoExamen: any) {
+  const token = localStorage.getItem('accessToken'); // Obtener el token de localStorage
 
-   
-  // Función para obtener un tipo de examen por su código
-  export async function getTipoExamenByCodigo(codigo_tipoE: number): Promise<TipoExamen> {
-    const response = await fetch(`http://localhost:3000/api/v1/tipo-examen/${codigo_tipoE}`);
-    if (!response.ok) {
-      throw new Error('Error al obtener el tipo de examen');
-    }
-    return await response.json();
-  }
-  
-  // Función para crear un nuevo tipo de examen
-  export async function createTipoExamen(newTipoExamen: TipoExamen): Promise<TipoExamen> {
-    const response = await fetch('http://localhost:3000/api/v1/tipo-examen', {
+  try {
+    const response = await fetch('http://localhost:3000/api/v1/tipo-examen/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // Agregar el token en el encabezado
       },
       body: JSON.stringify(newTipoExamen),
     });
-  
+
     if (!response.ok) {
-      throw new Error('Error al crear el tipo de examen');
+      const errorData = await response.json();
+      throw new Error(errorData.message || `Error: ${response.status} - ${response.statusText}`);
     }
-  
-    return await response.json();
+
+    const data = await response.json();
+    console.log(data);
+    return data; // Retorna los datos para poder ser utilizados
+  } catch (error) {
+    console.error('Error creando tipo de examen:', error);
+    throw error; // Para que el error pueda ser manejado en el nivel superior
   }
-  
-  // Función para actualizar un tipo de examen existente
-  export async function updateTipoExamen(codigo_tipoE: number, updatedTipoExamen: Partial<TipoExamen>): Promise<TipoExamen> {
+}
+
+export async function updateTipoExamen(codigo_tipoE: number, newTipoExamen: any) {
+  const token = localStorage.getItem('accessToken'); // Obtener el token de localStorage
+
+  try {
     const response = await fetch(`http://localhost:3000/api/v1/tipo-examen/${codigo_tipoE}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`, // Agregar el token en el encabezado
       },
-      body: JSON.stringify(updatedTipoExamen),
+      body: JSON.stringify(newTipoExamen),
     });
-  
+
     if (!response.ok) {
-      throw new Error('Error al actualizar el tipo de examen');
+      const errorData = await response.json();
+      throw new Error(errorData.message || `Error: ${response.status} - ${response.statusText}`);
     }
-  
-    return await response.json();
+
+    return await response.json(); // Retorna los datos actualizados para su uso
+  } catch (error) {
+    console.error('Error actualizando tipo de examen:', error);
+    throw error;
   }
-  
-  // Función para desactivar un tipo de examen (cambiar estado a false)
-  export async function desactiveTipoExamen(codigo_tipoE: number): Promise<{ message: string }> {
+}
+
+export async function desactiveTipoExamen(codigo_tipoE: number) {
+  const token = localStorage.getItem('accessToken'); // Obtener el token de localStorage
+
+  try {
     const response = await fetch(`http://localhost:3000/api/v1/tipo-examen/${codigo_tipoE}/estado`, {
       method: 'PATCH',
+      headers: {
+        'Authorization': `Bearer ${token}`, // Agregar el token en el encabezado
+      },
     });
-  
+
     if (!response.ok) {
-      throw new Error('Error al desactivar el tipo de examen');
+      const errorData = await response.json();
+      throw new Error(errorData.message || `Error: ${response.status} - ${response.statusText}`);
     }
-  
-    return await response.json();
+
+    return await response.json(); // Retorna el resultado después de desactivar el tipo de examen
+  } catch (error) {
+    console.error('Error desactivando tipo de examen:', error);
+    throw error;
   }
-  
+}

@@ -1,5 +1,6 @@
 import { Transform } from "class-transformer";
-import { IsNotEmpty, IsNumber, IsString, MaxLength, MinLength } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsString, MaxLength, MinLength } from "class-validator";
+import { Role } from "../../common/enums/rol.enum";
 
 export class RegisterDto{
     
@@ -21,6 +22,10 @@ export class RegisterDto{
     @MaxLength(10, {message: 'El telefono debe tener máximo 10 caracteres'})
     @IsNotEmpty( {message: 'El telefono es requerido'})
     telefono: string;
+
+    @IsString()
+    @IsNotEmpty( {message: 'El Rol del Usuario es requerido'})
+    role: string;
 
     @Transform(({ value }) => value.trim())
     @IsString()

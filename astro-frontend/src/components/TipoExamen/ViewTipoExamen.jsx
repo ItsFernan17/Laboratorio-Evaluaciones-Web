@@ -23,19 +23,30 @@ export function ViewTipoExamen() {
 
   const fetchTiposExamen = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/tipo-examen");
+      const token = localStorage.getItem('accessToken');
+      const response = await fetch("http://localhost:3000/api/v1/tipo-examen", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+  
       const tiposExamen = await response.json();
-      setData(tiposExamen); // Actualizamos el estado de la tabla
-      setLoading(false); // Desactivamos el estado de carga
+      setData(tiposExamen);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data: ", error);
       setLoading(false);
     }
   };
-
+  
   useEffect(() => {
     fetchTiposExamen();
   }, []);
+  
 
   const filteredData = data.filter(
     (item) =>
@@ -61,14 +72,14 @@ export function ViewTipoExamen() {
   const handleDeleteClick = async () => {
     if (selectedTipoExamen) {
       await desactiveTipoExamen(selectedTipoExamen.codigo_tipoE);
-      setDeleteModalIsOpen(false); // Cerrar modal después de eliminar
+      setDeleteModalIsOpen(false);
       setSelectedTipoExamen(null);
-      fetchTiposExamen(); // Recargar datos después de eliminar
+      fetchTiposExamen();
     }
   };
 
   const handleCloseModal = () => {
-    setModalIsOpen(false); // Cerrar modal
+    setModalIsOpen(false);
     setSelectedTipoExamen(null);
   };
 
@@ -89,7 +100,6 @@ export function ViewTipoExamen() {
 
   if (loading) return <div className="text-center font-page">Cargando...</div>;
 
-  // Exportar a Excel
   const exportToExcel = () => {
     if (filteredData.length > 0) {
       const exportData = filteredData.map(({ description, ceom }) => ({
@@ -105,7 +115,6 @@ export function ViewTipoExamen() {
     }
   };
 
-  // Exportar a PDF
   const exportToPDF = () => {
     if (filteredData.length > 0) {
       const exportData = filteredData.map(({ description, ceom }) => [
@@ -139,14 +148,10 @@ export function ViewTipoExamen() {
           />
         </div>
 
-        {/* Texto y botones de exportación alineados */}
         <div className="flex ml-4 items-center translate-x-[550px] space-x-3">
-          {/* Texto Exportar */}
           <span className="font-page font-semibold text-[16px] text-primary">
             Exportar en:
           </span>
-
-          {/* Botón Exportar a Excel */}
           <button
             className="bg-[#0f763d] text-white border border-[#0f763d] p-2 rounded flex justify-center items-center"
             onClick={exportToExcel}
@@ -154,7 +159,7 @@ export function ViewTipoExamen() {
             <FaFileExcel className="size-5" />
           </button>
 
-          {/* Botón Exportar a PDF */}
+
           <button
             className="bg-[#da1618] text-white p-2 rounded flex justify-center items-center"
             onClick={exportToPDF}
@@ -190,14 +195,14 @@ export function ViewTipoExamen() {
           columns={columns}
           data={filteredData}
           pagination
-          paginationPerPage={5} // Mostrará solo 5 registros por página
-          paginationRowsPerPageOptions={[5]} // Opciones limitadas a solo 5 registros por página
+          paginationPerPage={5} 
+          paginationRowsPerPageOptions={[5]}
           highlightOnHover
           noDataComponent={<div className="font-page">No hay registros</div>}
           selectableRows
           onSelectedRowsChange={handleSelectedRowsChange}
           paginationComponentOptions={{
-            rowsPerPageText: "Mostrando", // Texto para el dropdown
+            rowsPerPageText: "Mostrando",
             rangeSeparatorText: "de",
           }}
           selectableRowsSingle
@@ -207,7 +212,7 @@ export function ViewTipoExamen() {
           customStyles={{
             headCells: {
               style: {
-                color: "#142957", // Texto blanco
+                color: "#142957",
                 fontSize: "14px",
                 fontWeight: "bold",
                 textAlign: "center",
@@ -215,25 +220,25 @@ export function ViewTipoExamen() {
             },
             rows: {
               style: {
-                backgroundColor: "#FFFFFF", // Fila clara
+                backgroundColor: "#FFFFFF",
                 "&:hover": {
-                  backgroundColor: "#E7EBF8 !important", // Fila al hacer hover
+                  backgroundColor: "#E7EBF8 !important", 
                 },
-                minHeight: "48px", // Altura mínima de las filas
+                minHeight: "48px",
               },
             },
             cells: {
               style: {
-                paddingLeft: "10px", // Espaciado en celdas
+                paddingLeft: "10px",
                 paddingRight: "10px",
                 fontSize: "14px",
-                color: "#142957", // Gris oscuro para el texto
+                color: "#142957",
               },
             },
             pagination: {
               style: {
-                backgroundColor: "none", // Fondo claro para la paginación (equivalente a bg-gray-100)
-                padding: "10px", // Añade algo de padding
+                backgroundColor: "none", 
+                padding: "10px", 
                 fontSize: "14px !important",
                 color: "#142957 !important",
                 fontWeight: "bold",
@@ -267,7 +272,7 @@ export function ViewTipoExamen() {
                 Actualizar Tipo de Examen
               </h2>
               <img
-                src="/EMDN1.png" // Optional: Replace this with your actual logo path
+                src="/EMDN1.png" 
                 alt="Logo"
                 className="h-14"
               />
@@ -293,7 +298,7 @@ export function ViewTipoExamen() {
                 Confirmación de Eliminación
               </h2>
               <img
-                src="/EMDN1.png" // Optional: Replace this with your actual logo path
+                src="/EMDN1.png" 
                 alt="Logo"
                 className="h-14"
               />

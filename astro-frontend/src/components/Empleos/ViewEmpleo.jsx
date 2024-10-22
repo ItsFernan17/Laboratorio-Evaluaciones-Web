@@ -23,10 +23,20 @@ export function ViewEmpleo() {
 
   const fetchEmpleos = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/empleo");
+      const token = localStorage.getItem("accessToken"); 
+      const response = await fetch("http://localhost:3000/api/v1/empleo", {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
       const empleos = await response.json();
-      setData(empleos); // Actualizamos el estado de la tabla
-      setLoading(false); // Desactivamos el estado de carga
+      setData(empleos);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data: ", error);
       setLoading(false);
@@ -37,9 +47,10 @@ export function ViewEmpleo() {
     fetchEmpleos();
   }, []);
 
+
   const filteredData = data.filter(
     (item) =>
-      (item.ceom && item.ceom.toLowerCase().includes(filterText.toLowerCase()))
+      item.ceom && item.ceom.toLowerCase().includes(filterText.toLowerCase())
   );
 
   const handleSelectedRowsChange = ({ selectedRows }) => {
@@ -90,15 +101,10 @@ export function ViewEmpleo() {
   // Exportar a Excel
   const exportToExcel = () => {
     if (filteredData.length > 0) {
-      const exportData = filteredData.map(
-        ({
-          ceom,
-          descripcion,
-        }) => ({
-          CEOM: ceom,
-          Descripcion: descripcion,
-        })
-      );
+      const exportData = filteredData.map(({ ceom, descripcion }) => ({
+        CEOM: ceom,
+        Descripcion: descripcion,
+      }));
       const worksheet = XLSX.utils.json_to_sheet(exportData);
       const workbook = XLSX.utils.book_new();
       XLSX.utils.book_append_sheet(workbook, worksheet, "Empleos");
@@ -111,23 +117,13 @@ export function ViewEmpleo() {
   // Exportar a PDF
   const exportToPDF = () => {
     if (filteredData.length > 0) {
-      const exportData = filteredData.map(
-        ({
-          ceom,
-          descripcion,
-        }) => [
-            ceom,
-            descripcion,
-          ]
-      );
+      const exportData = filteredData.map(({ ceom, descripcion }) => [
+        ceom,
+        descripcion,
+      ]);
       const doc = new jsPDF();
       doc.autoTable({
-        head: [
-          [
-            "CEOM",
-            "Descripcion",
-          ],
-        ],
+        head: [["CEOM", "Descripcion"]],
         body: exportData,
       });
       doc.save("empleos.pdf");
@@ -140,6 +136,7 @@ export function ViewEmpleo() {
     <div className="w-full p-5">
       <div className="flex mb-4 items-center relative w-[600px]">
         <div className="relative flex-1">
+
           <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
             <FaSearch />
           </span>
@@ -147,7 +144,7 @@ export function ViewEmpleo() {
             type="text"
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            className="border  bg-[#F7FAFF] p-2 pl-10 w-full rounded-md focus:outline-none focus:ring focus:border-blue-300 font-page"
+            className="border bg-[#F7FAFF] p-2 pl-10 w-full rounded-md focus:outline-none focus:ring focus:border-blue-300 font-page"
             placeholder="Buscar empleo..."
           />
         </div>

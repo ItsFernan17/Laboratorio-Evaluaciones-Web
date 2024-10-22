@@ -21,8 +21,17 @@ export class AuthService {
             throw new BadRequestException('El usuario ya existe');
         }
 
+        console.log("Valor de role en registerDto:", registerDto.role);
+
         const register = await this.usuarioService.createUsuario({
-            ...registerDto,
+            dpi: registerDto.dpi,
+            nombre_completo: registerDto.nombre_completo,
+            telefono: registerDto.telefono,
+            rol: registerDto.role,
+            residencia: registerDto.residencia,
+            grado: registerDto.grado,
+            poblacion: registerDto.poblacion,
+            comando: registerDto.comando,
             password: await bcryptjs.hash(registerDto.password, 10),
         });
 
@@ -33,7 +42,7 @@ export class AuthService {
 
 
     async login(loginDto: LoginDto) {
-        const usuario = await this.usuarioService.findByUsername(loginDto.usuario);
+        const usuario = await this.usuarioService.findByUsuarioWithPassword(loginDto.usuario);
     
         if (!usuario) {
             throw new UnauthorizedException('El usuario no es correcto');
@@ -45,19 +54,22 @@ export class AuthService {
             throw new UnauthorizedException('La contraseña no es correcta');
         }
     
-        const payload = { user: usuario.nombre_usuario, sub: usuario.dpi };
+        const payload = { user: usuario.nombre_usuario, rol: usuario.rol, dpi: usuario.dpi };
     
-        // Generar access token
         const accessToken = await this.jwtService.signAsync(payload, { expiresIn: '30m' });
     
-        // Generar refresh token con mayor duración
         const refreshToken = await this.jwtService.signAsync(payload, { expiresIn: '7d' });
     
         return {
             accessToken,
-            refreshToken, // Enviar también el refresh token
+            refreshToken,
             usuario: usuario.nombre_usuario,
+            dpi: usuario.dpi,
         };
     }
+
+    async profile({ usuario, rol }: { usuario: string; rol: string }) {
+        return await this.usuarioService.findByUsername(usuario);
+      }
 
 }
