@@ -17,37 +17,46 @@ function NavbarSistema() {
   return (
     <div className="relative z-50 flex items-center w-full h-auto text-white md:px-9 bg-primary drop-shadow-md justify-between">
       <div className="flex items-center space-x-8">
-        <a href="/portal/menu-sistema">
+        {userRole !== "evaluado" ? (
+          <a href="/portal/menu-sistema">
+            <img
+              src="/logotipo.png"
+              alt="Logo Ministerio de la Defensa"
+              className="w-48 transition-all"
+            />
+          </a>
+        ) : null}
+
+        {userRole === "evaluado" ? (
           <img
-          
             src="/logotipo.png"
             alt="Logo Ministerio de la Defensa"
             className="w-48 transition-all"
           />
-        </a>
+        ) : null}
 
-        {(userRole === 'admin' || userRole === 'evaluador') && (
-        <div className="flex h-auto justify-center bg-primary cursor-pointer">
-          <FlyoutLink FlyoutContent={AsignacionContent}>
-            Asignaciones
-          </FlyoutLink>
-        </div>
+        {(userRole === "admin" || userRole === "evaluador") && (
+          <div className="flex h-auto justify-center bg-primary cursor-pointer">
+            <FlyoutLink FlyoutContent={AsignacionContent}>
+              Asignaciones
+            </FlyoutLink>
+          </div>
         )}
 
-        {(userRole === 'admin' || userRole === 'evaluador') && (
-        <div className="justify-center bg-primary cursor-pointer">
-          <FlyoutLinkExamen FlyoutContent={ExamenContent}>
-            Examenes
-          </FlyoutLinkExamen>
-        </div>
+        {(userRole === "admin" || userRole === "evaluador") && (
+          <div className="justify-center bg-primary cursor-pointer">
+            <FlyoutLinkExamen FlyoutContent={ExamenContent}>
+              Examenes
+            </FlyoutLinkExamen>
+          </div>
         )}
 
-        {(userRole === 'admin' || userRole === 'evaluador') && (
-        <div className="flex h-auto justify-center bg-primary cursor-pointer">
-          <FlyoutLink FlyoutContent={EmpleosContent}>Empleos</FlyoutLink>
-        </div>
+        {(userRole === "admin" || userRole === "evaluador") && (
+          <div className="flex h-auto justify-center bg-primary cursor-pointer">
+            <FlyoutLink FlyoutContent={EmpleosContent}>Empleos</FlyoutLink>
+          </div>
         )}
-        {(userRole === 'admin' || userRole === 'auxiliar') && (
+        {(userRole === "admin" || userRole === "auxiliar") && (
           <div className="flex h-auto justify-center bg-primary cursor-pointer">
             <FlyoutLink FlyoutContent={UsuariosContent}>Usuarios</FlyoutLink>
           </div>
@@ -177,10 +186,16 @@ const AsignacionContent = ({ userRole }) => {
     <div className="w-64 bg-white p-6 shadow-lg border border-primary rounded-lg">
       <div className="mb-3 space-y-3">
         <h3 className="font-page font-bold">Asignaciones</h3>
-        <a href="/portal/asignaciones/registrar-asignacion" className="block font-page text-sm hover:underline">
+        <a
+          href="/portal/asignaciones/registrar-asignacion"
+          className="block font-page text-sm hover:underline"
+        >
           Nueva Asignacion
-        </a> 
-        <a href="/portal/asignaciones/gestionar-asignacion" className="block font-page text-sm hover:underline">
+        </a>
+        <a
+          href="/portal/asignaciones/gestionar-asignacion"
+          className="block font-page text-sm hover:underline"
+        >
           Ver Asignaciones
         </a>
       </div>
@@ -193,37 +208,61 @@ const ExamenContent = () => {
     <div className="grid grid-cols-[auto,auto] gap-3">
       <div className="mb-3 space-y-3">
         <h3 className="font-page font-bold ml-10">Exámenes</h3>
-        <a href="/portal/examen/registrar-examen" className="block  ml-10  font-page text-sm hover:underline">
+        <a
+          href="/portal/examen/registrar-examen"
+          className="block  ml-10  font-page text-sm hover:underline"
+        >
           Nuevo Examen
         </a>
-        <a href="/portal/examen/gestionar-examenes" className="block   ml-10 font-page text-sm hover:underline">
+        <a
+          href="/portal/examen/gestionar-examenes"
+          className="block   ml-10 font-page text-sm hover:underline"
+        >
           Ver Exámenes
         </a>
       </div>
       <div className="mb-3 space-y-3">
         <h3 className="font-page font-bold">Preguntas y Respuestas</h3>
-        <a href="/portal/preguntas/registrar-pregunta" className="block font-page text-sm hover:underline">
+        <a
+          href="/portal/preguntas/registrar-pregunta"
+          className="block font-page text-sm hover:underline"
+        >
           Nueva Pregunta y Respuestas
         </a>
-        <a href="/portal/preguntas/gestionar-pregunta" className="block font-page text-sm hover:underline">
+        <a
+          href="/portal/preguntas/gestionar-pregunta"
+          className="block font-page text-sm hover:underline"
+        >
           Ver Preguntas y Respuestas
         </a>
       </div>
       <div className="mb-3 space-y-3">
         <h3 className="font-page font-bold ml-10 ">Tipos de Examen</h3>
-        <a href="/portal/tipoExamen/registrar-tipo-examen" className="block ml-10 font-page text-sm hover:underline">
+        <a
+          href="/portal/tipoExamen/registrar-tipo-examen"
+          className="block ml-10 font-page text-sm hover:underline"
+        >
           Nuevo Tipo de Examen
         </a>
-        <a href="/portal/tipoExamen/gestionar-tipo-examen" className="block ml-10 font-page text-sm hover:underline">
+        <a
+          href="/portal/tipoExamen/gestionar-tipo-examen"
+          className="block ml-10 font-page text-sm hover:underline"
+        >
           Ver Tipos de Examen
         </a>
       </div>
       <div className="mb-3 space-y-3">
         <h3 className="font-page font-bold">Series de Examen</h3>
-        <a href="/portal/series/registrar-serie" className="block font-page text-sm hover:underline">
+        <a
+          href="/portal/series/registrar-serie"
+          className="block font-page text-sm hover:underline"
+        >
           Nueva Serie de Examen
         </a>
-        <a href="/portal/series/gestionar-series" className="block font-page text-sm hover:underline">
+        <a
+          href="/portal/series/gestionar-series"
+          className="block font-page text-sm hover:underline"
+        >
           Ver Series de Examen
         </a>
       </div>
@@ -242,7 +281,10 @@ const EmpleosContent = () => {
         >
           Nuevo Empleo
         </a>
-        <a href="/portal/empleos/gestionar-empleos" className="block font-page text-sm hover:underline">
+        <a
+          href="/portal/empleos/gestionar-empleos"
+          className="block font-page text-sm hover:underline"
+        >
           Ver Empleos Disponibles
         </a>
       </div>
@@ -254,7 +296,7 @@ const UsuariosContent = () => {
   return (
     <div className="w-64 bg-white p-6 shadow-lg border border-primary rounded-lg">
       <div className="mb-3 space-y-3">
-        <h3 className="font-page font-bold">Usuarios</h3>  
+        <h3 className="font-page font-bold">Usuarios</h3>
         <a
           href="/portal/usuarios/registrar-usuario"
           className="block font-page text-sm hover:underline"
@@ -281,14 +323,16 @@ const Perfil = () => {
     localStorage.removeItem("usuario");
     localStorage.removeItem("role");
     localStorage.removeItem("dpi");
-  
+
     window.location.href = "/login";
   };
 
   return (
     <div className="w-[190px] bg-white p-6 shadow-lg border border-primary rounded-lg">
       <div className="mb-3 space-y-3">
-        <h3 className="font-page text-[16px] font-bold">{localStorage.usuario}</h3>
+        <h3 className="font-page text-[16px] font-bold">
+          {localStorage.usuario}
+        </h3>
         <a href="/portal" className="block font-page text-sm hover:underline">
           Perfil
         </a>
@@ -303,7 +347,5 @@ const Perfil = () => {
     </div>
   );
 };
-
-
 
 export default NavbarSistema;

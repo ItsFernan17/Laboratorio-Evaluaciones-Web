@@ -3,34 +3,32 @@ import { FaBan } from "react-icons/fa";
 
 const AuthGuard = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true); // Estado de carga inicial
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
 
-    // Verificamos si el token existe
     if (token) {
       setIsAuthenticated(true);
-      setIsLoading(false); // Terminamos de cargar si hay un token válido
+      setIsLoading(false);
     } else {
       setIsAuthenticated(false);
-      setIsLoading(false); // Terminamos de cargar, pero no está autenticado
+      setIsLoading(false);
 
-      // Redirigimos después de 3 segundos si no está autenticado
       const timer = setTimeout(() => {
         window.location.href = "/login";
       }, 3000);
 
-      return () => clearTimeout(timer); // Limpiar el timeout si el componente se desmonta
+      return () => clearTimeout(timer);
     }
   }, []);
 
   if (isLoading) {
-    return <div>Cargando...</div>; // Mostrar una pantalla de carga mientras se verifica la autenticación
+    return <div>Cargando...</div>;
   }
 
   if (!isAuthenticated) {
-    // Mostrar modal si no está autenticado
+
     return (
       <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
         <div className="bg-white w-[700px] rounded-lg shadow-lg">
@@ -49,7 +47,7 @@ const AuthGuard = ({ children }) => {
     );
   }
 
-  return <>{children}</>; // Renderizar el contenido si está autenticado
+  return <>{children}</>;
 };
 
 export default AuthGuard;

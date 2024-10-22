@@ -187,14 +187,16 @@ export function ViewAsignacion() {
                 row.codigo_asignacion
               )
             }
-            className="text-[#0f763d] px-4 py-2 rounded"
+            className={`text-[#0f763d] px-4 py-2 rounded ${row.punteo === null ? "" : "opacity-50 cursor-not-allowed"}`}
+            disabled={row.punteo !== null}
           >
-            Ir al Examen
+            {row.punteo === null ? "Ir al Examen" : "Examen completado"}
           </button>
         ),
         ignoreRowClick: true,
       },
     ] : []),
+    
     {
       name: "Certificación",
       cell: (row) => (
