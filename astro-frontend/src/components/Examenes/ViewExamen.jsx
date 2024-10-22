@@ -21,21 +21,38 @@ export function ViewExamen() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   
+    function getToken() {
+      return localStorage.getItem('accessToken'); // Obtener el token del localStorage
+    }
+    
     const fetchExamenes = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/v1/examen");
+        const token = getToken(); // Obtener el token
+    
+        const response = await fetch("http://localhost:3000/api/v1/examen", {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Agregar el token en el encabezado
+            'Content-Type': 'application/json', // Especificar el tipo de contenido
+          },
+        });
+    
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} - ${response.statusText}`);
+        }
+    
         const examenes = await response.json();
-        setData(examenes);
-        setLoading(false);
+        setData(examenes); // Actualizar el estado con los datos recibidos
+        setLoading(false); // Desactivar el estado de carga
       } catch (error) {
         console.error("Error fetching data: ", error);
-        setLoading(false);
+        setLoading(false); // Desactivar el estado de carga en caso de error
       }
     };
-  
+    
     useEffect(() => {
-        fetchExamenes();
+      fetchExamenes();
     }, []);
+    
   
     const filteredData = data.filter(
       (item) =>

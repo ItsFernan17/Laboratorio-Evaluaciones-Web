@@ -23,9 +23,22 @@ export function ViewPreguntaRespuesta() {
 
   const fetchPregunta = async () => {
     try {
+      const token = localStorage.getItem('accessToken'); // Obtener el token de localStorage
+
       const response = await fetch(
-        "http://localhost:3000/api/v1/pregunta-respuesta/preguntas"
+        "http://localhost:3000/api/v1/pregunta-respuesta/preguntas",
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado
+            'Content-Type': 'application/json'
+          }
+        }
       );
+      
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
       const preguntaRespuesta = await response.json();
 
       // Asegurarse de que siempre haya 3 respuestas, llenando con "NULL" si es necesario
@@ -48,6 +61,7 @@ export function ViewPreguntaRespuesta() {
   useEffect(() => {
     fetchPregunta();
   }, []);
+
 
   const filteredData = data.filter((item) =>
     item.descripcion.toLowerCase().includes(filterText.toLowerCase())

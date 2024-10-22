@@ -1,7 +1,10 @@
 import { Controller, Get, Post, Put, Patch, Body, Param } from '@nestjs/common';
 import { EmpleoService } from './empleo.service';
 import { CreateEmpleoDto, UpdateEmpleoDto  } from './dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Role } from 'src/common/enums/rol.enum';
 
+@Auth(Role.ADMINISTRADOR, Role.EVALUADOR)
 @Controller('empleo')
 export class EmpleoController {
     constructor(

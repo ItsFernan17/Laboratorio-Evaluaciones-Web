@@ -34,9 +34,6 @@ export class Asignacion {
   usuario_modifica: Usuario;
 
   @Column({ nullable: true })
-  punteo: number; // Asegúrate de tener este campo
+  punteo: number | null;
 
 }
-
-
-

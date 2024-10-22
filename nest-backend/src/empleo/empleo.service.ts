@@ -43,6 +43,17 @@ export class EmpleoService {
       throw new HttpException('Usuario no encontrado.', HttpStatus.NOT_FOUND);
     }
 
+    const empleoExistente = await this.empleoRepository.findOne({
+      where: { ceom: createEmpeloDto.ceom },
+    });
+
+    if (empleoExistente) {
+      throw new HttpException(
+        'El empleo con el CEOM proporcionado ya existe en la base de datos.',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const newEmpleo = this.empleoRepository.create({
       ceom: createEmpeloDto.ceom,
       estado: true,

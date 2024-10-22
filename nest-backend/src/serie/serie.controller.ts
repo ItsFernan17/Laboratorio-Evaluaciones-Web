@@ -1,7 +1,10 @@
 import { Controller, Get, Post, Put, Patch, Body, Param } from '@nestjs/common';
 import { SerieService } from './serie.service';
 import { CreateSerieDto, UpdateSerieDto } from './dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Role } from 'src/common/enums/rol.enum';
 
+@Auth(Role.ADMINISTRADOR, Role.EVALUADOR)
 @Controller('serie')
 export class SerieController {
   constructor(private readonly serieService: SerieService) {}

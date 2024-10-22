@@ -1,7 +1,10 @@
 import { Controller, Get, Post, Put, Patch, Body, Param } from '@nestjs/common';
 import { ExamenService } from './examen.service';
 import { CreateExamenDto, UpdateExamenDto } from './dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Role } from 'src/common/enums/rol.enum';
 
+@Auth(Role.ADMINISTRADOR, Role.EVALUADOR)
 @Controller('examen')
 export class ExamenController {
   constructor(private readonly examenService: ExamenService) {}

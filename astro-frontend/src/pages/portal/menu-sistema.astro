@@ -1,5 +1,6 @@
 ---
-import Sistema from '../../layouts/sistema.astro'
+import Sistema from '../../layouts/sistema.astro';
+import WelcomeMessage from '../../components/MesajeInicio';
 ---
 
 <Sistema title="Menu Principal">
@@ -19,22 +20,15 @@ import Sistema from '../../layouts/sistema.astro'
       <h2 class="font-semibold text-[33px] mb-5 text-primary">
         ¡Bienvenido al Sistema de Evaluación!
       </h2>
-      <span id="welcome-message" class=" text-[20px] font-bold  text-primary">
-        ¡Atención usuario!
-      </span> <span class="text-[20px] text-primary" >Es fundamental que toda la información contenida en este sistema sea tratada con el máximo cuidado y confidencialidad,
+
+      <!-- Aquí es donde se incluye el componente de bienvenida -->
+      <WelcomeMessage client:load />
+
+      <span class="text-[20px] text-primary">
+        Es fundamental que toda la información contenida en este sistema sea tratada con el máximo cuidado y confidencialidad,
         siguiendo los protocolos de seguridad establecidos. La manipulación de los datos debe ser precisa y rigurosa,
-        ya que cualquier uso indebido podría comprometer la integridad del sistema y la privacidad de la información.</span>
+        ya que cualquier uso indebido podría comprometer la integridad del sistema y la privacidad de la información.
+      </span>
     </div>
   </div>
-
-  <!-- Script to access localStorage and update the message -->
-  <script>
-    const usuario = localStorage.getItem('usuario');
-    const welcomeMessage = document.getElementById('welcome-message');
-
-    if (welcomeMessage && usuario) {
-      welcomeMessage.textContent = `¡Atención ${usuario}! `;
-    }
-  </script>
 </Sistema>
-

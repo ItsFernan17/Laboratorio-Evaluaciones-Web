@@ -1,3 +1,5 @@
+
+import { Role } from "../../common/enums/rol.enum";
 import { Comando } from "src/seed-db/comando/model/comando.entity";
 import { Departamento } from "src/seed-db/departamento/model/departamento.entity";
 import { Grado } from "src/seed-db/grado/model/grado.entity";
@@ -22,10 +24,10 @@ export class Usuario {
     @Column({ unique: true, nullable: false })
     nombre_usuario: string;
 
-    @Column({ default: 'evaluado' })
-    role: string;
+    @Column({ type: 'enum', enum: Role, default: Role.EVALUADO })
+    rol: string;    
 
-    @Column({ length: 100, nullable: false })
+    @Column({ length: 100, nullable: false, select: false })
     password: string;
 
     @ManyToOne(() => Grado, { nullable: true })

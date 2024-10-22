@@ -3,7 +3,10 @@ import { PreguntaRespuestaService } from './pregunta-respuesta.service';
 import { CreatePreguntaRespuestaDto, UpdatePreguntaRespuestaDto } from './dto';
 import { CreatePreguntaDto, UpdatePreguntaDto } from 'src/pregunta/dto';
 import { CreateRespuestaDto } from 'src/respuesta/dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Role } from 'src/common/enums/rol.enum';
 
+@Auth(Role.ADMINISTRADOR, Role.EVALUADOR)
 @Controller('pregunta-respuesta')
 export class PreguntaRespuestaController {
   constructor(

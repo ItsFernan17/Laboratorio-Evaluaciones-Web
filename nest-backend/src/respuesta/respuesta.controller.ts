@@ -1,7 +1,10 @@
 import { Controller, Get, Post, Put, Patch, Body, Param } from '@nestjs/common';
 import { RespuestaService } from './respuesta.service';
 import { CreateRespuestaDto, UpdateRespuestaDto } from './dto';
+import { Auth } from 'src/auth/decorators/auth.decorator';
+import { Role } from 'src/common/enums/rol.enum';
 
+@Auth(Role.ADMINISTRADOR, Role.EVALUADOR)
 @Controller('respuesta')
 export class RespuestaController {
   constructor(private readonly respuestaService: RespuestaService) {}

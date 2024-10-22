@@ -3,29 +3,42 @@ import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createAsignacion, updateAsignacion } from "./Asignaciones.api";
+import Examen from "./Examen";
+import Evaluado from "./Evaluado";
 
 export function NewAsignacion({
   codigo_asignacion = null,
   onClose = null,
-  onUserSaved = null
+  onUserSaved = null,
 }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm();
   const [toastMessage, setToastMessage] = useState(null);
   const [examenData, setExamenData] = useState(null);
   const [codigoExamen, setCodigoExamen] = useState(null);
 
+  const resetExamenRef = React.useRef(null);
+  const resetEvaluadoRef = React.useRef(null);
+
   useEffect(() => {
     const fetchExamenData = async () => {
       if (codigoExamen) {
         try {
+          const token = localStorage.getItem('accessToken');
           const response = await fetch(
-            `http://localhost:3000/api/v1/examen/${codigoExamen}`
+            `http://localhost:3000/api/v1/examen/${codigoExamen}`, 
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            }
           );
+  
           if (response.ok) {
             const data = await response.json();
             setExamenData(data);
@@ -37,43 +50,74 @@ export function NewAsignacion({
         }
       }
     };
-
+  
     fetchExamenData();
   }, [codigoExamen]);
+  
 
   useEffect(() => {
     const fetchEmpleoData = async () => {
       if (codigo_asignacion) {
         try {
+          const token = localStorage.getItem('accessToken');
           const empleoResponse = await fetch(
-            `http://localhost:3000/api/v1/asignacion/${codigo_asignacion}`
+            `http://localhost:3000/api/v1/asignacion/${codigo_asignacion}`, 
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`
+              }
+            }
           );
+          
           if (empleoResponse.ok) {
             const empleoData = await empleoResponse.json();
             reset({
               codigo_examen: empleoData.examen.codigo_examen,
               evaluado: empleoData.evaluado.dpi,
             });
+            setCodigoExamen(empleoData.examen.codigo_examen);
+          } else {
+            toast.error("Error al cargar los datos del empleo");
           }
         } catch (error) {
           toast.error("Error al cargar los datos del empleo");
         }
       }
     };
-
+  
     fetchEmpleoData();
   }, [codigo_asignacion, reset]);
+  
 
+  const handleErrors = (error) => {
+    if (error.message.includes("Failed to fetch")) {
+      toast.error("Error al conectar con el servidor. Verifica tu conexión.", {
+        autoClose: 3000,
+      });
+    } else if (error.message.includes("El evaluado ya tiene este examen asignado.")) {
+      toast.error("El evaluado ya tiene asignado este examen.", {
+        autoClose: 3000,
+      });
+    } else if (error.message.includes("422")) {
+      toast.error("Error: Datos inválidos. Revisa los campos y vuelve a intentarlo.", {
+        autoClose: 3000,
+      });
+    } else {
+      toast.error("Error inesperado. Intenta nuevamente.", {
+        autoClose: 3000,
+      });
+    }
+  };
+  
   const onSubmit = handleSubmit(async (formData) => {
     if (codigo_asignacion) {
       try {
         await updateAsignacion(codigo_asignacion, {
           evaluado: formData.evaluado,
-          evaluacion: parseInt(formData.examen),
-          punteo: null,
+          examen: parseInt(formData.examen),
           usuario_modifica: localStorage.usuario,
         });
-
+  
         toast.success("Asignación actualizada exitosamente!", {
           autoClose: 1500,
         });
@@ -81,48 +125,37 @@ export function NewAsignacion({
         setTimeout(() => {
           onUserSaved();
           onClose();
+          resetEvaluadoRef.current();
+          resetExamenRef.current();
+          reset(); 
         }, 1500);
-
       } catch (error) {
         console.error("Error al actualizar la asignación:", error);
-        toast.error("Error al actualizar la asignación, intente nuevamente");
+        handleErrors(error);
       }
-
     } else {
       try {
-        const response = await createAsignacion({
+        await createAsignacion({
           evaluado: formData.evaluado,
           examen: parseInt(formData.examen),
           usuario_ingreso: localStorage.usuario,
         });
-
+  
         toast.success("Asignación creada exitosamente!", {
           autoClose: 1500,
         });
 
-        setTimeout(() => {
-          onUserSaved();
-          onClose();
-        }, 1500);
+        reset();
+        resetEvaluadoRef.current();
+        resetExamenRef.current();
+
       } catch (error) {
         console.error("Error al crear la asignación:", error);
-
-        // Si el error es un conflicto (409), mostrar el mensaje adecuado y limpiar los datos del examen
-        if (error.statusCode === 409) {
-          toast.error("El evaluado ya tiene asignado este examen.", {
-            autoClose: 3000,
-          });
-          setExamenData(null); // Limpiar los datos del examen en caso de conflicto
-        } else {
-          toast.error("Error al crear la asignación, intente nuevamente.", {
-            autoClose: 3000,
-          });
-        }
-      } finally {
-        reset(); // Reseteamos el formulario
+        handleErrors(error);
       }
     }
   });
+  
 
   return (
     <div>
@@ -131,73 +164,35 @@ export function NewAsignacion({
         className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2"
         onSubmit={onSubmit}
       >
-        <div className="mt-4">
+        <div className="mt-2">
           <label
-            htmlFor="examen"
+            htmlFor="grado"
             className="block text-[16px] font-page font-semibold text-primary"
           >
-            Código del Examen
+            Examen
           </label>
-          <input
-            type="number"
-            id="examen"
-            className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm border border-primary pl-3 font-page"
-            placeholder="Ingrese el código del examen"
-            {...register("examen", {
-              required: "*El código del examen es requerido",
-            })}
-            onChange={(e) => setCodigoExamen(e.target.value)}
+          <Examen
+            register={register}
+            errors={errors}
+            setValue={setValue}
+            resetSelectRef={resetExamenRef}
           />
-          {errors.examen && (
-            <p className="text-red-900 text-sm mb-0">{errors.examen.message}</p>
-          )}
         </div>
 
-        <div className="mt-4">
+        <div className="mt-2">
           <label
-            htmlFor="evaluado"
+            htmlFor="grado"
             className="block text-[16px] font-page font-semibold text-primary"
           >
             Evaluado
           </label>
-          <input
-            type="text"
-            id="evaluado"
-            placeholder="Ingrese DPI del evaluado"
-            className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm border border-primary pl-3 font-page"
-            {...register("evaluado", { required: "*El evaluado es requerido" })}
+          <Evaluado
+            register={register}
+            errors={errors}
+            setValue={setValue}
+            resetSelectRef={resetEvaluadoRef}
           />
-          {errors.evaluado && (
-            <p className="text-red-900 text-sm mb-0">
-              {errors.evaluado.message}
-            </p>
-          )}
         </div>
-
-        {/* Mostrar los datos del examen solo si hay datos válidos */}
-        {codigoExamen && examenData && (
-          <div className="col-span-full mt-4">
-            <table className="table-auto w-full text-left text-primary">
-              <thead>
-                <tr>
-                  <th>Fecha Evaluación</th>
-                  <th>Tipo de Examen</th>
-                  <th>Motivo del Examen</th>
-                  <th>Punteo Máximo</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>{examenData?.fecha_evaluacion || "N/A"}</td>
-                  <td>{examenData?.tipo_examen?.description || "N/A"}</td>
-                  <td>{examenData?.motivo_examen?.nombre_motivo || "N/A"}</td>
-                  <td>{examenData?.punteo_maximo || "N/A"}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        )}
-
         <div className="col-span-full flex justify-center">
           {codigo_asignacion ? (
             <div className="flex justify-end space-x-4 mb-3 w-full">

@@ -20,11 +20,32 @@ export function ViewUsuarios() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
+  const [userRole, setUserRole] = useState(null); // Role of the logged-in user
 
-  // Función para cargar los datos de los usuarios
+  function getToken() {
+    return localStorage.getItem("accessToken");
+  }
+
+  useEffect(() => {
+    // Get the role of the logged-in user from localStorage
+    const storedUserRole = localStorage.getItem("role");
+    setUserRole(storedUserRole);
+  }, []);
+
   const fetchUsuarios = async () => {
     try {
-      const response = await fetch("http://localhost:3000/api/v1/usuario");
+      const token = getToken(); // Obtener el token de localStorage
+
+      const response = await fetch("http://localhost:3000/api/v1/usuario", {
+        headers: {
+          Authorization: `Bearer ${token}`, // Agregar el token en el encabezado
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status} - ${response.statusText}`);
+      }
+
       const usuarios = await response.json();
       setData(usuarios); // Actualizamos el estado de la tabla
       setLoading(false); // Desactivamos el estado de carga
@@ -34,7 +55,6 @@ export function ViewUsuarios() {
     }
   };
 
-  // Cargar usuarios al montar el componente
   useEffect(() => {
     fetchUsuarios();
   }, []);
@@ -76,6 +96,90 @@ export function ViewUsuarios() {
     setSelectedUser(null); // Deseleccionar usuario
   };
 
+    // Exportar a Excel
+    const exportToExcel = () => {
+      if (filteredData.length > 0) {
+        const exportData = filteredData.map(
+          ({
+            dpi,
+            nombre_completo,
+            nombre_usuario,
+            telefono,
+            rol,
+            residencia,
+            comando,
+            grado,
+            poblacion,
+          }) => ({
+            DPI: dpi,
+            Nombre: nombre_completo,
+            Usuario: nombre_usuario,
+            Telefono: telefono,
+            Rol: rol,
+            Residencia: residencia?.nombre_departamento || "N/A",
+            Comando: comando?.nombre_comando || "N/A",
+            Grado: grado?.nombre_grado || "N/A",
+            Poblacion: poblacion?.nombre_poblacion || "N/A",
+          })
+        );
+        const worksheet = XLSX.utils.json_to_sheet(exportData);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Usuarios");
+        XLSX.writeFile(workbook, "usuarios.xlsx");
+      } else {
+        alert("No hay datos para exportar");
+      }
+    };
+  
+    // Exportar a PDF
+    const exportToPDF = () => {
+      if (filteredData.length > 0) {
+        const exportData = filteredData.map(
+          ({
+            dpi,
+            nombre_completo,
+            nombre_usuario,
+            telefono,
+            rol,
+            residencia,
+            comando,
+            grado,
+            poblacion,
+          }) => [
+            dpi,
+            nombre_completo,
+            nombre_usuario,
+            telefono,
+            rol,
+            residencia?.nombre_departamento || "N/A",
+            comando?.nombre_comando || "N/A",
+            grado?.nombre_grado || "N/A",
+            poblacion?.nombre_poblacion || "N/A",
+          ]
+        );
+        const doc = new jsPDF();
+        doc.autoTable({
+          head: [
+            [
+              "DPI",
+              "Nombre",
+              "Usuario",
+              "Telefono",
+              "Rol",
+              "Residencia",
+              "Comando Militar",
+              "Grado Militar",
+              "Poblacion Militar",
+            ],
+          ],
+          body: exportData,
+        });
+        doc.save("usuarios.pdf");
+      } else {
+        alert("No hay datos para exportar");
+      }
+    };
+
   const columns = [
     {
       name: "DPI",
@@ -103,7 +207,7 @@ export function ViewUsuarios() {
     },
     {
       name: "Rol",
-      selector: (row) => row.role || "",
+      selector: (row) => row.rol || "",
       sortable: true,
       className: "font-page",
     },
@@ -134,90 +238,6 @@ export function ViewUsuarios() {
   ];
 
   if (loading) return <div className="text-center font-page">Cargando...</div>;
-
-  // Exportar a Excel
-  const exportToExcel = () => {
-    if (filteredData.length > 0) {
-      const exportData = filteredData.map(
-        ({
-          dpi,
-          nombre_completo,
-          nombre_usuario,
-          telefono,
-          role,
-          residencia,
-          comando,
-          grado,
-          poblacion,
-        }) => ({
-          DPI: dpi,
-          Nombre: nombre_completo,
-          Usuario: nombre_usuario,
-          Telefono: telefono,
-          Rol: role,
-          Residencia: residencia?.nombre_departamento || "N/A",
-          Comando: comando?.nombre_comando || "N/A",
-          Grado: grado?.nombre_grado || "N/A",
-          Poblacion: poblacion?.nombre_poblacion || "N/A",
-        })
-      );
-      const worksheet = XLSX.utils.json_to_sheet(exportData);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Usuarios");
-      XLSX.writeFile(workbook, "usuarios.xlsx");
-    } else {
-      alert("No hay datos para exportar");
-    }
-  };
-
-  // Exportar a PDF
-  const exportToPDF = () => {
-    if (filteredData.length > 0) {
-      const exportData = filteredData.map(
-        ({
-          dpi,
-          nombre_completo,
-          nombre_usuario,
-          telefono,
-          role,
-          residencia,
-          comando,
-          grado,
-          poblacion,
-        }) => [
-          dpi,
-          nombre_completo,
-          nombre_usuario,
-          telefono,
-          role,
-          residencia?.nombre_departamento || "N/A",
-          comando?.nombre_comando || "N/A",
-          grado?.nombre_grado || "N/A",
-          poblacion?.nombre_poblacion || "N/A",
-        ]
-      );
-      const doc = new jsPDF();
-      doc.autoTable({
-        head: [
-          [
-            "DPI",
-            "Nombre",
-            "Usuario",
-            "Telefono",
-            "Rol",
-            "Residencia",
-            "Comando Militar",
-            "Grado Militar",
-            "Poblacion Militar",
-          ],
-        ],
-        body: exportData,
-      });
-      doc.save("usuarios.pdf");
-    } else {
-      alert("No hay datos para exportar");
-    }
-  };
 
   return (
     <div className="w-full p-5">
@@ -266,15 +286,27 @@ export function ViewUsuarios() {
           <span className="mr-4 font-page ml-7">
             Seleccionado: {selectedUser.nombre_usuario}
           </span>
+          {/* Deshabilitar edición si el usuario actual es auxiliar y el seleccionado es admin */}
           <button
             onClick={handleEditClick}
-            className="flex items-center text-primary bg-[#FFFFFF] px-4 py-2 ml-[760px] rounded-[10px] mr-2"
+            className={`flex items-center text-primary bg-[#FFFFFF] px-4 py-2 ml-[760px] rounded-[10px] mr-2 ${
+              selectedUser.rol === "admin" && userRole === "auxiliar"
+                ? "cursor-not-allowed opacity-50"
+                : ""
+            }`}
+            disabled={selectedUser.rol === "admin" && userRole === "auxiliar"}
           >
             <FaEdit className="size-5" />
           </button>
+          {/* Deshabilitar eliminación si el usuario actual es auxiliar y el seleccionado es admin */}
           <button
             onClick={() => setDeleteModalIsOpen(true)}
-            className="flex items-center text-primary bg-[#ED8080] px-4 py-2 rounded-[10px]"
+            className={`flex items-center text-primary bg-[#ED8080] px-4 py-2 rounded-[10px] ${
+              selectedUser.rol === "admin" && userRole === "auxiliar"
+                ? "cursor-not-allowed opacity-50"
+                : ""
+            }`}
+            disabled={selectedUser.rol === "admin" && userRole === "auxiliar"}
           >
             <FaTrashAlt className="size-5" />
           </button>
@@ -355,6 +387,7 @@ export function ViewUsuarios() {
         />
       </div>
 
+      {/* Modal de edición */}
       {modalIsOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
           <div className="bg-white w-[700px] rounded-lg shadow-lg">
@@ -372,16 +405,17 @@ export function ViewUsuarios() {
 
             {/* Modal Body */}
             <div className="px-6">
-              <NewUsuario 
-              usuario={selectedUser.dpi} 
+              <NewUsuario
+                usuario={selectedUser.dpi}
                 onClose={handleCloseModal}
-                onUserSaved={fetchUsuarios}  
+                onUserSaved={fetchUsuarios}
               />
             </div>
           </div>
         </div>
       )}
 
+      {/* Modal de eliminación */}
       {deleteModalIsOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
           <div className="bg-white w-[500px] rounded-lg shadow-lg">
@@ -407,15 +441,15 @@ export function ViewUsuarios() {
                   Eliminar
                 </button>
                 <button
-                    onClick={() => {
-                      setDeleteModalIsOpen(false);
-                      setSelectedUser(null);
-                    }}
+                  onClick={() => {
+                    setDeleteModalIsOpen(false);
+                    setSelectedUser(null);
+                  }}
                   className="bg-primary text-white px-4 py-2 rounded-md shadow transition duration-300 ease-in-out border hover:bg-white hover:text-primary hover:border-primary"
                 >
                   Cancelar
                 </button>
-              </div> 
+              </div>
             </div>
           </div>
         </div>

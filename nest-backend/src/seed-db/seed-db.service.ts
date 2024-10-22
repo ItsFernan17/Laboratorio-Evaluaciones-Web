@@ -193,7 +193,7 @@ export class SeedDbService {
         newUser.estado = user.estado;
         newUser.nombre_completo = user.nombre_completo;
         newUser.telefono = user.telefono; 
-        newUser.role = user.rol;
+        newUser.rol = user.rol;
         newUser.nombre_usuario = user.nombre_usuario;
         newUser.password = bcryptjs.hashSync(user.contrasenia, 10);
   

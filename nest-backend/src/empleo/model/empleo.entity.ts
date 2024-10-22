@@ -4,7 +4,7 @@ import { Usuario } from '../../usuario/model/usuario.entity';
 @Entity({ name: 'empleo' })
 export class Empleo {
 
-    @PrimaryColumn({ type: 'varchar', length: 10 })
+    @PrimaryColumn({ type: 'varchar', length: 10, unique: true })
     ceom: string;
 
     @Column({ type: 'bit', width: 1 })

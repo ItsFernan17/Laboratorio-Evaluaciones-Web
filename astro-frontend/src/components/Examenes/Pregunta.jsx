@@ -48,7 +48,7 @@ function Pregunta({ register, errors, setValue, getValues, name }) {
       </p>
 
       <div
-        className="bg-[#F7FAFF] h-[34px] w-full mt-1 rounded-sm shadow-sm border border-primary pl-3 pr-3 flex items-center justify-between cursor-pointer"
+        className="bg-[#F7FAFF] h-[38px] w-full mt-1 rounded-sm shadow-sm border border-primary pl-3 pr-3 flex items-center justify-between cursor-pointer"
         onClick={toggleDropdown}
       >
         <span className="font-page text-gray-700">Preguntas</span>
@@ -92,7 +92,7 @@ function Pregunta({ register, errors, setValue, getValues, name }) {
               type="text"
               value={pregunta.descripcion}
               readOnly
-              className="bg-[#F7FAFF] h-[34px] w-full mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page mb-2"
+              className="bg-[#F7FAFF] h-[38px] w-full mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page mb-2"
             />
           ))}
         </div>
