@@ -29,13 +29,29 @@ export function NewExamen({
     },
   });
 
+  const resetTipoExamenRef = React.useRef(null);
+  const resetMotivoExamenRef = React.useRef(null);
+
+  function getToken() {
+    return localStorage.getItem('accessToken'); // Obtener el token del localStorage
+  }
+  
   useEffect(() => {
     const fetchExamenData = async () => {
       if (codigo_examen) {
         try {
+          const token = getToken(); // Obtener el token
+  
           const examenResponse = await fetch(
-            `http://localhost:3000/api/v1/examen-master/informacion/${codigo_examen}`
+            `http://localhost:3000/api/v1/examen-master/informacion/${codigo_examen}`,
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`, // Agregar el token en la cabecera
+                'Content-Type': 'application/json', // Especificar el tipo de contenido
+              },
+            }
           );
+  
           if (examenResponse.ok) {
             const examenData = await examenResponse.json();
             reset({
@@ -44,13 +60,14 @@ export function NewExamen({
             });
           }
         } catch (error) {
-          toast.error("Error al cargar los datos del empleo");
+          toast.error("Error al cargar los datos del examen");
         }
       }
     };
-
+  
     fetchExamenData();
   }, [codigo_examen, reset]);
+  
 
   const {
     fields: seriesFields,
@@ -89,6 +106,8 @@ export function NewExamen({
         setTimeout(() => {
           onUserSaved();
           onClose();
+          resetMotivoExamenRef.current();
+          resetTipoExamenRef.current();
         }, 1500);
       } catch (error) {
         toast.error("Error al actualizar el examen, intente nuevamente");
@@ -120,11 +139,15 @@ export function NewExamen({
 
         toast.success("Examen creado exitosamente!");
         reset();
+        resetMotivoExamenRef.current();
+        resetTipoExamenRef.current();
       } catch (error) {
         console.error("Error al crear el examen:", error);
         toast.error("Error al crear el examen, intente nuevamente");
       } finally {
         reset();
+        resetMotivoExamenRef.current();
+        resetTipoExamenRef.current();
       }
     }
   });
@@ -146,7 +169,7 @@ export function NewExamen({
               type="date"
               name="datetime"
               id="datetime"
-              className="bg-[#F7FAFF] h-[34px] w-[320px] mt-1 rounded-sm border border-primary pl-3 font-page"
+              className="bg-[#F7FAFF] h-[38px] w-[320px] mt-1 rounded-sm border border-primary pl-3 font-page"
               placeholder="Ejemplo: 2024/12/31"
               {...register("fecha", {
                 required: "*Fecha de Evaluación es requerida",
@@ -167,7 +190,12 @@ export function NewExamen({
             >
               Tipo de Examen
             </label>
-            <TipoExamen register={register} errors={errors} />
+            <TipoExamen
+              register={register}
+              errors={errors}
+              setValue={setValue}
+              resetSelectRef={resetTipoExamenRef}
+            />
           </div>
 
           {/* Motivo del Examen */}
@@ -178,7 +206,12 @@ export function NewExamen({
             >
               Motivo del Examen
             </label>
-            <TipoMotivo register={register} errors={errors} />
+            <TipoMotivo
+              register={register}
+              errors={errors}
+              setValue={setValue}
+              resetSelectRef={resetMotivoExamenRef}
+            />
           </div>
 
           {/* Punteo Máximo del Examen */}
@@ -192,11 +225,14 @@ export function NewExamen({
             <input
               type="number"
               id="punteo"
-              className="bg-[#F7FAFF] h-[34px] w-[320px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
+              className="bg-[#F7FAFF] h-[38px] w-[320px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
               placeholder="100, 60, 50, 20, etc."
               step="0.1"
               {...register("punteo", {
                 required: "*El Punteo es requerido",
+                valueAsNumber: true, // Convierte automáticamente el valor a número
+                validate: (value) =>
+                  !isNaN(value) || "*El punteo debe ser un número",
                 min: { value: 0, message: "*El punteo no puede ser negativo" },
                 max: {
                   value: 100,
@@ -234,6 +270,7 @@ export function NewExamen({
                 errors={errors}
                 className="w-full"
                 seriesIndex={seriesIndex}
+                setValue={setValue}
               />
 
               {/* Sección de Preguntas dentro de cada Serie */}

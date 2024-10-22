@@ -17,11 +17,16 @@ export function NewPreguntaRespuestas({
     control,
     formState: { errors },
     reset,
+    setValue,
+
   } = useForm({
     defaultValues: {
       respuestas: [{ respuesta: "", esCorrecta: false }],
     },
   });
+
+  const resetTipoPreguntaRef = React.useRef(null);
+  
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -34,12 +39,21 @@ export function NewPreguntaRespuestas({
     const fetchPreguntaData = async () => {
       if (id) {
         try {
+          const token = localStorage.getItem('accessToken'); // Obtener el token de localStorage
+  
           const preguntaResponse = await fetch(
-            `http://localhost:3000/api/v1/pregunta-respuesta/preguntas/${id}`
+            `http://localhost:3000/api/v1/pregunta-respuesta/preguntas/${id}`,
+            {
+              headers: {
+                'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado
+                'Content-Type': 'application/json'
+              }
+            }
           );
+  
           if (preguntaResponse.ok) {
             const preguntaData = await preguntaResponse.json();
-
+  
             // Mapeamos las respuestas de la pregunta para poder mostrarlas
             const respuestasFormateadas = preguntaData.respuestas.map(
               (respuesta) => ({
@@ -47,7 +61,7 @@ export function NewPreguntaRespuestas({
                 esCorrecta: respuesta.esCorrecta === "Correcta", // Convertimos la respuesta a booleano
               })
             );
-
+  
             reset({
               pregunta: preguntaData.descripcion,
               punteo: preguntaData.punteo,
@@ -59,9 +73,10 @@ export function NewPreguntaRespuestas({
         }
       }
     };
-
+  
     fetchPreguntaData();
   }, [id, reset]);
+  
 
   const onSubmit = handleSubmit(async (dataPregunta) => {
   if (id) {
@@ -97,6 +112,7 @@ export function NewPreguntaRespuestas({
       setTimeout(() => {
         onUserSaved();
         onClose();
+        resetTipoPreguntaRef.current();
       }, 1500);
 
     } catch (error) {
@@ -128,7 +144,7 @@ export function NewPreguntaRespuestas({
 
       toast.success("¡Pregunta creada exitosamente!", { autoClose: 2500 });
 
-      // Reiniciamos el formulario después de crear la pregunta
+      resetTipoPreguntaRef.current();
       reset({
         pregunta: "",
         punteo: 0,
@@ -139,6 +155,8 @@ export function NewPreguntaRespuestas({
     } catch (error) {
       console.error("Error al crear la pregunta: ", error); // Ver log en consola
       toast.error("Error al crear la pregunta, intente nuevamente");
+    } finally {
+      resetTipoPreguntaRef.current();
     }
   }
 });
@@ -158,7 +176,7 @@ export function NewPreguntaRespuestas({
           <input
             type="text"
             id="pregunta"
-            className="bg-[#F7FAFF] h-[34px] w-full mt-1 rounded-sm border border-primary pl-3 font-page"
+            className="bg-[#F7FAFF] h-[38px] w-full mt-1 rounded-sm border border-primary pl-3 font-page"
             placeholder="Ejemplo: ¿Cuál es la misión del EMDN?"
             {...register("pregunta", { required: "*La Pregunta es requerida" })}
           />
@@ -174,7 +192,8 @@ export function NewPreguntaRespuestas({
           >
             Tipo de Pregunta
           </label>
-          <TipoPregunta register={register} errors={errors} />
+          <TipoPregunta register={register} errors={errors} setValue={setValue}
+            resetSelectRef={resetTipoPreguntaRef}    />
         </div>
 
         <div className="mt-2">
@@ -187,7 +206,7 @@ export function NewPreguntaRespuestas({
           <input
             type="number"
             id="punteo"
-            className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
+            className="bg-[#F7FAFF] h-[38px] w-[318px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
             placeholder="1, 2, 0.5, etc."
             step="0.1"
             {...register("punteo", {
@@ -213,7 +232,7 @@ export function NewPreguntaRespuestas({
                   {...register(`respuestas[${index}].respuesta`, {
                     required: "*La respuesta es requerida",
                   })}
-                  className="bg-[#F7FAFF] h-[34px] w-full rounded-sm shadow-sm border border-primary pl-3 font-page mr-2"
+                  className="bg-[#F7FAFF] h-[38px] w-full rounded-sm shadow-sm border border-primary pl-3 font-page mr-2"
                   placeholder="Ejemplo: Misión del EMDN, Verdadero, Falso, etc."
                 />
                 <label className="inline-flex items-center mr-2">

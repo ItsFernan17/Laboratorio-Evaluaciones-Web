@@ -7,8 +7,6 @@ interface Props {
 
 const { title } = Astro.props;
 
-import ClearSession from '../components/Auth/ClearSession';
-
 ---
 
 <!doctype html>
@@ -35,8 +33,6 @@ import ClearSession from '../components/Auth/ClearSession';
 	</head>
 	<body class="bg-background w-full h-full absolute">
 		<Navbar client:load/>
-		<ClearSession client:load />
-		<Navbar client:load />
 		<div class="mr-2 ml-2">
 			<slot />
 		</div>

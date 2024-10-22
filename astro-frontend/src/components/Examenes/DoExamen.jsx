@@ -6,18 +6,25 @@ export function DoExamen() {
   const [examen, setExamen] = useState(null);
   const [isExamFinished, setIsExamFinished] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isUnauthorized, setIsUnauthorized] = useState(false);
   const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
 
   useEffect(() => {
     const codigo_examen = localStorage.getItem('codigo_examen');
+    const userRole = localStorage.getItem('role');
+
     if (!codigo_examen) {
-      // Si no hay un código de examen, mostrar modal de usuario no autorizado
-      setIsUnauthorized(true);
-      setTimeout(() => {
-        window.location.assign("/portal/menu-sistema");
-      }, 5000);
+      if (userRole === 'evaluador') {
+        setIsUnauthorized(true);
+        setTimeout(() => {
+          window.location.assign("/portal/mis-asignaciones");
+        }, 5000);
+      } else {
+        setIsUnauthorized(true);
+        setTimeout(() => {
+          window.location.assign("/login");
+        }, 5000);
+      }
     }
   }, []);
 
@@ -41,49 +48,67 @@ export function DoExamen() {
     const codigo_examen = localStorage.getItem('codigo_examen');
     const codigo_asignacion = localStorage.getItem('codigo_asignacion');
     
-    if (codigo_examen && codigo_asignacion) {
-      // Lógica para calcular el punteo
-      const punteo = 10; // Reemplaza esto con tu lógica real de cálculo
-  
-      try {
-        console.log("Enviando solicitud para actualizar punteo...");
-        console.log(`Asignación: ${codigo_asignacion}, Punteo: ${punteo}`);
-  
-        const response = await fetch(`http://localhost:3000/api/v1/asignacion/${codigo_asignacion}/punteo`, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ punteo }), // Asegúrate de enviar punteo correctamente
-        });
-  
-        console.log("Respuesta del servidor:", response);
-  
-        if (response.ok) {
-          toast.success("¡Calificación Registrada en el Sistema!.");
-          // Eliminar los datos de localStorage
-          localStorage.removeItem('codigo_examen');
-          localStorage.removeItem('codigo_asignacion');
-
-          // Abrir el modal indicando que se ha completado el examen
-          setIsCompletedModalOpen(true);
-          
-          // Redirigir al menú-sistema después de 5 segundos
-          setTimeout(() => {
-            window.location.assign("/portal/menu-sistema");
-          }, 5000);
-          
-        } else {
-          const errorData = await response.json(); // Intenta obtener el mensaje de error del servidor
-          console.error("Error en la respuesta:", errorData);
-          toast.error("Error al actualizar el punteo.");
-        }
-      } catch (error) {
-        console.error("Error en la solicitud:", error);
-        toast.error("Error en la solicitud. Revisa la consola.");
-      }
-    } else {
+    if (!codigo_examen || !codigo_asignacion) {
       toast.error("No se encontraron códigos en localStorage.");
+      return;
+    }
+  
+    let totalScore = 0;
+    let allQuestionsAnswered = true; 
+  
+    examen.series.forEach((serie, serieIndex) => {
+      serie.preguntas.forEach((pregunta, preguntaIndex) => {
+        const selectedAnswer = document.querySelector(
+          `input[name="pregunta-${serieIndex}-${preguntaIndex}"]:checked`
+        );
+        
+        if (selectedAnswer) {
+          const selectedValue = selectedAnswer.value;
+
+          const correctAnswer = pregunta.respuestas.find((respuesta) => respuesta.esCorrecta);
+          if (correctAnswer && selectedValue === correctAnswer.descripcion_respuesta) {
+            totalScore += parseFloat(pregunta.punteo_pregunta);
+          }
+        } else {
+          allQuestionsAnswered = false;
+        }
+      });
+    });
+  
+    if (!allQuestionsAnswered) {
+      toast.error("Debes contestar todas las preguntas antes de finalizar el examen.");
+      return;
+    }
+  
+    setTotalScore(totalScore);
+  
+    try {
+      const response = await fetch(`http://localhost:3000/api/v1/asignacion/${codigo_asignacion}/punteo`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ punteo: totalScore }),
+      });
+  
+      if (response.ok) {
+        toast.success("¡Calificación Registrada en el Sistema!");
+        localStorage.removeItem('codigo_examen');
+        localStorage.removeItem('codigo_asignacion');
+  
+        setIsCompletedModalOpen(true);
+        
+        setTimeout(() => {
+          window.location.assign("/portal/mis-asignaciones");
+        }, 5000);
+      } else {
+        const errorData = await response.json();
+        console.error("Error en la respuesta:", errorData);
+        toast.error("Error al actualizar el punteo.");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud:", error);
+      toast.error("Error en la solicitud. Revisa la consola.");
     }
   };
 
@@ -157,8 +182,8 @@ export function DoExamen() {
           </div>
 
           {/* Series del Examen */}
-          {examen.series && examen.series.map((serie, index) => (
-            <div key={index} className="bg-white p-7 rounded-lg border shadow-sm mt-8">
+          {examen.series && examen.series.map((serie, serieIndex) => (
+            <div key={serieIndex} className="bg-white p-7 rounded-lg border shadow-sm mt-8">
               <h3 className="text-[20px] font-bold text-primary">{serie.serie}</h3>
               <p className="text-[18px] text-primary mt-2">
                 <span className="font-bold">Instrucciones:</span> {serie.instrucciones}
@@ -173,7 +198,7 @@ export function DoExamen() {
                       <label key={respuestaIndex} className="flex items-center space-x-2">
                         <input
                           type="radio"
-                          name={`pregunta-${index}-${preguntaIndex}`}
+                          name={`pregunta-${serieIndex}-${preguntaIndex}`}
                           value={respuesta.descripcion_respuesta}
                           className="appearance-none border border-primary rounded-full w-5 h-5 checked:bg-primary checked:border-transparent checked:shadow-md transition-all duration-300 ease-in-out cursor-pointer"
                           disabled={isExamFinished}
@@ -223,3 +248,4 @@ export function DoExamen() {
     </div>
   );
 }
+

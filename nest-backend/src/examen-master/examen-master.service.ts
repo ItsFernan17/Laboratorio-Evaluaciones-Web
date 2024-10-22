@@ -286,6 +286,7 @@ export class ExamenMasterService {
       
             const preguntaData = {
               descripcion_pregunta: examenMaster.pregunta.descripcion,
+              punteo_pregunta: examenMaster.pregunta.punteo,
               respuestas: preguntaRespuestas.map(pr => ({
                 descripcion_respuesta: pr.respuesta.respuesta,
                 esCorrecta: pr.respuesta.esCorrecta,

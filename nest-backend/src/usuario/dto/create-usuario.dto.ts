@@ -6,6 +6,8 @@ export class CreateUsuarioDto {
 
     telefono: string;
 
+    rol: string;
+
     password: string;
 
     grado: number;
