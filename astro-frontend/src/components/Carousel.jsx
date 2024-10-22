@@ -39,13 +39,8 @@ const Carousel = () => {
     };
 
     return (
-<<<<<<< HEAD
         <div id="carousel" className="relative h-4xl w-full overflow-hidden" data-carousel="static">
             <div className="relative h-56 md:h-96 overflow-hidden rounded-lg">
-=======
-        <div id="animation-carousel" className="relative w-full" data-carousel="static">
-            <div className="relative h-70 overflow-hidden rounded-lg md:h-96">
->>>>>>> 0c9640c9c8c875a6a00425515f499b572b9edc23
                 {items.map((item, index) => (
                     <div
                         key={index}
