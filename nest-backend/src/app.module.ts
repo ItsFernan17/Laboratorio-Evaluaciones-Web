@@ -27,7 +27,7 @@ import { AsignacionModule } from './asignacion/asignacion.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: false,
       dropSchema: false, 
     }),
     SeedDbModule, 
